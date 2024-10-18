@@ -1,0 +1,209 @@
+<div class="app-fluid">
+  <div class="store-wrap">
+    <div class="xs-product-bar" style="justify-content: flex-end!important;">
+      <div class="xs-next-step" data-xs-set-logo="">
+        <span>Next Step <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    <div class='xs-layout'>
+      <aside class='xs-sidebar'>
+        <h3>Filter</h3>
+        <section>
+          <h4>By Category</h4>
+          <% @categories.each do |category| %>
+            <div class="filter-option">
+              <input type="checkbox" data-xs-filter="category" name="category" id="category_<%= category.id %>" data-xs-filter-val="<%= category.id %>">
+              <label for="category_<%= category.id %>"><span class="xs-simple-filter"><%= category.title %></span></label>
+            </div>
+            <!-- <a href="javascript:void(0);" data-xs-filter="category" data-xs-filter-val="<%= category.id %>"><%= category.title %></a>-->
+          <% end %>
+        </section>
+        <section>
+          <h4>By Vendors</h4>
+          <% Product.get_all_vendors.each do |vendor| %>
+            <div class="filter-option">
+              <input type="checkbox" data-xs-filter="vendor" name="vendor" id="vendor_<%= vendor.parameterize %>" data-xs-filter-val="<%= vendor %>">
+              <label for="vendor_<%= vendor.parameterize %>"><span class="xs-simple-filter"><%= vendor %></span></label>
+            </div>
+          <% end %>
+        </section>
+        <% @attributes.each do |attrib| %>
+          <% values = attrib.get_values %>
+          <% if values.size > 0 %>
+            <section>
+              <h4>By <%= attrib.title %></h4>
+              <% values.each do |value| %>
+                <% if attrib.attrib_type == "color" %>
+                  <!-- <a href="javascript:void(0);" class="xs-color-filter" style="background: <%= value[:color] %>" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value[:color] %>"><%= value[:title] %></a> -->
+                  <!-- <a href="javascript:void(0);" class="xs-color-filter" style="background: <%= value[:color] %>" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value[:color] %>"><%= value[:title] %></a> -->
+                  <div class="filter-option">
+                    <input type="checkbox" data-xs-filter="attribute" name="<%= attrib.handle %>" data-xs-attrib-id="<%= attrib.handle %>" id="<%= attrib.handle %>_<%= value[:title].parameterize %>" data-xs-filter-val="<%= value[:id] %>">
+                    <label for="<%= attrib.handle %>_<%= value[:title].parameterize %>"><span class="xs-color-filter" style="background: <%= value[:color] %>"></span></label>
+                  </div>
+                <% else %>
+                  <!-- <a href="javascript:void(0);" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value %>"><%= value %></a> -->
+                  <div class="filter-option">
+                    <input type="checkbox" data-xs-filter="attribute" name="<%= attrib.handle %>" data-xs-attrib-id="<%= attrib.handle %>" id="<%= attrib.handle %>_<%= value.parameterize %>" data-xs-filter-val="<%= value %>">
+                    <label for="<%= attrib.handle %>_<%= value.parameterize %>"><span class="xs-simple-filter"><%= value %></span></label>
+                  </div>
+                <% end %>
+              <% end %>
+            </section>
+          <% end %>
+        <% end %>
+      </aside>
+      <div class="xs-store-creator">
+        <h4 class="xs-h4-title mb-5">Select your products</h4>
+        <div data-xs-products-list class="xs-products-list">
+        </div>
+        <div data-xs-setup-products-loading style="display: none;">
+          <img src="<%= image_url "loading.gif" %>">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="productDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Sign up to create your free team store</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_tag create_account_post_path, :method => :post, :id => "get_started_form" do %>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <input type="text" required class="form-control form-control-user" name="team_admin[first_name]" placeholder="First Name">
+            </div>
+            <div class="form-group col-md-6">
+              <input type="text" required class="form-control form-control-user" name="team_admin[last_name]" placeholder="Last Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="email" required class="form-control form-control-user" name="team_admin[email]" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <input type="password" required class="form-control form-control-user" name="team_admin[password]" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <input type="tel" required class="form-control form-control-user" name="team_admin[phone]" placeholder="Phone">
+          </div>
+          <div class="form-group">
+            <input type="text" required class="form-control form-control-user" name="team_admin[organization]" placeholder="Organization">
+          </div>
+          <div class="form-group">
+            <label for="team-admin-sports">Sports</label>
+            <select name="team_admin[sports]" id="team-admin-sports" class="form-control form-control-user" required>
+              <option value="Boxing">Boxing</option>
+              <option value="Baseball">Baseball</option>
+              <option value="Basketball">Basketball</option>
+              <option value="Cheer">Cheer</option>
+              <option value="Cross Country">Cross Country</option>
+              <option value="Dance">Dance</option>
+              <option value="eSports">eSports</option>
+              <option value="Field Hockey">Field Hockey</option>
+              <option value="Flag Football">Flag Football</option>
+              <option value="Football">Football</option>
+              <option value="Golf">Golf</option>
+              <option value="Gymnastics">Gymnastics</option>
+              <option value="Hockey">Hockey</option>
+              <option value="Lacrosse">Lacrosse</option>
+              <option value="Martial Arts">Martial Arts</option>
+              <option value="Rugby">Rugby</option>
+              <option value="Soccer">Soccer</option>
+              <option value="Softball">Softball</option>
+              <option value="Swimming">Swimming</option>
+              <option value="Tennis">Tennis</option>
+              <option value="Track and Field">Track and Field</option>
+              <option value="Volleyball">Volleyball</option>
+              <option value="Wrestling">Wrestling</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="team-admin-type">Team Type</label>
+            <select name="team_admin[team_type]" id="team-admin-type" class="form-control form-control-user" required>
+              <option value="Youth">Youth</option>
+              <option value="Prep School">Prep School</option>
+              <option value="High School">High School</option>
+              <option value="College">College</option>
+              <option value="Adult Rec">Adult Rec</option>
+              <option value="Pro Sports">Pro Sports</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="team_admin_role">Your Role</label>
+            <select name="team_admin[role]" id="team_admin_role" class="form-control form-control-user" required>
+              <option value="Athletic Director">Athletic Director</option>
+              <option value="Coach">Coach</option>
+              <option value="Fan">Fan</option>
+              <option value="Parent">Parent</option>
+              <option value="Player">Player</option>
+              <option value="League Administrator">League Administrator</option>
+            </select>
+          </div>
+          <!-- <input type="hidden" name="xs_redirect" value="to_login"> -->
+          <button type="submit" class="btn btn-primary btn-user btn-block">
+            Create Account
+          </button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Outer Row -->
+<!-- 
+<div class="row justify-content-center">
+  <div class="col-xl-4 col-lg-4 col-md-6">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-5">
+        <div class="row">
+          <div class="col-lg-12">
+            <h3 class="text-center mb-5">Get Started</h3>
+            <a href="<%= signup_path %>" class="btn btn-primary btn-user btn-block">
+              Create an account
+            </a>
+            <a href="<%= login_path %>" class="btn btn-primary btn-user btn-block">
+              Login
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+<!-- <div class="page-width">
+  <div class="get-started">
+    <h3>Get Started</h3>
+    <a href="<%= signup_path %>/" class="btn">Create an account</a>
+    <span class="xs-or">or</span>
+    <a href="<%= login_path %>" class="btn btn--secondary-accent login-link">Login</a>
+  </div>
+</div> -->
+<% content_for :javascript do %>
+  <script>
+    $(document).on('turbolinks:load', () => {
+      xs.showContent();
+        xs.setGetStartedEvents();
+        xs.setFilters();
+    });
+  </script>
+<% end %>

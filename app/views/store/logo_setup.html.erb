@@ -1,0 +1,317 @@
+<div class="app-fluid">
+  <div class="store-wrap" id="store-logo-setup">
+    <div class="xs-product-bar">
+      <div class="xs-next-step" data-xs-products-step="<%= @store.id %>">
+        <span><i class="fas fa-arrow-left"></i> Back</span>
+      </div>
+
+      <div class="xs-set-logo-heading">
+        <h4>Upload your logo</h4>
+      </div>
+      <div class="xs-next-step" data-toggle="modal" data-target="#renameModal">
+        <span>Finish <i class="fas fa-arrow-right"></i></span>
+      </div>
+      <div class="xs-bar-overlay" style="display: none;" data-xs-bar-overlay>
+        <div class="progress">Loading...</div>
+      </div>
+    </div>
+    <div class="xs-store-utils">
+      <div id='xs-countdown-info'></div>
+      <div class="xs-label">Share: </div>
+      <% if @store.collection != nil %>
+      <button data-copy-link="<%= store_front_index_path @store.collection %>" class="btn btn-success">Copy
+        Link</button>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://midwaysports.com<%= store_front_index_path @store.collection %>" target="_blank" class="ml-1 btn btn-primary xs-btn-facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com/intent/tweet?text=See%20Store%20at%20midway%20https://midwaysports.com<%= store_front_index_path @store.collection %>" target="_blank" class="ml-1 btn btn-primary xs-btn-twitter"><i class="fab fa-twitter"></i></a>
+        <a href="mailto:test@example.com?subject=See%20live%20store%20at&body=See%20Store%20at%20midway%20https://midwaysports.com<%= store_front_index_path @store.collection %>" target="_blank" class="ml-1 btn btn-primary xs-btn-email"><i class="fas fa-envelope"></i></a>
+      <% end %>
+    </div>
+    <div class="xs-btn-bar">
+      <div class="xs-btns-left">
+        <label for="xs_select_all_products">
+          <input type="checkbox" id="xs_select_all_products"> Select All
+        </label>
+        <button data-select-product-action data-change-logo-action class='btn btn-primary'>Change Logo</button>
+      </div>
+      <div class="xs-btns-right">
+        <div class="xs-fund-bar">
+          <div class="xs-label">Fundraising: </div>
+          <select data-store-fundraise="<%= @store.id %>" class="form-control">
+            <% opts = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50] %>
+            <% opts.each do |opt| %>
+            <option value="<%= opt %>" <%= "selected" if @store.fundraising == opt %>><%= "#{opt}%" %></option>
+            <% end %>
+          </select>
+        </div>
+        <input type="file" style="display: none!important" id="add_logo_input">
+        <!-- <button class="btn btn-primary" data-add-store-logos="<%= @store.id %>">Add Logo</button> -->
+        <label data-toggle="tooltip" data-placement="top" title="Use transparent background images for logos. If not, we can help make the background transparent for you" class="xs-logo-add-btn btn btn-primary" for="xs_logo_file">Add Logo</label>
+
+        <button data-toggle="modal" data-target="#requestLogoModal" class="btn btn-primary" >Request Logo</button>
+
+        <button data-toggle="tooltip" data-placement="top" title="Add new or delete previous logos for this store" class="btn btn-primary" data-manage-store-logos="<%= @store.id %>">Manage Logos</button>
+
+        <button data-toggle="tooltip" data-placement="top" title="Set a deadline for when your team store closes"  class="btn btn-info" data-set-store-countdown="<%= @store.id %>">Set Countdown</button>
+      </div>
+
+    </div>
+
+    <div class='xs-layout'>
+      <div class='xs-logo-products'>
+        <% @store.shopify_products.each do |sp| %>
+        <% product = sp.product %>
+        <% next if product == nil %>
+        <% next if sp.get_selected_color == nil %>
+
+        <% logoparamsjson = product.logo_param.to_json %>
+        <% if product.logo_param == nil %>
+          <% logoparamsjson = @zerologoparams.to_json %>
+        <% end %>
+        <div class='xs-logo-product' data-xs-product="<%= sp.id %>" data-xs-shopify-pid="<%= product.id %>">
+          <div class="card shadow">
+            <div class="card-body">
+              <div class="xs-logo-product-inner">
+                <a href="javascript:void(0);" data-logo-setup-product-remove="<%= sp.id %>"><i class="fas fa-trash"></i></a>
+                <div class="xs-p-overlay" data-overlay></div>
+                <input type="checkbox" name="xs_products_check" class='xs-product-select-checkbox'
+                  value="<%= sp.id %>" />
+      <canvas id="xscanvas<%= product.id %>"></canvas>
+                <div class="xs-product-image" data-xs-product-image="<%= sp.id %>">
+                  <img
+                    src="<%= sp.get_image %>"
+                    data-logo-product-image="<%= sp.id %>" class="xs-g-img">
+                  <input type="hidden" name="product[<%= sp.id %>]" data-logo-product-input="<%= sp.id %>"
+                    value="">
+                  <input type="hidden" name="logo[<%= sp.id %>]" data-logo-selected-input="<%= sp.id %>"
+                    value="<%= sp.logo.id if sp.logo %>">
+                  <img src="<%= sp.get_selected_color.url %>" class="xs-o-img" style='display: none!important;'
+                    data-image-url="<%= sp.get_selected_color.url %>"
+                    data-logo-params="<%= logoparamsjson %>">
+                </div>
+                <div class="product-info">
+                  <% if @unique_admin %>
+                  <%= form_tag store_update_price_tag_path, :method => :post, :class => "xs-update-price-tag-form" do %>
+                  <input type="hidden" name="id" value="<%= sp.id %>" />
+      <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="">$</span>
+        </div>
+        <input type="number" name="price" data-product-price-input step="0.01"
+                      value="<%= sp.custom_base_price.to_f / 100.0 if sp.custom_base_price != nil %>"
+                      class="form-control" placeholder="Price" aria-label="Recipient's username"
+                      aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="submit">Update</button>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+  <div class="xs-product-price" data-product-price>{{ <%= sp.price %> | money }}</div>
+  <div class='xs-essential-wrapper'>
+    <label for="toggleEssential<%= sp.id %>">
+                      <input type="checkbox" id="toggleEssential<%= sp.id %>" data-toggle-essential="<%= sp.id %>" <%= "checked" if sp.essential %>> Make Product Essential
+                    </label>
+                  </div>
+                </div>
+
+                <div class='xs-product-logos' data-product-logos>
+                  <span data-close-logos></span>
+                  <% @store.logos.each do |logo| %>
+                  <% if logo.logo_file.attached? %>
+                  <span class="xs-product-logo-select <%= "active-logo" if logo == sp.logo %>"
+                    data-select-product-logo="<%= logo.id %>">
+                    <img class="" height="80" width="80"
+                      src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file, Rails.application.config.action_mailer.default_url_options) %>">
+                  </span>
+                  <% end %>
+                  <% end %>
+                </div>
+                <div class="xs-product-hover-actions">
+                  <button type='button' class="btn btn-sm btn-primary" data-change-color="<%= product.id %>">Change
+                    Color</button>
+                  <button type='button' class="btn btn-sm btn-primary" data-change-logo="<%= product.id %>">Change
+                    Logo</button>
+                    <button type='button' class="btn btn-sm btn-primary" data-remove-xs-logo="<%= sp.id %>">Remove Logo</button>
+                </div>
+                <div class='xs-product-colors-wrap' data-product-colors>
+                  <span data-close-colors></span>
+                  <div class="xs-product-colors">
+                    <% product.color_images.each do |color_image| %>
+                    <div data-set-product-color="<%= color_image.id %>" data-sp-id="<%= sp.id %>"
+                      class="xs-product-color xs-color-<%= color_image.get_color.handle if color_image.get_color %> <%= "active-color" if color_image.id == sp.get_selected_color.id %>">
+                      <span style="background-image: url(<%= color_image.url %>)"></span>
+                    </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div id="store-publish-loading" style="display: none;">
+    <div class="xs-progress-text text-center">Please Wait</div>
+    <div class="progress">
+      <div id="store-publish-progress" class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <div id="store-publish-done" style="display: none;">
+    <% if @store.logos.size > 0 %>
+      <img src="<%= @store.logos.first.logo_file.service_url %>" class="store-publish-logo" style="display: block; max-width: 150px; margin: 10px auto;" />
+  <% end %>
+  <h3 class="text-center">Congratulations!</h3>
+  <div class="xs-progress-done text-center">You store is being published now.</div>
+  <a href="" target="_blank" data-store-link></a>
+  <div class="my-3 xs-after-share">
+    <button data-store-g-link data-copy-link="" class="btn btn-success">Copy Link</button>
+    <a data-store-g-a-link href="https://www.facebook.com/sharer/sharer.php?u=https://midwaysports.com/" target="_blank" class="ml-1 btn btn-primary xs-btn-facebook"><i class="fab fa-facebook-f"></i></a>
+    <a data-store-g-a-link href="https://twitter.com/intent/tweet?text=See%20Store%20at%20midway%20https://midwaysports.com/" target="_blank" class="ml-1 btn btn-primary xs-btn-twitter"><i class="fab fa-twitter"></i></a>
+    <a data-store-g-a-link href="mailto:test@example.com?subject=See%20live%20store%20at&body=See%20Store%20at%20midway%20https://midwaysports.com/" target="_blank" class="ml-1 btn btn-primary xs-btn-email"><i class="fas fa-envelope"></i></a>
+  </div>
+  <a href="javascript:void(0);" data-go-back>Go back to editing</a>
+  <a href="/a/locker" >Go back to dashboard</a>
+</div>
+<div class='xs-variant-images' data-variant-forms style='display: none!important'>
+  <% @store.products.each do |product| %>
+    <% sp = product.shopify_products.find_by_store_id(@store.id) %>
+    <% i = 0 %>
+    <% product.variant_images.each do |image| %>
+      <%= form_tag store_g_images_upload_path(:id => sp.id, :variant_id => image.variant_id), :method => "POST" do |f| %>
+        <input type='hidden' data-xs-variant-image data-product-id="<%= product.id %>" name="image"
+      data-url="<%= image.url %>">
+      <% end %>
+      <% #break if i == 5 %>
+      <% #i = i + 1 %>
+    <% end %>
+  <% end %>
+</div>
+<%= form_tag store_logo_upload_path, :method => "POST", multipart: true, :id => "logo_hidden_form" do |f| %>
+  <% # <input type="file" class="custom-file-input" name="xs_logo" id="xs_logo_file" required > %>
+  <input type="hidden" name="redirect_to_store" value="<%= @store.id %>">
+  <div class="input-group mb-3">
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" name="xs_logo" id="xs_logo_file"
+        onchange="javascript:this.form.submit();" required>
+      <label class="custom-file-label" for="xs_logo_file">Choose file</label>
+    </div>
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="submit" id="xs_logo_upload">Upload</button>
+    </div>
+  </div>
+<% end %>
+<div class="xs-modal">
+  <div class='xs-change-logo-modal'>
+    <h3>Select Logo</h3>
+    <div class='xs-modal-inner'>
+      <% @store.logos.each do |logo| %>
+        <% if logo.logo_file.attached? %>
+          <span class="xs-logo-select <%= "logo-selected" if logo == @store.logos.first %>"
+          data-modal-select-logo="<%= logo.id %>">
+            <img class=""
+            src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file, Rails.application.config.action_mailer.default_url_options) %>">
+          </span>
+        <% end %>
+      <% end %>
+    </div>
+    <div class='xs-modal-footer'>
+      <input type="hidden" id="xs-modal-logo" value="<%= @store.logos.first.id if @store.logos.size > 0 %>">
+      <button type="button" data-action-cancel class="btn btn-secondary">Cancel</button>
+      <button type="button" data-action-change class="btn btn-primary">Change</button>
+    </div>
+  </div>
+</div>
+<div class="xs-modal">
+  <div class='xs-set-countdown-modal'>
+    <h3>Set Countdown</h3>
+    <div class='xs-modal-inner'>
+      <input id="countdownpicker" data-min="<%= Date.tomorrow.strftime("%d/%m/%Y") %>"
+          data-current="<% if @store.countdown %><%= @store.countdown.to_i * 1000 %><% else %>false<% end %>"
+          type="text" class="form-control" placeholder="Click here to set date/time for countdown">
+    </div>
+    <div class='xs-modal-footer'>
+      <button type="button" data-action-cancel class="btn btn-secondary">Cancel</button>
+      <button type="button" data-action-set class="btn btn-primary">Set</button>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Name Your store</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control" id="storeName" value="<%= @store.title %>">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <a class="btn btn-primary"  data-xs-finish-step="<%= @store.id %>"  href="javascript:void(0);">Launch</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="requestLogoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="renameModalLabel">Request Logo</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_tag store_request_logo_path, :method => :post, :multipart => true do %>
+          <div class="form-group" data-xs-color-picker>
+            <label for="primary_color">Primary Color</label>
+            <input type="text" class="form-control" id="primary_color" name="primary_color">
+          </div>
+          <div class="form-group"  data-xs-color-picker>
+            <label for="secondary_color">Secondary Color</label>
+            <input type="text" class="form-control" id="secondary_color"  name="secondary_color">
+          </div>
+          <div class="form-group"  data-xs-color-picker>
+            <label for="third_color">Third Color</label>
+            <input type="text" class="form-control" id="third_color" name="third_color">
+          </div>
+          <div class="form-group">
+            <label for="mascot">Mascot</label>
+            <input type="text" class="form-control" id="mascot" name="mascot">
+          </div>
+          <div class="form-group">
+            <label for="mascot">Reference Image</label>
+            <input type="file" class="form-control-file" id="reference" name='reference'>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea type="text" rows="5" class="form-control" name="description" id="description"></textarea>
+          </div>
+          <button type="submit" name="submit" class="btn btn-primary">Request</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<% content_for :javascript do %>
+  <script>
+    $(document).on('turbolinks:load', () => {
+    
+      xs.storeSetup();
+      xs.setupLogoRendering();
+    
+      <% if @xs_prompt %>
+      toastr.success("<%= @xs_prompt %>");
+      <% end %>
+    });
+  </script>
+<% end %>

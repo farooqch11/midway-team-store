@@ -1,0 +1,40 @@
+<h2 class="my-4 display-2 text-center">Stores</h2>
+<div class="container-fluid">
+    <div class="row">
+        <% @stores.each do |store| %>
+            <div class='col-12'>
+                <div class='card mb-5'>
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary"><%= store.title %> Orders</h6>
+                    </div>
+                    <div class='card-body'>
+                        <table class="table table-bordered mt-4 xs-datatable">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Products</th>
+                                <th>Price</th>
+                                <th>Fund Raised</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% store.orders.each do |order| %>
+                            <tr>
+                                <td><%= order.title %></td>
+                                <td><%= order.get_qty %></td>
+                                <td><%= formatMoney(order.price) %></td>
+                                <td><%= formatMoney(order.fundraised) %></td>
+                                <td>
+                                    <a href="<%= "https://#{@current_shopify_session.domain}/admin/orders/#{order.shopify_id}" %>" class="btn btn-primary" target="_blank">View Details</a>
+                                </td>
+                            </tr>
+                            <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>

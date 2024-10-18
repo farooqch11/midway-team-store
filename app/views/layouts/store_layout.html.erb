@@ -1,0 +1,24 @@
+<script>
+  window.xs_money_format = "{{ shop.money_format }}";
+</script>
+{{ 'https://code.jquery.com/jquery-2.1.1.min.js' | script_tag }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+<%= stylesheet_link_tag "frontstore" %>
+<%= javascript_include_tag "store-front" %>
+{{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+{{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+<%= csrf_meta_tags %>
+<div class="app-wrapper xs-app-wrapper">
+  <div class="app-content">
+    <main role="main" >
+      <%= yield %>
+    </main>
+  </div>
+</div>
+<% if content_for?(:javascript) %>
+  <div id="ContentForJavascript" data-turbolinks-temporary>
+    <%= yield :javascript %>
+  </div>
+<% end %>

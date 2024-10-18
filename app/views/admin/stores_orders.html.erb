@@ -1,0 +1,27 @@
+<h2 class="my-4 display-2 text-center"><%= @store.title %> Order History</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <table class="table table-bordered mt-4 xs-datatable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Products</th>
+            <th>Price</th>
+            <th>Fund Raised</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @store.orders.each do |order| %>
+          <tr>
+            <td><%= order.title %></td>
+            <td><%= order.get_qty %></td>
+            <td><%= formatMoney(order.price) %></td>
+            <td><%= formatMoney(order.fundraised) %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+	</div>
+</div>

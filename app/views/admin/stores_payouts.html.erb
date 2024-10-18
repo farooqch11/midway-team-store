@@ -1,0 +1,45 @@
+<h2 class="my-4 display-2 text-center"><%= @store.title %> Payouts</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <table class="table table-bordered mt-4 ">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Full Name</th>
+            <th>Address</th>
+            <th>Total Payout</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @store.payouts.order(:month).reverse_order.each do |payout| %>
+            <tr>
+              <td><%= payout.month.strftime("%Y %m") %></td>
+              <td><%= payout.full_name %></td>
+              <td><%= payout.address %></td>
+              <td><%= formatMoney(payout.total) %></td>
+              <td>
+                <span class="badge badge-<%= payout.paid? ? "success" : "warning" %>"><%= payout.status %></span>
+                <% if !payout.paid? %>
+                  <a href="<%= admin_stores_payout_set_paid_path :id => @store.id, :pid => payout.id %>" class='btn btn-primary'>Set Paid</button>
+
+                <% else %>
+                  <%= form_tag admin_stores_payout_set_tracking_path, :method => "post" do %>
+                  <input type="hidden" name="pid" value="<%= payout.id %>">
+                    <div class="input-group my-2">
+                      <input type="text" class="form-control" placeholder="Tracking " value="<%= payout.tracking %>" name='tracking'>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="submit">Update</button>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

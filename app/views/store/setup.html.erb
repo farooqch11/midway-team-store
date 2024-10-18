@@ -1,0 +1,104 @@
+<div class="app-fluid">
+  <div class="store-wrap">
+    <div class="xs-product-bar">
+      <div class="xs-products-added" data-xs-added-products>
+        <% @store.shopify_products.each do |p| %>
+          <% next if p.product == nil %>
+          <div data-xs-added-product="<%= p.id %>">
+            <img src="<%= p.get_selected_color_image%>" >
+            <span class='xs-product-remove' data-xs-product-remove="<%= p.id %>" data-store-id="<%= @store.id %>"></span>
+          </div>
+        <% end %>
+      </div>
+      <div class="xs-next-step" data-xs-set-logo="<%= @store.id %>">
+        <span>Next Step <i class="fas fa-arrow-right"></i></span>
+      </div>
+      <div class="xs-bar-overlay" style="display: none;" data-xs-bar-overlay>
+        <div class="progress">Loading...</div>
+      </div>
+    </div>
+    <button id="openFilterXs" class="btn btn-primary">Filter</button>
+    <div class='xs-layout'>
+      <aside class='xs-sidebar'>
+        <h3>Filter</h3>
+        <section>
+          <h4>By Category</h4>
+          <% @categories.each do |category| %>
+            <div class="filter-option">
+              <input type="checkbox" data-xs-filter="category" name="category" id="category_<%= category.id %>" data-xs-filter-val="<%= category.id %>">
+              <label for="category_<%= category.id %>"><span class="xs-simple-filter"><%= category.title %></span></label>
+            </div>
+            <!-- <a href="javascript:void(0);" data-xs-filter="category" data-xs-filter-val="<%= category.id %>"><%= category.title %></a>-->
+          <% end %>
+        </section>
+        <section>
+          <h4>By Vendors</h4>
+          <% Product.get_all_vendors.each do |vendor| %>
+            <div class="filter-option">
+              <input type="checkbox" data-xs-filter="vendor" name="vendor" id="vendor_<%= vendor.parameterize %>" data-xs-filter-val="<%= vendor %>">
+              <label for="vendor_<%= vendor.parameterize %>"><span class="xs-simple-filter"><%= vendor %></span></label>
+            </div>
+          <% end %>
+        </section>
+        <% @attributes.each do |attrib| %>
+          <% values = attrib.get_values %>
+          <% if values.size > 0 %>
+            <section>
+              <h4>By <%= attrib.title %></h4>
+              <% values.each do |value| %>
+                <% if attrib.attrib_type == "color" %>
+                  <!-- <a href="javascript:void(0);" class="xs-color-filter" style="background: <%= value[:color] %>" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value[:color] %>"><%= value[:title] %></a> -->
+                  <!-- <a href="javascript:void(0);" class="xs-color-filter" style="background: <%= value[:color] %>" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value[:color] %>"><%= value[:title] %></a> -->
+                  <div class="filter-option">
+                    <input type="checkbox" data-xs-filter="attribute" name="<%= attrib.handle %>" data-xs-attrib-id="<%= attrib.handle %>" id="<%= attrib.handle %>_<%= value[:title].parameterize %>" data-xs-filter-val="<%= value[:id] %>">
+                    <label for="<%= attrib.handle %>_<%= value[:title].parameterize %>"><span class="xs-color-filter" style="background: <%= value[:color] %>"></span></label>
+                  </div>
+                <% else %>
+                  <!-- <a href="javascript:void(0);" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value %>"><%= value %></a> -->
+                  <div class="filter-option">
+                    <input type="checkbox" data-xs-filter="attribute" name="<%= attrib.handle %>" data-xs-attrib-id="<%= attrib.handle %>" id="<%= attrib.handle %>_<%= value.parameterize %>" data-xs-filter-val="<%= value %>">
+                    <label for="<%= attrib.handle %>_<%= value.parameterize %>"><span class="xs-simple-filter"><%= value %></span></label>
+                  </div>
+                <% end %>
+              <% end %>
+            </section>
+          <% end %>
+        <% end %>
+      </aside>
+      <div class="xs-store-creator">
+        <h4 class="xs-h4-title mb-5"><% if @store.shopify_products.size > 0 %>Add or Remove products<% else %>Select your products<% end %></h4>
+        <div data-xs-products-list class="xs-products-list">
+        </div>
+        <div data-xs-setup-products-loading style="display: none;">
+          <img src="<%= image_url "loading.gif" %>">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="productDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ....
+        </div>
+      </div>
+    </div>
+  </div>
+  <% content_for :javascript do %>
+    <script>
+      $(document).on('turbolinks:load', () => {
+        // xs.showContent();
+        xs.setFilters();
+        xs.storeSetup();
+      });
+    </script>
+  <% end %>
+</div>
+
+</div>

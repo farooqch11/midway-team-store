@@ -1,0 +1,42 @@
+<h2 class="my-4 display-2 text-center"><%= @store.title %> Logos</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <div class='container-fluid'>
+        <div class="row justify-content-center">
+          <div class='col-12 col-sm-7 col-md-6 col-lg-4'>
+            <%= form_tag admin_store_logo_upload_path, :method => "POST", multipart: true, :id => "logo_file_form" do |f| %>
+              <div class="input-group mb-3">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="xs_logo" id="xs_logo_file" required >
+                  <label class="custom-file-label" for="xs_logo_file">Choose file</label>
+                </div>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit" id="xs_logo_upload">Upload</button>
+                </div>
+                <%# <input type="file" class="custom-file-input form-control-file" id="xs_logo_file" name='xs_logo' >
+                <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" id="xs_logo_upload">Upload</button>
+                </div> %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="row align-items-center justify-content-between">
+          <% @store.logos.each do |logo| %>
+            <% if logo.logo_file.attached? %>
+              <div class="col-12 col-sm-4 col-md-3 col-lg-3" >
+                <div class="xs-logo">
+                  <img class=" mb-4" data-xs-logo-image height="150" width="150" src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file, Rails.application.config.action_mailer.default_url_options) %>">
+                  <div class="xs-logo-actions">
+                    <a href="<%= admin_store_logo_delete_path :id => @store.id, :logo_id => logo.id %>" class="btn btn-danger btn-sm">Delete</a>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

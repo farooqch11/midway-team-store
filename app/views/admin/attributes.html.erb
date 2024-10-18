@@ -1,0 +1,116 @@
+<h2 class="my-4 display-2 text-center">Attributes</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addAttribModal">
+        <%= icon("fas", "plus") %>
+        Add Attribute
+      </button>
+      <% if @error %>
+        <div class="alert alert-dismissible alert-danger">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <h4><%= @error %></h4>
+        </div>
+      <% end %>
+      <table class="table table-bordered mt-4">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @attribs.each do |attrib| %>
+            <tr data-attrib="<%= attrib.id %>">
+              <td><%= attrib.title %></td>
+              <td><%= attrib.attrib_type %></td>
+              <td>
+                <div class="btn-toolbar" role="toolbar" >
+                  <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Edit" data-target="#editAttrib<%= attrib.id %>"> <%= icon("fas", "pencil-alt") %> </button>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Delete" data-target="#deleteAttrib<%= attrib.id %>"> <%= icon("fas", "trash-alt") %> </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Add attribute modal -->
+<div class="modal" id="addAttribModal" tabindex="-1" role="dialog" aria-labelledby="addAttribModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a new category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_for @new_attrib, url: { action: "attributes_new" } do |f| %>
+          <div class="form-group">
+            <%= f.label :title, "Title" %>
+            <%= f.text_field :title, :class => "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :attrib_type, "Type" %>
+            <%= f.select(:attrib_type, [['Color', 'color'], ['Text', 'text']], {},{ :class => "form-control"}) %>
+          </div>
+          <div class="form-group">
+            <button type="submit" name="create" class="btn btn-success">Save</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<% @attribs.each do |attrib|  %>
+  <!-- Add attribute modal -->
+  <div class="modal" id="editAttrib<%= attrib.id %>" tabindex="-1" role="dialog" aria-labelledby="editAttribModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" ><%= attrib.title %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= form_for attrib, method: "PATCH", url: admin_attributes_update_path(attrib.id)  do |f| %>
+            <div class="form-group">
+              <%= f.label :title, "Title" %>
+              <%= f.text_field :title, :class => "form-control" %>
+            </div>
+            <div class="form-group">
+              <button type="submit" name="update" class="btn btn-success">Update</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="deleteAttrib<%= attrib.id %>" tabindex="-1" role="dialog" aria-labelledby="deleteAttribModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete <%= attrib.title %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete the attribute?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <a href="<%= admin_attributes_delete_path attrib.id %>" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

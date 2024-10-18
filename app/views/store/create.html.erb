@@ -1,0 +1,40 @@
+<div class="app-fluid">
+  <div class="create-store-form">
+    <div class='row justify-content-center'>
+      <div class="col-xl-6 col-lg-4 col-md-6">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class='card-body p-0'>
+            <div class="">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Create a new Store</h1>
+                </div>
+                <%= form_tag store_save_path do %>
+                  <input type="hidden" name="team_admin" data-xs-admin-id>
+                  <div class="form-group">
+                    <input type="text" class="form-control form-control-user" name="name" placeholder="Enter Store name...">
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-user btn-block">
+                    Create
+                  </button>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="store-wrap">
+    <div class="">
+      <div class="xs-store-name">
+        <h4>Create a Store</h4>
+        <%= form_tag url: store_save_path, method: "POST" do %>
+          <input type="hidden" name="team_admin" data-xs-admin-id>
+          <input type="text" placeholder="Store Name" name="name">
+          <button type="submit" class="btn">Create</button>
+        <% end %>
+      </div>
+    </div>
+  </div> -->
+</div>

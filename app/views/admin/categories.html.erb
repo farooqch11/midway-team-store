@@ -1,0 +1,173 @@
+<h2 class="my-4 display-2 text-center">Categories</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addCategoryModal">
+        <%= icon("fas", "plus") %>
+        Add Category
+      </button>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" width="100">Image</th>
+            <th scope="col">Title</th>
+            <th scope="col">Products</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @categories.each do |category| %>
+            <tr>
+              <td><% if category.image.attached? %><img src="<%= url_for(category.image) %>" class="rounded " height="80" style="max-width:80px;object-fit: contain;"><% end %></td>
+              <td><%= category.title %></td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#viewProducts<%= category.id %>">
+                  View Products <span class="label label-light" data-category-products-count="<%= category.id %>"><%= category.products.count %></span>
+                </button>
+              </td>
+              <td>
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                  <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#editCategory<%= category.id %>"> <%= icon("fas", "pencil-alt") %> </button>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCategory<%= category.id %>"> <%= icon("fas", "trash-alt") %> </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<% @categories.each do |category| %>
+  <div class="modal" id="editCategory<%= category.id %>" tabindex="-1" role="dialog" aria-labelledby="categoryEditModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><%= category.title %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= form_for category, url: admin_categories_edit_path(category.id) do |f| %>
+            <div class="form-group">
+              <%= f.label :title, "Title" %>
+              <%= f.text_field :title, :class => "form-control" %>
+            </div>
+            <div class="form-group xs-image-field">
+              <%= f.label :image, "Change Image" %>
+              <%= f.file_field :image, :class => "form-control-file", :accept => "image/jpeg,image/jpg,image/png" %>
+              <div class="xs-image-preview">
+              <% if category.image.attached? %>
+                <img src="<%= url_for(category.image) %>" class="rounded " height="80" style="max-width:80px;object-fit: contain;">
+                <% end %>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" name="create" class="btn btn-success">Save</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="deleteCategory<%= category.id %>" tabindex="-1" role="dialog" aria-labelledby="categoryDeleteModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete <%= category.title %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete the category?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <a href="<%= admin_categories_delete_path category.id %>" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="viewProducts<%= category.id %>" tabindex="-1" role="dialog" aria-labelledby="categoryDeleteModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content ">
+        <!-- <div class="modal-header">
+            <h5 class="modal-title">Products in <%= category.title %></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div> -->
+        <div class="modal-body">
+          <h5>Add Products to <%= category.title %></h5>
+          <div class="xs-add-products-box">
+            <select class="fetch-products-select" data-add-url="<%= admin_add_product_to_category_path(:category_id => category.id, :product_id => "") %>" data-url="<%= admin_search_products_not_in_category_json_path(:category_id => category.id, :query => "") %>"></select>
+          </div>
+          <hr/>
+          <h5 class="">Products in <%= category.title %></h5>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" width="100" class>Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody data-category-listing="<%= category.id %>">
+              <% category.products.each do |product| %>
+                <tr data-category-product="<%= product.id %>" >
+                  <td><img src="<%= product.image_url %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ></td>
+                  <td><%= product.title %></td>
+                  <td>
+                    <div class="btn-toolbar" role="toolbar" aria-label="">
+                      <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button type="button" class="btn btn-sm btn-danger" data-remove-product-from-category> <%= icon("fas", "times") %> </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<!-- Add category modal -->
+<div class="modal" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a new category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_for @new_category, url: { action: "categories_new" }, html: { class: "nifty_form" } do |f| %>
+          <div class="form-group">
+            <%= f.label :title, "Title" %>
+            <%= f.text_field :title, :class => "form-control" %>
+          </div>
+          <div class="form-group xs-image-field">
+            <%= f.label :image, "Image" %>
+            <%= f.file_field :image, :class => "form-control-file", :accept => "image/jpeg,image/jpg,image/png" %>
+            <div class="xs-image-preview">
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" name="create" class="btn btn-success">Save</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

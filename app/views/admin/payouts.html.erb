@@ -1,0 +1,33 @@
+<h2 class="my-4 display-2 text-center">Payouts Requested</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <table class="table table-bordered mt-4 xs-datatable">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Store Name</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @payouts.each do |payout| %>
+            <tr>
+              <td><%= payout.store.team_admin.full_name %> Requested </td>
+              <td><%= payout.store.title %></td>
+              <td><%= formatMoney(payout.total) %></td>
+              <td>
+                <span class="badge badge-<%= payout.paid? ? "success" : "warning" %>"><%= payout.get_status %></span>
+              </td>
+              <td>
+                <a href="<%= admin_stores_payouts_path :id => payout.store.id %>" class="btn btn-primary">View Details</a>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="app-fluid">
+  <div class="container-fluid">
+    <h3 class='text-center'><%= @store.title %></h3>
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Order History</h6>
+      </div>
+      <div class="card-body">
+        <div class="xs-store-orders">
+          <% if @store.orders.size > 0 %>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Price</th>
+                  <th>Products</th>
+                  <th>Fundraised</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @store.orders.order(:created_at).reverse_order.each do |order| %>
+                  <tr>
+                    <td><%= order.title %></td>
+                    <td>{{ <%= order.price %> | money }}</td>
+                    <td><%= order.get_qty %></td>
+                    <td>{{ <%= order.fundraised %> | money }}</td>
+                    <td><%= time_ago_in_words order.created_at %> ago</td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <h3>Payouts</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Total Payout</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @store.payouts.order(:month).reverse_order.each do |payout| %>
+                  <tr>
+                    <td><%= payout.month.strftime("%Y %m") %></td>
+                    <td>{{ <%= payout.total %> | money }}</td>
+                    <td>
+                      <span class="badge badge-warning"><%= payout.status %></span>
+                    </td>
+                  </tr>
+                <% end %>
+                <% orders = @store.orders.order(:created_at).reverse_order.group_by(&:month)
+                   #.orders.group_by {|u| u.created_at.month } %>
+                <% orders.each do |month, month_orders| %>
+                  <% if month_orders.first.payout == nil %>
+                    <% total = 0.0 %>
+                    <% month_orders.each do |p| total += p.fundraised end %>
+                    <tr>
+                      <td><%= month %></td>
+                      <td>{{ <%= total %> | money }}</td>
+                      <td>
+                        <a href="<%= store_request_payout_path :store_id => @store.id, :month => month %>" data-toggle="modal" data-target="#payout<%= month.parameterize %>" class='btn btn-primary'>Request payout</a>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <p class="my-5 text-center">No orders yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% if orders != nil %>
+<% orders.each do |month, month_orders| %>
+  <% if month_orders.first.payout == nil %>
+    <!-- Modal -->
+    <div class="modal fade" id="payout<%= month.parameterize %>" tabindex="-1" role="dialog" aria-labelledby="payout<%= month.parameterize %>popup" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Request Payout</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Enter the information of person you want this payout to recieve.</p>
+            <%= form_tag store_request_payout_path(:store_id => @store.id, :month => month) do %>
+              <%= text_field_tag :full_name, "", :class => "form-control form-control-user mb-2", :required => "required", :placeholder => "Full Name" %>
+              <%= text_field_tag :address, "", :class => "form-control form-control-user", :required => "required", :placeholder => "Address" %>
+              <hr >
+              <% total = 0.0 %>
+              <% month_orders.each do |p| total += p.fundraised end %>
+              <div class='payout-total'><b>Total Amount: </b>{{ <%= total %> | money }}</div>
+              <button type="submit" class="btn btn-primary" >Request</button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<% end %>

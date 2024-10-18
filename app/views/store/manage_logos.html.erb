@@ -1,0 +1,69 @@
+<div class="app-fluid">
+  <%= render "partials/dashboard/header" %>
+  <div class="store-wrap" id="store-logo-setup">
+    <div class="xs-product-bar">
+      <div class="xs-next-step" data-check-products="false" data-xs-set-logo="<%= @store.id %>">
+        <span>&lt; Back</span>
+      </div>
+      <div class="xs-set-logo-heading">
+        <h4>Logos for this store</h4>
+      </div>
+      <div class="" data-xs-set-logo="<%= @store.id %>">
+      </div>
+      <div class="xs-bar-overlay" style="display: none;" data-xs-bar-overlay>
+        <div class="progress">Loading...</div>
+      </div>
+    </div>
+    <div class="xs-upload-logo mb-3">
+      <div class="xs-logo-panel">
+        <%= form_tag store_logo_upload_path, :method => "POST", multipart: true, :id => "logo_file_form" do |f| %>
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" name="xs_logo" id="xs_logo_file" accept="image/x-png,image/gif,image/jpeg" required >
+              <label class="custom-file-label" for="xs_logo_file">Choose file</label>
+            </div>
+            <div class="input-group-append" style="display: none!important;">
+              <button class="btn btn-primary" type="submit" id="xs_logo_upload">Upload</button>
+            </div>
+            <%# <input type="file" class="custom-file-input form-control-file" id="xs_logo_file" name='xs_logo' >
+                <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" id="xs_logo_upload">Upload</button>
+                </div> %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class='xs-logos mb-3'>
+      <div class='container-fluid'>
+        <div class="row">
+          <% @store.logos.each do |logo| %>
+            <% if logo.logo_file.attached? %>
+              <div class="col-12 col-sm-4 col-md-3 col-lg-2" data-xs-logo="<%= logo.id %>">
+                <div class="xs-logo">
+                  <img class=" mb-4" data-xs-logo-image height="150" width="150" src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file, Rails.application.config.action_mailer.default_url_options) %>">
+                  <div class="xs-logo-actions">
+                    <div>
+                      <% unless logo.main %>
+                        <a href="<%= store_logo_set_main_path :id => @store.id, :logo_id => logo.id  %>" class="btn btn-primary btn-sm">Set Main Logo</a>
+                      <% else %>
+                        <strong>Main Logo</strong>
+                      <% end %>
+                    </div>
+                    <a href="<%= store_logo_delete_path :id => @store.id, :logo_id => logo.id %>" class="btn btn-danger btn-sm">Delete</a>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% content_for :javascript do %>
+    <script>
+      $(document).on('turbolinks:load', () => {
+      
+        xs.storeSetup();
+      });
+    </script>
+  <% end %>

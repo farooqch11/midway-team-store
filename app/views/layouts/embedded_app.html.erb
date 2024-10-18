@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <% application_name = ShopifyApp.configuration.application_name %>
+    <title><%= application_name %></title>
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anon
+    ymous">
+    <%= stylesheet_link_tag "admin" %>
+    <script src="//code.jquery.com/jquery-2.1.0.min.js" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <% if ShopifyApp.use_webpacker? %>
+      <%= javascript_pack_tag "admin", 'data-turbolinks-track': "reload" %>
+    <% else %>
+      <%= javascript_include_tag "admin", "data-turbolinks-track" => true %>
+    <% end %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <script type="x-handlebar-template" id="categoryProductTemplate">
+      <tr data-category-product="{{ id }}" >
+        <td><img src="{{ image_url }}" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ></td>
+        <td>{{ title }}</td>
+        <td>
+          <div class="btn-toolbar" role="toolbar" aria-label="">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-sm btn-danger" data-remove-product-from-category> <%= icon("fas", "times") %> </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </script>
+    <script type="x-handlebar-template" id="productCategoryTemplate">
+      <tr data-product-category="{{ id }}" >
+        <td><img src="{{ image_url }}" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ></td>
+        <td>{{ title }}</td>
+        <td>
+          <div class="btn-toolbar" role="toolbar" aria-label="">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> <%= icon("fas", "times") %> </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </script>
+    <script type="x-handlebar-template" id="productStoreTemplate">
+      <tr data-product-store="{{ id }}" >
+        <td>{{ title }}</td>
+        <td>
+          <div class="btn-toolbar" role="toolbar" aria-label="">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-sm btn-danger" data-remove-store-from-product> <%= icon("fas", "times") %> </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </script>
+    <div class="app-wrapper">
+      <div class="app-content">
+        <main role="main">
+          <div class="container-fluid">
+            <%= render "admin/partials/header" %>
+            <a href="<%= request.path %>" data-turbolinks="false">Reload </a>
+            <br />
+            <%= yield %>
+          </div>
+        </main>
+      </div>
+    </div>
+    <%= render "layouts/flash_messages" %>
+    <script src="https://unpkg.com/@shopify/app-bridge"></script>
+    <%= content_tag(:div, nil, id: 'shopify-app-init', data: {
+      api_key: ShopifyApp.configuration.api_key,
+      shop_origin: (@current_shopify_session.domain if @current_shopify_session),
+      debug: Rails.env.development?
+    } ) %>
+    <% if content_for?(:javascript) %>
+      <div id="ContentForJavascript" data-turbolinks-temporary>
+        <%= yield :javascript %>
+      </div>
+    <% end %>
+  </body>
+</html>

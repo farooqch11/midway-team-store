@@ -1,0 +1,534 @@
+<!-- Outer Row -->
+<div class="row justify-content-center" id="signup-wizard-div">
+  <div class="col-xl-10 col-lg-12 col-md-9">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Create Your Account</h1>
+              </div>
+              <%= form_for @team_admin, :url => create_account_path, :html => { :class => "user" } do |f| %>
+                <div id="signup-wizard">
+                  <h1>First Step</h1>
+                  <div class="xs-wizard-step">
+                    <section class='xs-wizard-question'>
+                      <h4>1. What type of organization are you looking to outfit?</h4>
+                      <div class='xs-choices xs-choices-boxed'>
+                        <div>
+                          <input type="radio" required="required" data-msg-required="This value is required."   name="team_admin[organization]" value="Sports" id="xs-org-sports" />
+                          <label for="xs-org-sports">
+                            <%= icon("fas", "trophy") %>
+                            <span>Sports Organization</span>
+                          </label>
+                        </div>
+                        <div>
+                          <input type="radio"  name="team_admin[organization]" value="School" id="xs-org-school" />
+                          <label for="xs-org-school">
+                            <%= icon("fas", "graduation-cap") %>
+                            <span>School</span>
+                          </label>
+                        </div>
+                        <div>
+                          <input type="radio"  name="team_admin[organization]" value="Business" id="xs-org-business" />
+                          <label for="xs-org-business">
+                            <%= icon("fas", "briefcase") %>
+                            <span>Business</span>
+                          </label>
+                        </div>
+                        <div>
+                          <input type="radio"  name="team_admin[organization]" value="Community/Other" id="xs-org-community" />
+                          <label for="xs-org-community">
+                            <%= icon("fas", "users") %>
+                            <span>Community/Other</span>
+                          </label>
+                        </div>
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>2. Your primary role</h4>
+                      <div class='xs-choices xs-choices-dropdown'>
+                        <select name="team_admin[role]" class="form-control form-control-user" required>
+                          <option value="Athletic Director">Athletic Director</option>
+                          <option value="Coach">Coach</option>
+                          <option value="Fan">Fan</option>
+                          <option value="Parent">Parent</option>
+                          <option value="Player">Player</option>
+                          <option value="League Administrator">League Administrator</option>
+                        </select>
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>3. Organization Name</h4>
+                      <div class='xs-choices xs-choices-input'>
+                        <input type="text" class="form-control form-control-user" required name="team_admin[organization_name]">
+                      </div>
+                    </section>
+                  </div>
+                  <h1>Second Step</h1>
+                  <div class="xs-wizard-step">
+                    <section class='xs-wizard-question'>
+                      <h4>4. How many teams are you looking to outfit?</h4>
+                      <div class='xs-choices xs-choices-boxed'>
+                        <div>
+                          <input type="radio"  name="team_admin[team_number]" value="Single" id="xs-team-single" />
+                          <label for="xs-team-single">
+                            <%= icon("fas", "user") %>
+                            <span>Single Team</span>
+                          </label>
+                        </div>
+                        <div>
+                          <input type="radio"   name="team_admin[team_number]" value="Multiple" id="xs-team-multiple" />
+                          <label for="xs-team-multiple">
+                            <%= icon("fas", "users") %>
+                            <span>Mutliple Teams</span>
+                          </label>
+                        </div>
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>5. What solutions are you interested in?</h4>
+                      <div class='xs-choices xs-choices-checkbox'>
+                        <div>
+                          <input type="checkbox" name="team_admin[solution][]" value="Spirit Wear" id="xs-sol-spirit" />
+                          <label for="xs-sol-spirit">Spirit Wear</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[solution][]" value="Team Gear" id="xs-sol-team" />
+                          <label for="xs-sol-team">Team Gear</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[solution][]" value="Uniforms" id="xs-sol-uniforms" />
+                          <label for="xs-sol-uniforms">Uniforms</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[solution][]" value="Fundraising" id="xs-sol-fundraising" />
+                          <label for="xs-sol-fundraising">Fundraising</label>
+                        </div>
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>6. Type of team?</h4>
+                      <div class='xs-choices xs-choices-dropdown'>
+                        <select name="team_admin[team_type]"   class="form-control form-control-user" required>
+                          <option value="Youth">Youth</option>
+                          <option value="Prep School">Prep School</option>
+                          <option value="High School">High School</option>
+                          <option value="College">College</option>
+                          <option value="Adult Rec">Adult Rec</option>
+                          <option value="Pro Sports">Pro Sports</option>
+                        </select>
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>6. Which sport(s)?</h4>
+                      <div class='xs-choices xs-choices-checkbox'>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Baseball" id="xs-sport-baseball" />
+                          <label for="xs-sport-baseball">Baseball</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Basketball" id="xs-sport-basketball" />
+                          <label for="xs-sport-basketball">Basketball</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Boxing" id="xs-sport-boxing" />
+                          <label for="xs-sport-boxing">Boxing</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Cross Country" id="xs-sport-cross-country" />
+                          <label for="xs-sport-cross-country">Cross Country</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Cheer" id="xs-sport-cheer" />
+                          <label for="xs-sport-cheer">Cheer</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Dance" id="xs-sport-dance" />
+                          <label for="xs-sport-dance">Dance</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="eSports" id="xs-sport-esports" />
+                          <label for="xs-sport-esports">eSports</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Field Hockey" id="xs-sport-field-hockey" />
+                          <label for="xs-sport-field-hockey">Field Hockey</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Flag Football" id="xs-sport-flag-football" />
+                          <label for="xs-sport-flag-football">Flag Football</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Football" id="xs-sport-football" />
+                          <label for="xs-sport-football">Football</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Golf" id="xs-sport-golf" />
+                          <label for="xs-sport-golf">Golf</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Gymnastics" id="xs-sport-gymnastics" />
+                          <label for="xs-sport-gymnastics">Gymnastics</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Lacrosse" id="xs-sport-lacrosse" />
+                          <label for="xs-sport-lacrosse">Lacrosse</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Hockey" id="xs-sport-hockey" />
+                          <label for="xs-sport-hockey">Hockey</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Martial Arts" id="xs-sport-martial-arts" />
+                          <label for="xs-sport-martial-arts">Martial Arts</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="MMA" id="xs-sport-mma" />
+                          <label for="xs-sport-mma">MMA</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Rugby" id="xs-sport-rugby" />
+                          <label for="xs-sport-rugby">Rugby</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Soccer" id="xs-sport-soccer" />
+                          <label for="xs-sport-soccer">Soccer</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Softball" id="xs-sport-soft-ball" />
+                          <label for="xs-sport-soft-ball">Softball</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Swimming" id="xs-sport-swimming" />
+                          <label for="xs-sport-swimming">Swimming</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Tennis" id="xs-sport-tennis" />
+                          <label for="xs-sport-tennis">Tennis</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Track and Field" id="xs-sport-track-field" />
+                          <label for="xs-sport-track-field">Track and Field</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Volleyball" id="xs-sport-volley-ball" />
+                          <label for="xs-sport-volley-ball">Volleyball</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Wrestling" id="xs-sport-wrestling" />
+                          <label for="xs-sport-wrestling">Wrestling</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="team_admin[sports][]" value="Others" id="xs-sport-others" />
+                          <label for="xs-sport-others">Others</label>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                  <h1>Third Step</h1>
+                  <div class='xs-wizard-step'>
+                    <section class='xs-wizard-question'>
+                      <h4>7. First name</h4>
+                      <div class='xs-choices xs-choices-input'>
+                        <input type="text" required class="form-control form-control-user" name="team_admin[first_name]" placeholder="First Name">
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>8. Last name</h4>
+                      <div class='xs-choices xs-choices-input'>
+                        <input type="text" required class="form-control form-control-user" name="team_admin[last_name]" placeholder="Last Name">
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>9. Email address</h4>
+                      <div class='xs-choices xs-choices-input'>
+                        <input type="email" required class="form-control form-control-user" name="team_admin[email]" placeholder="Email">
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>10. Phone number</h4>
+                      <div class='xs-choices xs-choices-input'>
+                        <input type="tel" required class="form-control form-control-user" name="team_admin[phone]" placeholder="Phone">
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>11. Password</h4>
+                      <div class='xs-choices xs-choices-input'>
+                        <input type="password" class="form-control form-control-user" id="team_admin_password" required name="team_admin[password]">
+                      </div>
+                    </section>
+                    <section class='xs-wizard-question'>
+                      <h4>11(a). Confirm password</h4>
+                      <div class='xs-choices xs-choices-input'>
+                        <input type="password" class="form-control form-control-user" required name="team_admin[confirm_password]">
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              <% end %>
+              <div id="signup_login-form" class="" style="display: none">
+                <form id="login-form" class="user" style="dipslay:none;" data-url="<%= process_login_path %>" method="POST">
+                  <div class="form-group">
+                    <%= email_field_tag :email, "", :class => "form-control form-control-user", :placeholder => "Enter Email Address..." %>
+                  </div>
+                  <div class="form-group">
+                    <%= password_field_tag :password, "", :class => "form-control form-control-user", :placeholder => "Password" %>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-user btn-block">
+                    Login
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center" id="signup-wizard-response" style="display: none;">
+  <div class="col-xl-4 col-lg-4 col-md-6">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Our team is now working on your uniform solution! </h1>
+              </div>
+              <div class="alert alert-success" data-response-text role="alert">We will contact you within 24 hours. Until then, go ahead and finish building your store! 
+              </div>
+              <div class="text-center" data-response-login style="display: none">
+                <a class="btn btn-primary" href="javascript:void(0);" data-after-login class="">Continue building store</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="page-width">
+  <div class="signup-form">
+    <h3>Create your account</h3>
+    <%= form_for @team_admin, :url => create_account_path do |f| %>
+      <div id="signup-wizard">
+        <h1>First Step</h1>
+        <div class="xs-wizard-step">
+          <section class='xs-wizard-question'>
+            <h4>1. What type of organization are you looking to outfit?</h4>
+            <div class='xs-choices xs-choices-boxed'>
+              <div>
+                <input type="radio" required="required" data-msg-required="This value is required."   name="team_admin[organization]" value="Sports" id="xs-org-sports" />
+                <label for="xs-org-sports">
+                  <%= icon("fas", "trophy") %>
+                  <span>Sports Organization</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio"  name="team_admin[organization]" value="School" id="xs-org-school" />
+                <label for="xs-org-school">
+                  <%= icon("fas", "graduation-cap") %>
+                  <span>School</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio"  name="team_admin[organization]" value="Business" id="xs-org-business" />
+                <label for="xs-org-business">
+                  <%= icon("fas", "briefcase") %>
+                  <span>Business</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio"  name="team_admin[organization]" value="Community/Other" id="xs-org-community" />
+                <label for="xs-org-community">
+                  <%= icon("fas", "users") %>
+                  <span>Community/Other</span>
+                </label>
+              </div>
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>2. Your primary role</h4>
+            <div class='xs-choices xs-choices-dropdown'>
+              <select name="team_admin[role]" required>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Coordinator">Coordinator</option>
+                <option value="Manager">Manager</option>
+                <option value="Team Leader">Team Leader</option>
+              </select>
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>3. Organization Name</h4>
+            <div class='xs-choices xs-choices-input'>
+              <input type="text" required name="team_admin[organization_name]">
+            </div>
+          </section>
+        </div>
+        <h1>Second Step</h1>
+        <div class="xs-wizard-step">
+          <section class='xs-wizard-question'>
+            <h4>4. How many teams are you looking to outfit?</h4>
+            <div class='xs-choices xs-choices-boxed'>
+              <div>
+                <input type="radio"  name="team_admin[team_number]" value="Single" id="xs-team-single" />
+                <label for="xs-team-single">
+                  <%= icon("fas", "user") %>
+                  <span>Single Team</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio"   name="team_admin[team_number]" value="Multiple" id="xs-team-multiple" />
+                <label for="xs-team-multiple">
+                  <%= icon("fas", "users") %>
+                  <span>Mutliple Teams</span>
+                </label>
+              </div>
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>5. What solutions are you interested in?</h4>
+            <div class='xs-choices xs-choices-checkbox'>
+              <div>
+                <input type="checkbox" name="team_admin[solution][]" value="Spirit Wear" id="xs-sol-spirit" />
+                <label for="xs-sol-spirit">Spirit Wear</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[solution][]" value="Team Gear" id="xs-sol-team" />
+                <label for="xs-sol-team">Team Gear</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[solution][]" value="Uniforms" id="xs-sol-uniforms" />
+                <label for="xs-sol-uniforms">Uniforms</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[solution][]" value="Fundraising" id="xs-sol-fundraising" />
+                <label for="xs-sol-fundraising">Fundraising</label>
+              </div>
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>6. Type of team?</h4>
+            <div class='xs-choices xs-choices-dropdown'>
+              <select name="team_admin[team_type]" required>
+                <option value="Athletics">Athletics</option>
+                <option value="Athletics">Athletics</option>
+                <option value="Athletics">Athletics</option>
+              </select>
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>6. Which sport(s)?</h4>
+            <div class='xs-choices xs-choices-checkbox'>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Baseball" id="xs-sport-baseball" />
+                <label for="xs-sport-baseball">Baseball</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Field Hockey" id="xs-sport-field-hockey" />
+                <label for="xs-sport-field-hockey">Field Hockey</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Lacrosse" id="xs-sport-lacrosse" />
+                <label for="xs-sport-lacrosse">Lacrosse</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Tennis" id="xs-sport-tennis" />
+                <label for="xs-sport-tennis">Tennis</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Basketball" id="xs-sport-basketball" />
+                <label for="xs-sport-basketball">Basketball</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Flag Football" id="xs-sport-flag-football" />
+                <label for="xs-sport-flag-football">Flag Football</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Martial Arts" id="xs-sport-martial" />
+                <label for="xs-sport-martial">Martial Arts</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Track and Field" id="xs-sport-track" />
+                <label for="xs-sport-track">Track and Field</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Cheer" id="xs-sport-cheer" />
+                <label for="xs-sport-cheer">Cheer</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Football" id="xs-sport-football" />
+                <label for="xs-sport-football">Football</label>
+              </div>
+              <div>
+                <input type="checkbox" name="team_admin[sports][]" value="Rugby" id="xs-sport-rugby" />
+                <label for="xs-sport-rugby">Rugby</label>
+              </div>
+            </div>
+          </section>
+        </div>
+        <h1>Third Step</h1>
+        <div class='xs-wizard-step'>
+          <section class='xs-wizard-question'>
+            <h4>7. First name</h4>
+            <div class='xs-choices xs-choices-input'>
+              <input type="text" required name="team_admin[first_name]" placeholder="First Name">
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>8. Last name</h4>
+            <div class='xs-choices xs-choices-input'>
+              <input type="text" required name="team_admin[last_name]" placeholder="Last Name">
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>9. Email address</h4>
+            <div class='xs-choices xs-choices-input'>
+              <input type="email" required name="team_admin[email]" placeholder="Email">
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>10. Phone number</h4>
+            <div class='xs-choices xs-choices-input'>
+              <input type="tel" required name="team_admin[phone]" placeholder="Phone">
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>11. Password</h4>
+            <div class='xs-choices xs-choices-input'>
+              <input type="password" id="team_admin_password" required name="team_admin[password]">
+            </div>
+          </section>
+          <section class='xs-wizard-question'>
+            <h4>11(a). Confirm password</h4>
+            <div class='xs-choices xs-choices-input'>
+              <input type="password" required name="team_admin[confirm_password]">
+            </div>
+          </section>
+        </div>
+      </div>
+    <% end %>
+    <div class="login-form" id="signup_login_form" style="display: none;">
+      <h3>Login</h3>
+      <form id="login-form" data-url="<%= process_login_path %>" method="POST">
+        <div class="xs-form-group">
+          <%= label_tag :email %>
+          <%= email_field_tag :email %>
+        </div>
+        <div class="xs-form-group">
+          <%= label_tag :password %>
+          <%= password_field_tag :password %>
+        </div>
+        <%= submit_tag "Login", :class => "btn " %>
+        <span class="xs-or">or</span>
+        <a href="<%= signup_path %>" class="signup-link">Sign Up</a>
+      </form>
+    </div>
+  </div>
+</div>
+-->

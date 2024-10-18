@@ -1,0 +1,31 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore cache files.
+log/*
+tmp/*
+node_modules/
+yarn-error.log
+
+# Ignore database files.
+*.sqlite3
+*.sqlite3-journal
+
+# Ignore system-specific files.
+.DS_Store
+*.swp
+
+# Ignore credentials
+config/master.key
+config/credentials.yml.enc
+
+# Ignore build output.
+app/assets/builds/*
+
+# Ignore compiled files.
+/public/*
+/tmp/*
+/storage/*
+
+# Ignore secrets or environment variable files
+.env

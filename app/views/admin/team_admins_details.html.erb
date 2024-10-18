@@ -1,0 +1,67 @@
+<h2 class="my-4 display-2 text-center">Team Admin Details</h2>
+<h2 class="my-4 display-4 text-center"><%= @admin.email %></h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <div class="row">
+        <div class="col-12">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <b>Name: </b> <%= @admin.first_name %> <%= @admin.last_name %>
+            </li>
+            <li class="list-group-item">
+              <b>Email: </b> <%= @admin.email %>
+            </li>
+            <li class="list-group-item">
+              <b>Organization: </b> <%= @admin.organization_name %> 
+            </li>
+            <li class="list-group-item">
+              <b>Organization Type: </b> <%= @admin.organization %>
+            </li>
+            <li class="list-group-item">
+              <b>Role: </b> <%= @admin.role %>
+            </li>
+            <li class="list-group-item">
+              <b>Team Number: </b> <%= @admin.team_number %>
+            </li>
+            <li class="list-group-item">
+              <b>Team Type: </b> <%= @admin.team_type %>
+            </li>
+            <li class="list-group-item">
+              <b>Solution: </b> <%= @admin.solution %>
+            </li>
+            <li class="list-group-item">
+              <b>Sports: </b> <%= @admin.sports %>
+            </li>
+            <% if @admin.admin_info != nil %>
+            <li class="list-group-item">
+              <b>Payout Details</b>
+            </li>
+            <li class="list-group-item">
+              <b>Full name: </b> <%= @admin.admin_info.full_name %>
+            </li>
+            <li class="list-group-item">
+              <b>Address 1: </b> <%= @admin.admin_info.address1 %>
+            </li>
+            <li class="list-group-item">
+              <b>Address 2: </b> <%= @admin.admin_info.address2 %>
+            </li>
+            <li class="list-group-item">
+              <b>Country: </b> <%= @admin.admin_info.country %>
+            </li>
+            <li class="list-group-item">
+              <b>City: </b> <%= @admin.admin_info.city %>
+            </li>
+            <li class="list-group-item">
+              <b>State: </b> <%= @admin.admin_info.state %>
+            </li>
+            <li class="list-group-item">
+              <b>Zipcode: </b> <%= @admin.admin_info.zipcode %>
+            </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

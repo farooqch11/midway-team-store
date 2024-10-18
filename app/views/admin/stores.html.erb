@@ -1,0 +1,59 @@
+<h2 class="my-4 display-2 text-center">Stores</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <table class="table table-bordered mt-4 xs-datatable">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Team Admin</th>
+            <th>Products</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @stores.each do |store| %>
+            <tr>
+              <td><%= store.title %></td>
+              <td><%= store.team_admin.email %></td>
+              <td><%= store.products.size %></td>
+              <td>
+                <div class="btn-toolbar" role="toolbar" >
+                  <div class="btn-group" role="group" aria-label="First group">
+                    <a href="https://<%= Shop.first.shopify_domain %>/a/locker/store/<%= store.collection %>" target="_blank" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Preview"> <%= icon("fas", "eye") %> </a>
+                    <a href="<%= admin_stores_logos_path store.id %>" type="button" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Logos">Manage Logos</a>
+                    <a href="<%= admin_stores_payouts_path store.id %>" type="button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Payout"> <%= icon("fas", "dollar-sign") %> </a>
+                    <a href="<%= admin_stores_orders_path store.id %>" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Sales"> <%= icon("fas", "chart-area") %> </a>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-placement="top" title="Delete" data-target="#deleteStore<%= store.id %>"> <%= icon("fas", "trash-alt") %> </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<% @stores.each do |store| %>
+  <div class="modal" id="deleteStore<%= store.id %>" tabindex="-1" role="dialog" aria-labelledby="deleteStoreModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete <%= store.title %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Deleting this store will delete all it's products along with their data. This action is not reversible.
+            Are you sure you want to delete this store?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <a href="<%= admin_stores_delete_path store.id %>" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,51 @@
+<h2 class="my-4 display-2 text-center">Team Admin Sales</h2>
+<h2 class="my-4 display-4 text-center"><%= @admin.email %></h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-6">
+          <div class="card text-white bg-primary mb-3" style="max-width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">Total Sales</h5>
+              <p class="card-text"><%= formatMoney @admin.get_total_sales %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+          <div class="card text-white bg-primary mb-3" style="max-width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">Total Funds Raised</h5>
+              <p class="card-text"><%= formatMoney @admin.get_total_funds_raised %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+          <div class="card text-white bg-success mb-3" style="max-width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">This month Sales</h5>
+              <p class="card-text"><%= formatMoney @admin.get_this_month_sales %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+          <div class="card text-white bg-success mb-3" style="max-width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">This month Raised</h5>
+              <p class="card-text"><%= formatMoney @admin.get_this_month_funds_raised %></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-12 col-sm-6 col-md-6">
+          <div class="card text-white bg-dark mb-3" style="max-width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">Total Payout for this month</h5>
+              <p class="card-text"><%= formatMoney @admin.get_this_month_funds_raised %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	</div>
+</div>

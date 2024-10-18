@@ -1,0 +1,318 @@
+<h2 class="my-4 display-2 text-center">Products</h2>
+<div class='card'>
+  <div class='card-body'>
+  
+    <%= form_tag  admin_products_path , :method => "GET" do %>
+      <div class="input-group mb-3">
+        <input name="search" type="search" class="form-control" placeholder="Enter a title or product tags" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit" id="button-addon2">Search</button>
+        </div>
+      </div>  
+    <% end %>
+
+    <div id="selected-product-actions" class="my-3 container-fluid">
+      <div class="row">
+        <div class="col">
+          <span data-selected-products-status></span>
+          <div class="btn-toolbar d-inline-block" role="toolbar" >
+            <div class="btn-group mr-2" role="group" >
+              <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#addToCategoryModal">Add to Category</button>
+              <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#removeFromCategoryModal">Remove From Category</button>
+            </div>
+          </div>
+          <div class="btn-toolbar d-inline-block" role="toolbar" >
+            <div class="btn-group mr-2" role="group" >
+              <button type="button" class="btn btn-sm btn-success"  data-toggle="tooltip" data-placement="top" title="Publish" data-bulk-publish><%= icon("fas", "eye") %></button>
+              <button type="button" class="btn btn-sm btn-warning"   data-toggle="tooltip" data-placement="top" title="Un-Publish" data-bulk-unpublish><%= icon("fas", "eye-slash") %></button>
+              <button type="button" class="btn btn-sm btn-danger"   data-toggle="tooltip" data-placement="top" title="Delete" data-bulk-delete><%= icon("fas", "trash-alt") %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if @products.size > 0 %>
+    <table class="table xs-datatable">
+      <thead>
+        <tr>
+          <th>
+            <input class="" type="checkbox" value=""  data-admin-product-select-all>
+          </th>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Categories</th>
+          <th>Logo Params</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @products.each do |product| %>
+          <tr data-product-row="<%= product.id %>">
+            <td>
+              <input class="" type="checkbox" value="<%= product.id %>"  data-admin-product-select>
+            </td>
+            <td data-search="<%= product.tags %>">
+              <img id="product-image-<%= product.id %>" src="<%= product.image_url %>" data-logo-params='<%= product.logo_param.to_json %>' class="img-thumbnail product-thumbnail" />
+            </td>
+            <td><%= product.title %></td>
+            <td>
+              <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCategories<%= product.id %>">View 
+                <span class="badge" data-product-categories-count="<%= product.id %>"><%= product.categories.count %></span>
+              </button>
+            </td>
+            <td>
+              <% if product.logo_param != nil %>
+                <span class="label label-success" data-logo-params-status="<%= product.id %>">Defined</span>
+              <% else %>
+                <span class="label label-danger"  data-logo-params-status="<%= product.id %>">Not defined</span>
+              <% end %>
+              <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-product-id="<%= product.id %>" data-target="#canvasDrawModal"> <%= icon("fas", "draw-polygon") %> </button>
+            </td>
+            <td>
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Edit" data-target="#editProduct<%= product.id %>"> <%= icon("fas", "pencil-alt") %> </button>
+                  <% if product.published %>
+                    <button type="button" data-toggle-publish="<%= product.id %>" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Un-Publish"> <%= icon("fas", "eye-slash") %> </button>
+                  <% else %>
+                    <button type="button" data-toggle-publish="<%= product.id %>" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Publish"> <%= icon("fas", "eye") %> </button>
+                  <% end %>
+                  
+                  <button type="button" class="btn btn-sm btn-danger"   data-toggle="tooltip" data-placement="top" title="Delete" data-product-delete="<%= product.id %>"><%= icon("fas", "trash-alt") %></button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% end %>
+    <hr>
+    <div class="py-3">
+      <div class="alert alert-dismissible alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Don't see any product?</h4>
+        <p>When you add the product in shopify admin, the app will sync the database and fetch the product, and it will appear in 5 - 10 minutes. If it still does not appear in here, then you can hit the refresh button to update the app's product database manually. Make sure you press it just once, and app will update it's database with all the products. It will take sometime and all products will appear in here.</p>
+        <p>Products without images will not be fetched in the database.</p>
+        <div class="text-center">
+          <button data-refresh-products class="btn btn-primary btn-lg">Update product database manually</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% if @products.size > 0 %>
+  <% @products.each do |product| %>
+    <div class="modal" id="viewCategories<%= product.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+          <div class="modal-body">
+            <h5 class="lead">Add to categories</h5>
+            <div class="xs-add-collections-box">
+              <select class="fetch-categories-select" data-url="<%= admin_search_categories_json_path :query=> "" %>" data-add-url="<%= admin_add_category_to_product_path :product_id => product.id, :category_id => "" %>"></select>
+            </div>
+            <hr/>
+            <h5 class="lead">Categories of <i><%= product.title %></i></h5>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" width="100" class>Image</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody data-product-categories="<%= product.id %>">
+                <% product.categories.each do |category| %>
+                  <tr data-product-category="<%= category.id %>" >
+                    <td><% if category.image.attached? %><img src="<%= url_for(category.image) %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ><% end %></td>
+                    <td><%= category.title %></td>
+                    <td>
+                      <div class="btn-toolbar" role="toolbar" aria-label="">
+                        <div class="btn-group mr-2" role="group" aria-label="">
+                          <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> <%= icon("fas", "times") %> </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="editProduct<%= product.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+          <div class="modal-body">
+            <h4 class="lead"><%= product.title %></h4>
+            <div class="py-3">
+              <div class='container-fluid'>
+                <div class="row">
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="xs-product-image">
+                      <img src="<%= product.image_url %>" class="img-fluid img-thumbnail">
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-8">
+                    <table class="table">
+                      <tr>
+                        <th>Logo Drawing Parameters: 
+                          <% if product.logo_param != nil %>
+                            <span class="label label-success" data-logo-params-status="<%= product.id %>">Defined</span>
+                          <% else %>
+                            <span class="label label-danger"  data-logo-params-status="<%= product.id %>">Not defined</span>
+                          <% end %>
+                        </th>
+                        <td>
+                          <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-product-id="<%= product.id %>" data-target="#canvasDrawModal"> Define <%= icon("fas", "draw-polygon") %> </button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="py-3">
+              <h5 class="lead">Attributes</h5>
+              <% @attributes.each do |attrib| %>
+                <div class="card mb-3">
+                  <div class="card-header">
+                    <h6><%= attrib.title %></h6>
+                  </div>
+                  <div class='card-body'>
+                    <% if attrib.attrib_type == "color" %>
+                      <input type='text' class="xs-attrib-color" data-add-url="<%= admin_attributes_add_to_product_path %>" data-remove-url="<%= admin_attributes_remove_from_product_path %>" data-title="<%= attrib.title %>" data-attrib-id="<%= attrib.id %>" value="<%= product.get_attributes_str attrib %>" data-product-id="<%= product.id %>" >
+                    <% else %>
+                      <input type='text' class="xs-attrib-input" data-add-url="<%= admin_attributes_add_to_product_path %>" data-remove-url="<%= admin_attributes_remove_from_product_path %>" data-title="<%= attrib.title %>" data-attrib-id="<%= attrib.id %>" value="<%= product.get_attributes_str attrib %>" data-product-id="<%= product.id %>" >
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <hr />
+            <div class="py-3">
+              <h5 class="lead">Categories</h5>
+              <div class="xs-add-collections-box">
+                <select class="fetch-categories-select" data-url="<%= admin_search_categories_json_path :query=> "" %>" data-add-url="<%= admin_add_category_to_product_path :product_id => product.id, :category_id => "" %>"></select>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" width="100" class>Image</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody data-product-categories="<%= product.id %>">
+                  <% product.categories.each do |category| %>
+                    <tr data-product-category="<%= category.id %>" >
+                      <td><% if category.image.attached? %><img src="<%= url_for(category.image) %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ><% end %></td>
+                      <td><%= category.title %></td>
+                      <td>
+                        <div class="btn-toolbar" role="toolbar" aria-label="">
+                          <div class="btn-group mr-2" role="group" aria-label="">
+                            <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> <%= icon("fas", "times") %> </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="modal" id="addToCategoryModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content ">
+      <div class="modal-body">
+        <h5 class="lead">Add to categories</h5>
+        <div class="xs-add-collections-box">
+          <select class="fetch-categories-add-all" data-url="<%= admin_search_categories_json_path :query=> "" %>" data-add-url="<%= admin_add_all_to_category_path :category_id => "" %>"></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="removeFromCategoryModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content ">
+      <div class="modal-body">
+        <h5 class="lead">Add to categories</h5>
+        <div class="xs-add-collections-box">
+          <select class="fetch-categories-remove-all" data-url="<%= admin_search_categories_json_path :query=> "" %>" data-add-url="<%= admin_remove_all_from_category_path :category_id => "" %>"></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="canvasDrawModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content ">
+      <div class='modal-body'>
+        <h3 class="lead">Draw Image Params</h3>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col">
+              <button id="testBtn" class='btn btn-sm btn-primary'>Test</button>
+              <div class="image-canvas-wrap">
+                <canvas id="imageParamsCanvas"></canvas>
+              </div>
+            </div>
+            <div class="col">
+              <div class="py-3">
+                <h5 class="lead">Position Info:</h5>
+                <table class="table">
+                  <tr>
+                    <th>x</th>
+                    <td data-logo-pos-x></td>
+                  </tr>
+                  <tr>
+                    <th>y</th>
+                    <td data-logo-pos-y></td>
+                  </tr>
+                  <tr>
+                    <th>Width</th>
+                    <td data-logo-width></td>
+                  </tr>
+                  <tr>
+                    <th>Height</th>
+                    <td data-logo-height></td>
+                  </tr>
+                </table>
+                <button id="saveLogoParams" class="btn btn-success">Save</button>
+              </div>
+              <div class="alert alert-info mt-4" role="alert">
+                <h4 class="alert-heading">How to set logo draw parameters</h4>
+                <p>Drag and adjust the red box over the image of the product. The position of the box you will set now will be saved, and every store's logo will be drawn according to this position.</p>
+                <hr>
+                <p class="mb-0">Adjust the box and click save, when you're done.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div data-xs-colors="<%= Color.all.map{ |c| { id: c.id, title: c.title }}.to_json %>">

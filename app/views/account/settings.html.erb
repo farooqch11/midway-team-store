@@ -1,0 +1,80 @@
+<div class="app-fluid">
+  <div class="container-fluid">
+    <div class='row'>
+      <div class="col">
+        <h3 class='text-center'>Account Settings</h3>
+        <div class="xs-account-settings">
+          <% if @alerts %>
+            <div class='xs-alerts' style="display: block!important;">
+              <% @alerts.each do |alert| %>
+                <div class="xs-alert xs-alert-<%= alert[:type] %>"><%= alert[:text] %></div>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  General Info
+                </div>
+                <div class="card-body">
+                  <%= form_for @team_admin, :url => account_save_general_info_path, :method => "POST" do |f| %>
+                    <input type="hidden" name="access_token" value="<%= @team_admin.access_token %>">
+                    <input type="hidden" name="id" value="<%= @team_admin.id %>">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Email</label>
+                      <%= f.email_field :email, :class => "form-control" %>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  Payout Info
+                </div>
+                <div class="card-body">
+                  <%= form_for @admin_info, :url => account_save_payment_info_path, :method => "POST" do |f| %>
+                    <input type="hidden" name="access_token" value="<%= @team_admin.access_token %>">
+                    <input type="hidden" name="id" value="<%= @team_admin.id %>">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Name</label>
+                      <%= f.text_field :full_name, :class => "form-control" %>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Address Line 1</label>
+                      <%= f.text_field :address1, :class => "form-control" %>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Address Line 2</label>
+                      <%= f.text_field :address2, :class => "form-control" %>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Country</label>
+                      <%= f.text_field :country, :class => "form-control" %>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">City</label>
+                      <%= f.text_field :city, :class => "form-control" %>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">State</label>
+                      <%= f.text_field :state, :class => "form-control" %>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Zip</label>
+                      <%= f.text_field :zipcode, :class => "form-control" %>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

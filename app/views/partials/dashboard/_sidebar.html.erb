@@ -1,0 +1,66 @@
+<!-- <div class="list-group">
+    
+    <a class="list-group-item list-group-item-action" href="javascript:void(0);" data-xs-stores>Your Stores</a>
+    <a class="list-group-item list-group-item-action" href="<%= store_create_path %>">Create a Store</a>
+    <a class="list-group-item list-group-item-action" data-g-url="<%= account_settings_path :access_token => "TOKEN", :id => "ID" %>" href="javascript:void(0)">Settings</a>
+    <a class="list-group-item list-group-item-action" href="" data-xs-log-out>Log out</a>
+</div>
+ -->
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="https://midwaysports.com/pages/hc-team?_pos=1&_sid=5d5343c5d&_ss=r">
+    <div class="sidebar-brand-icon ">
+      <img src="<%= asset_url "logo-trans.png" %>" >
+    </div>
+    <div class="sidebar-brand-text mx-3">Midway Sports </div>
+  </a>
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+  <!-- Nav Item - Dashboard -->
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Manage
+  </div>
+  <!-- Nav Item - Pages Collapse Menu 
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#"  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Manage Stores:</h6>
+        <a class="collapse-item" data-xs-stores href="buttons.html">All Stores</a>
+        <a class="collapse-item" data-g-url="<%= store_create_path :access_token => "TOKEN" %>" >Create a Store</a>
+        <a class="collapse-item" data-g-url="<%= account_settings_path :access_token => "TOKEN", :id => "ID" %>">Settings</a>
+      </div>
+    </div>
+  </li>
+  -->
+  <li class="nav-item">
+    <a class="nav-link " href="#"  data-xs-stores >
+      <i class="fas fa-fw fa-store"></i>
+      <span>Dashboard</span>
+    </a>
+  </li>
+  <!-- <li class="nav-item">
+    <a class="nav-link " href="#"  data-xs-stores >
+      <i class="fa-fw fa-tachometer-alt"></i>
+      <span>All Stores</span>
+    </a>
+  </li> -->
+  <li class="nav-item">
+    <a class="nav-link " data-g-url="<%= store_create_path :access_token => "TOKEN" %>"  >
+      <i class="fas fa-fw fa-plus"></i>
+      <span>Create a Store</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link "  data-g-url="<%= account_settings_path :access_token => "TOKEN", :id => "ID" %>" >
+      <i class="fas fa-fw fa-cogs"></i>
+      <span>Settings</span>
+    </a>
+  </li>
+</ul>
+<!-- End of Sidebar -->

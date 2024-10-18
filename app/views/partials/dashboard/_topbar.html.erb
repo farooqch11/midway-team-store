@@ -1,0 +1,58 @@
+<!-- Topbar -->
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" style="justify-content:space-between!important;">
+  <!-- Sidebar Toggle (Topbar) -->
+  <% if @store_design %>
+    <a href="<%= all_stores_path %>" data-xs-stores class="return-to-dashboard-link btn btn-link  mr-3">
+      Back
+    </a>
+  <% end %>
+  <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+  </button>
+  <!-- Topbar Search -->
+  <% if @store_design or @get_started_process %>
+    <a class="topbar-brand" href="https://midwaysports.com/pages/hc-team?_pos=1&_sid=5d5343c5d&_ss=r">
+      <div class="topbar-brand-icon ">
+        <img src="<%= asset_url "logo-black.png" %>" >
+      </div>
+    </a>
+  <% end %>
+  <!-- Topbar Navbar -->
+  <ul class="navbar-nav <%= "ml-auto" if !@store_design %>">
+    <div class="topbar-divider d-none d-sm-block"></div>
+    <!-- Nav Item - User Information -->
+    <li class="nav-item dropdown no-arrow">
+      <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= @team_admin.full_name if @team_admin %></span>
+        <!-- <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60"> -->
+        <img class="img-profile rounded-circle" src="<%= asset_url("user-icon.jpg") %>">
+      </a>
+      <!-- Dropdown - User Information -->
+      <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+        <% if @get_started_process %>
+          <a class="dropdown-item" href="javascript:void(0);" data-xs-get-started-trigger >
+            Signup
+          </a>
+          <a class="dropdown-item" href="<%= login_path %>">
+            Login
+          </a>
+        <% else %>
+          <a class="dropdown-item" href="#"  data-xs-stores >
+            <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Dashboard
+          </a>
+          <a class="dropdown-item" href="#" data-g-url="<%= account_settings_path :access_token => "TOKEN", :id => "ID" %>">
+            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+            Settings
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Logout
+          </a>
+        <% end %>
+      </div>
+    </li>
+  </ul>
+</nav>
+<!-- End of Topbar -->

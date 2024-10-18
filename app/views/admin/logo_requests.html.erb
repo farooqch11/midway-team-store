@@ -1,0 +1,45 @@
+<h2 class="my-4 display-2 text-center">Logo Requests</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <table class="table table-bordered mt-4 xs-datatable">
+        <thead>
+          <tr>
+            <th>Store</th>
+            <th>Team Admin</th>
+            <th>Reference File</th>
+            <th>Colors</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @logo_requests.each do |lr| %>
+            <% store = lr.store %>
+            <tr>
+              <td><%= store.title %></td>
+              <td><%= store.team_admin.email %></td>
+              <td>
+                <% if lr.reference.attached? %>
+                    <a href="<%= lr.reference.service_url %>" class="btn btn-primary" target="_blank">View File</a>
+                <% end %>
+              </td>
+              <td>
+                <div>
+                    <b>Primary Color: </b>
+                    <span style="background: <%= lr.primary_color %>; width: 20px; height: 20px; vertical-align:middle; display: inline-block;"></span> <%= lr.primary_color %>
+                </div>
+                <div>
+                    <b>Secondary Color: </b>
+                    <span style="background: <%= lr.secondary_color %>; width: 20px; height: 20px; vertical-align:middle; display: inline-block;"></span> <%= lr.secondary_color %>
+                </div>
+                <div>
+                    <b>Third Color: </b>
+                    <span style="background: <%= lr.third_color %>; width: 20px; height: 20px; vertical-align:middle; display: inline-block;"></span> <%= lr.third_color %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

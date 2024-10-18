@@ -1,0 +1,28 @@
+<h2 class="my-4 display-2 text-center">All Tags</h2>
+<div class="container-fluid">
+  <div class="card">
+    <div class='card-body'>
+      <table class="table xs-datatable">
+        <thead>
+          <tr>
+            <th>Tag</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @titles.each do |title| %>
+            <tr>
+              <td><%= title %></td>
+              <td>
+                <%= form_tag admin_all_tags_delete_path, method: :post do %>
+                  <input type="hidden" name="title" value="<%= title %>" >
+                  <button  type="submit" class='btn btn-sm btn-danger'>Delete</a>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

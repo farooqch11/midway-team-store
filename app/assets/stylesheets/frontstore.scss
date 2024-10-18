@@ -1,0 +1,298 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require client_bootstrap
+ *= require libs/toastr.min
+ *= require libs/jquery.countdown.min
+ *= require_self
+ */
+
+
+// store front styles 
+.xs-store-front-products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    #Collection {
+        width: 100%;
+    }
+}
+
+.xs-store-front-product {
+    width: calc(33.33% - 20px);
+    margin: 10px 10px;
+    /* border: 1px solid #ccc; */
+    box-shadow: 0px 1px 4px -1px #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+
+    .xs-inner {
+        position: relative;
+    }
+
+    .xs-hover-action {
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+        left: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 30px;
+        opacity: 0;
+        transition: all 0.18s cubic-bezier(0.47, 0, 0.75, 0.72);
+    }
+
+    .xs-image {
+        padding: 20px;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+
+    .xs-info {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+
+        h5.xs-title {
+            font-size: 1em;
+            /* text-transform: uppercase; */
+        }
+
+        .xs-price {
+            font-size: 1em;
+            font-weight: bold;
+        }
+    }
+
+    &:hover {
+        .xs-hover-action {
+            top: 0px;
+            opacity: 1;
+        }
+    }
+}
+
+.xs-drawer {
+    display: block !important;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    max-width: 500px;
+    width: 100%;
+    background: #fbfbfb;
+    z-index: 9999;
+    bottom: 0px;
+    box-shadow: 0px 0px 5px 1px #ccc;
+    transition: all 0.2s ease-out;
+    transform: translateX(100%);
+    overflow-y: auto;
+
+    [data-close-drawer] {
+        position: absolute;
+        top: 16px;
+        left: 8px;
+        cursor: pointer;
+
+        &:before,
+        &:after {
+            content: " ";
+            display: block;
+            height: 1px;
+            width: 20px;
+            background: #000;
+            cursor: pointer;
+        }
+
+        &:before {
+            transform: rotate(45deg);
+        }
+
+        &:after {
+            transform: translateY(-1px) rotate(-45deg);
+        }
+    }
+
+    .xs-select-variants {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin: 15px 0px;
+    }
+
+    .xs-variant-swatch {
+        padding: 5px 15px;
+        border: 1px solid #ccc;
+        margin: 5px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+
+        &:hover {
+            background: #eee;
+        }
+
+        &.variant-selected {
+            border-color: #007bff;
+            background: #007bff;
+            color: #fff;
+        }
+    }
+
+
+    .xs-product-image {
+        height: auto;
+        width: 100%;
+        padding: 15px;
+        max-width: 400px;
+        margin: 0px auto;
+
+        img {
+            width: 100%;
+            object-fit: contain;
+            height: 100%;
+        }
+    }
+
+    .xs-product-info {
+        padding: 15px;
+        border-top: 1px solid #eee;
+        margin-top: 15px;
+
+        h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        h4.xs-price {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        button.xs-add-to-cart {
+            border-radius: 0px;
+            width: 100%;
+            padding: 11px 5px;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+    }
+
+    &.open {
+        transform: translateX(0px);
+    }
+}
+
+div#store-timer {
+    margin: 50px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div#store-time .countdown-section {
+    float: none;
+    width: auto;
+    padding: 10px 15px;
+}
+
+div#store-time .countdown-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+}
+
+div#store-time {
+    background: #f9f9f9;
+    padding: 0px 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.xs-badge {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    font-weight: bold;
+    font-size: 9px;
+    background: #d00000;
+    padding: 4px 5px;
+    padding-left: 10px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 3;
+}
+
+.xs-store-front-product .btn.btn-primary,
+.xs-add-to-cart {
+    background: #000 !important;
+    border-color: #000 !important;
+}
+
+.xs-active-filter i.check-icon:after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    height: 10px;
+    width: 10px;
+    display: block;
+    background: #000;
+}
+
+.xs-store-collection {
+    .grid-product {
+        position: relative;
+    }
+
+    ul.nav-category {
+        margin-left: 25px;
+        margin-bottom: 20px;
+    }
+}
+
+.filter-group ul li a {
+    position: relative;
+}
+
+.filter-group li a i.check-icon {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    background: none;
+}
+
+.filter-group ul li {
+    list-style: none;
+}
+
+.filter-group ul li a:before {
+    display: block;
+    content: " ";
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    top: 50%;
+    left: -23px;
+    transform: translateY(-50%);
+    border: 1px solid #000;
+}
+
+.filter-group ul li a.xs-active-filter:before {
+    background: #000;
+}

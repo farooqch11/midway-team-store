@@ -1,0 +1,124 @@
+<h2 class="my-4 display-2 text-center">Colors</h2>
+<div class="container">
+  <div class='card'>
+    <div class='card-body'>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addColorModal">
+        <%= icon("fas", "plus") %>
+        Add Color
+      </button>
+      <% if @error %>
+        <div class="alert alert-dismissible alert-danger">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <h4><%= @error %></h4>
+        </div>
+      <% end %>
+      <table class="table table-bordered mt-4 xs-datatable">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Code</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @colors.each do |color| %>
+            <tr data-color="<%= color.id %>">
+              <td><%= color.title %></td>
+              <td><span style="background: <%= color.code %>;width: 20px;height: 20px; vertical-align: middle;display: inline-block;"></span> <%= color.code %></td>
+              <td>
+                <div class="btn-toolbar" role="toolbar" >
+                  <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Edit" data-target="#editColor<%= color.id %>"> <%= icon("fas", "pencil-alt") %> </button>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Delete" data-target="#deleteColor<%= color.id %>"> <%= icon("fas", "trash-alt") %> </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Add attribute modal -->
+<div class="modal" id="addColorModal" tabindex="-1" role="dialog" aria-labelledby="addColorModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a new color</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_for @new_color, url: { action: "colors_new" } do |f| %>
+          <div class="form-group">
+            <%= f.label :title, "Title" %>
+            <%= f.text_field :title, :class => "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :code, "Code" %>
+            <div data-xs-color-picker>
+              <%= f.text_field :code, :class => "form-control" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" name="create" class="btn btn-success">Save</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<% @colors.each do |color|  %>
+  <!-- Add attribute modal -->
+  <div class="modal" id="editColor<%= color.id %>" tabindex="-1" role="dialog" aria-labelledby="editColorModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" ><%= color.title %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= form_for color, method: "PATCH", url: admin_colors_update_path(color.id)  do |f| %>
+            <div class="form-group">
+              <%= f.label :title, "Title" %>
+              <%= f.text_field :title, :class => "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= f.label :code, "Code" %>
+              <div data-xs-color-picker>
+                <%= f.text_field :code, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" name="update" class="btn btn-success">Update</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="deleteColor<%= color.id %>" tabindex="-1" role="dialog" aria-labelledby="deleteColorModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete <%= color.title %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete the color?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <a href="<%= admin_colors_delete_path color.id %>" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

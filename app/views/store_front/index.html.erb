@@ -1,0 +1,191 @@
+<% if @store != nil %>
+  <script>
+    window.xs_store_id = <%= @store.id %>;
+    <% if @store.countdown != nil %>
+    window.xs_store_countdown = true;
+    window.xs_store_time = new Date(<%= @store.countdown.to_i * 1000 %>);
+    <% else %>
+    window.xs_store_countdown = false;
+    <% end %>
+  </script>
+  {% assign collection = collections["<%= @handle %>"] %}
+  {% paginate collection.products by 1000 %}
+  <div class="page-width xs-store-front"  style="max-width: 1400px!important;">
+    <div class="store-logo" style="text-align:center">
+      <img src="<%= @store.get_main_logo %>" style="max-width: 200px; width: 100%;     max-height: 150px; object-fit: contain; margin: 20px auto; display: block;"/>
+    </div>
+    <h2 class="xs-store-title text-center"><%= @store.title %></h2>
+    <% if @store.processing %>
+      <div class="store-processing text-center">
+        <img src="<%= image_url "loading.gif" %>">
+        <h4>Success!</h4>
+        <p>Your store is generating. <br >
+          This will only take a few seconds.</p>
+      </div>
+    <% else %>
+      <div id="store-timer" style="">
+        <div id='store-time'></div>
+      </div>
+      <div id="store-contents" style="<% if @store.countdown != nil %>display: none;<% end %>" class="xs-store-front-products">
+        <% if !@store.closed %>
+          <div class="xs-store-collection" id="Collection" data-active-filters="<%= @active_filters %>">
+            <div class="grid grid--uniform">
+              <div class="grid__item small--one-whole medium-up--one-quarter">
+                <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
+                  <h4>Category</h4>
+                  <div class="scroll-content">
+                    <ul class="nav-category ">
+                      <% @categories.each do |category| %>
+                        <li class="collection-container  ">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="<%= category[:id] %>" class="<%= 'xs-active-filter' if @filter_category == category[:id].to_s %>"  data-category="<%= category[:ids].join "," %>" title="<%= category[:title] %>">
+                              <i class="check-icon"></i> <%= category[:title] %>
+                            </a>
+                          </div>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+                <% @attributes.each do |id, attrib| %>
+                  <% next if attrib[:title].downcase == "sport" %>
+                  <div data-xs-filter="<%= attrib[:title] %>" data-xs-filter-id="<%= attrib[:id] %>" class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
+                    <h4><%= attrib[:title] %></h4>
+                    <div class="scroll-content">
+                      <ul class="nav-category ">
+                        <% attrib[:values].each do |iid, value| %>
+                          <li class="collection-container  " data-id="<%= iid %>">
+                            <div class="collection-name">
+                              <a href="javascript:void(0);" class="<%= 'xs-active-filter' if @active_filters.include?(value[:id].to_s) %>" data-id="<%= value[:id] %>" data-filter="<%= value[:ids].join "," %>" title="<%= value[:title] %>">
+                                <i class="check-icon"></i> <%= value[:title] %>
+                              </a>
+                            </div>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+              <div class="grid__item small--one-whole medium-up--three-quarters">
+                {% assign xhandles = "<%= @filtered_products.collect{ |x| x.handle if x.handle != nil}.join(",") %>" | split: "," %}
+                <script>
+                  window.ximages = {};
+                  <% @filtered_products.each do |product| %>
+                    <% next if product.handle == nil %>
+                    ximages['<%= product.handle %>'] = "<%= product.prev_images.last.image_url.url if product.prev_images.size > 0 %>";
+                  <% end %>
+                </script>
+                <ul class='grid grid--uniform grid--collection'>
+                  {% for xhandle in xhandles %}
+                  {% assign product = false %}
+                  {% for pr in collection.products %}
+                  {% if pr.handle == xhandle %} 
+                  {% assign product = pr %}
+                  {% break %}
+                  {% endif %}
+                  {% endfor %}
+                  {% if product %}
+                  <%= render :partial => "store_front/partials/grid-item"%>
+                  {% endif %}
+                  {% endfor %}
+                </ul>
+                <%= will_paginate @filtered_products, { :pre_path => store_front_index_path(@store.collection)} %>
+              </div>
+            </div>
+          </div>
+          {% for xhandle in xhandles %}
+          {% assign product = all_products[xhandle] %}
+          <!-- <div class='xs-store-front-product {% if product.tags contains 'essential' %}xs-essential{% endif %}' {% if product.tags contains 'essential' %}data-product-essential="{{ product.id }}" {% endif %}>
+          <div class="xs-inner">
+            {% if product.tags contains 'essential' %}
+            <span class='xs-badge-essential xs-badge' >Essential</span>
+            {% endif %}
+            <div class="xs-image">
+              {{ product.featured_image | img_url: "large" | img_tag }}
+            </div>
+            <div class='xs-info text-center'>
+              <h5 class="xs-title">{{ product.title }}</h5>
+              <div class='xs-price'>{{ product.price | money }}</div>
+            </div>
+            <div class="xs-hover-action">
+              <button data-xs-open-drawer="drawer{{ product.id }}" class="btn btn-primary">Add To Cart</button>
+            </div>
+          </div>
+        </div> -->
+          <div class="xs-drawer" data-xs-drawer id="drawer{{ product.id }}" style='display: none;'>
+            <div class="xs-drawer-inner">
+              <span data-close-drawer></span>
+              <div class='xs-product-image'>
+                {{ product.featured_image | img_url: "grande" | img_tag }}
+              </div>
+              <div class='xs-product-info' data-xs-product-add-form data-product-id="{{ product.id }}">
+                <h3>{{ product.title }}</h3>
+                <h4 class="xs-price">{{ product.price | money }}</h4>
+                <div class="xs-v-selection row mb-3">
+                  <div class="col-9">
+                    <select class="form-control xs-variant-select">
+                      {% for variant in product.variants %}
+                      <option value="{{ variant.id }}" {% if forloop.first %}selected{% endif %}>
+                        {{ variant.title }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-3">
+                    <select class="form-control xs-qty-select">
+                      {% for i in (1..10) %}
+                      <option value="{{ i }}" {% if forloop.first %}selected{% endif %}>
+                        {{ i }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <input type="hidden" name="xs_image" data-property data-ximage="{{ product.handle }}">
+                {% if product.tags contains "tops" or product.tags contains "Tops" %}
+                <div class="line-properties">
+                  <input type="text" class="form-control" name="name" data-property placeholder="Name">
+                  <input type="number" class="form-control" name="number" data-property placeholder="Number">
+                </div>
+                {% endif %}
+                <button class="xs-add-to-cart btn btn-primary">Add To Cart</button>
+                <div class="xs-product-description mt-3">
+                  {{ product.description }}
+                </div>
+                <div class="xs-product-date-note"></div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        <% end %>
+      </div>
+      <div id="store-closed" style="<% if !@store.closed %>display: none;<% end %>">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="">
+            <h1 class="display-4 text-center">This store is closed</h1>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  {% endpaginate %}
+<% else %>
+  <script>
+    location.href = "/";
+  </script>
+<% end %>
+<% content_for :javascript do %>
+  <script>
+    $(document).on('ready', () => {
+    
+          xs.setCountdown();
+    
+      <% if @store.processing %>
+      setTimeout(() => {
+        location.reload();
+      }, 5000);
+      <% end %>
+    });
+  </script>
+<% end %>

@@ -1,0 +1,211 @@
+{% layout  false %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <%= csrf_meta_tags %>
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <%= stylesheet_link_tag "application" %>
+    <script>
+      window.xs_money_format = "{{ shop.money_format }}";
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.0.min.js" ></script>
+    {{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+    <% if ShopifyApp.use_webpacker? %>
+      <%= javascript_pack_tag "application", 'data-turbolinks-track': "reload" %>
+    <% else %>
+      <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <% end %>
+    {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+    {%- endif -%}
+  </head>
+  <body id="page-top">
+    <script type="x-handlebar-template" id="productTemplate">
+      {% raw %}
+        <div data-product="{{ id }}" >
+          <div class="card shadow">
+            <div class="card-body">
+              <div class='xs-product-inner'>
+                <span class="xs-product-details-overlay" data-product-details="{{ id }}"><i class="fas fa-info"></i></span>
+                <div class="xs-product-overlay" data-xs-product-add="{{ id }}" data-store-id="<% if @store %><%= @store.id %><% end %>">
+                  <span><span class="xs-add">+</span><span class='xs-add-str'>Add</span></span>
+                </div>
+                <div class="xs-product-image"><img src="{{ image_url }}"  ></div>
+                <div class="xs-product-info">
+                  <h4 class="h6 mb-3">{{ title }}</h4>
+                  <p class="xs-product-price">{{ price }}</p>
+                </div>
+                <div class='xs-product-colors-wrap' data-product-colors>
+                  <span data-close-colors></span>
+                  <div class="xs-product-colors">
+                    {{#each color_images }}
+                      <div data-xs-p-add-color="{{ id }}" class="xs-product-color">
+                        <span style="background-image: url({{ url }})"></span>
+                      </div>
+                    {{/each}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <div class="modal fade" data-xs-product-modal id="productDescriptionModal{{id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Details</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+      
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-12 col-md-6 xs-pd-media">
+                      <div class="xs-pd-main-image">
+                        <img src="{{ color_images.[0].url }}" data-product-main-image/>
+                      </div>
+                      <div class="xs-pd-product-thumbs">
+                        {{#each color_images }}
+                          <div class="xs-pd-thumb">
+                            <img src="{{ url }}" data-product-thumb="{{ id }}" >
+                          </div>
+                        {{/each}}
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <h4 class="mb-4 xs-pd-title">{{ title }}</h4>
+                      <h5 class="xs-pd-price">{{ formatMoney price }}</h5>
+                      <hr />
+                      <div class='xs-pd-desc'>
+                        {{{ description }}}
+                      </div>
+                      <div class="xs-add-to-store-modal" data-store-id="<% if @store %><%= @store.id %><% end %>" data-product-id="{{ id }}" data-xs-add-to-store-modal="{{ color_images.[0].id }}">
+                        <span><i class="fa fa-plus"></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      
+      {% endraw %}
+    </script>
+    <script type="x-handlebar-template" id="addedProductTemplate">
+      {% raw %}
+      <div data-xs-added-product="{{ id }}">
+        <img src="{{ image_url }}" >
+        <span class='xs-product-remove'  data-xs-product-remove="{{id}}" data-store-id="<% if @store %><%= @store.id %>"><% end %></span>
+      </div>
+      {% endraw %}
+    </script>
+    <div class="app-wrapper xs-app-wrapper">
+      <div class="app-content">
+        <div style="display: none!important;">
+          <% if @unique_admin %>
+            <input type="hidden" id="xs_unique_admin" value="true">
+          <% else %>
+            <input type="hidden" id="xs_unique_admin" value="false">
+          <% end %>
+          <input type="hidden" id="xs_url_verify_admin" value="<%= verify_admin_path %>">
+          <input type="hidden" id="xs_url_login" value="<%= login_path %>">
+          <input type="hidden" id="xs_url_logout" value="<%= logout_path %>">
+          <input type="hidden" id="xs_url_signup" value="<%= signup_path %>">
+          <input type="hidden" id="xs_url_signup_post" value="<%= create_account_post_path %>">
+          <input type="hidden" id="xs_url_get_started" value="<%= get_started_path %>">
+          <input type="hidden" id="xs_url_after_login" value="<%= all_stores_path %>">
+          <input type="hidden" id="xs_url_api_get_products" value="<%= api_get_products_path %>">
+          <input type="hidden" id="xs_url_all_stores" value="<%= all_stores_path %>">
+          <% if @store %>
+            <input type="hidden" id="xs_url_store_add_products" value="<%= store_add_products_path %>">
+            <input type="hidden" id="xs_url_store_remove_products" value="<%= store_remove_products_path %>">
+            <input type="hidden" id="xs_url_store_setup" value="<%= store_setup_path :id => @store.id %>">
+            <input type="hidden" id="xs_url_store_logo_setup" value="<%= store_logo_setup_path :id => @store.id %>">
+            <input type="hidden" id="xs_url_store_logo_upload" value="<%= store_logo_upload_path :id => @store.id %>">
+            <input type="hidden" id="xs_url_store_images_upload" value="<%= store_images_upload_path :id => @store.id %>">
+            <input type="hidden" id="xs_url_store_manage_logos" value="<%= store_manage_logos_path :id => @store.id %>">
+            <input type="hidden" id="xs_url_store_set_product_color" value="<%= store_set_product_color_path %>">
+            <input type="hidden" id="xs_url_store_set_product_logo" value="<%= store_set_product_logo_path %>">
+            <input type="hidden" id="xs_url_store_publish" value="<%= store_publish_path :id => @store.id %>">
+            <input type="hidden" id="xs_url_store_fundraise" value="<%= store_fundraise_path :id => @store.id %>">
+            <input type="hidden" id="xs_url_store_set_countdown" value="<%= store_set_countdown_path :id => @store.id %>">
+            <input type="hidden" id="xs_url_store_toggle_essential" value="<%= store_toggle_essential_path %>">
+            <input type="hidden" id="xs_url_store_update_price_tag" value="<%= store_update_price_tag_path %>">
+            <input type="hidden" id="xs_url_store_delete_logo_product" value="<%= store_delete_logo_product_path  %>">
+            <input type="hidden" id="xs_url_store_remove_logo_image" value="<%= store_remove_logo_image_path  %>">
+          <% end %>
+        </div>
+        <div id="xs-midway-loading">
+          <img src="<%= image_url "loading.gif" %>">
+        </div>
+        <div class="xs-alerts page-width" id="xs-midway-errors" style="display: none;">
+        </div>
+        <main role="main" id="xs-midway-wrap" style="display: none;">
+          <% if @alerts %>
+            <div class="page-width">
+              <div class='xs-alerts'>
+                <% @alerts.each do |alert| %>
+                  <div class="xs-alert xs-alert-<%= alert[:type] %>"><%= alert[:text] %></div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          <!-- Page Wrapper -->
+          <div id="wrapper">
+            <% if !@store_design %>
+              <%= render "partials/dashboard/sidebar" if !@user_auth_process and !@get_started_process %>
+            <% end %>
+            <div id="content-wrapper" class="d-flex flex-column">
+              <!-- Main Content -->
+              <div id="content">
+                <%= render "partials/dashboard/topbar" if !@user_auth_process %>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                  <%= yield %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <div id="xs-logo-canvas">
+      <canvas id="productRenderCanvas"></canvas>
+    </div>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" data-xs-log-out  href="#">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <code style="display: none;">
+    </code>
+    <% if content_for?(:javascript) %>
+      <div id="ContentForJavascript" data-turbolinks-temporary>
+        <%= yield :javascript %>
+      </div>
+    <% end %>
+  </body>
+</html>
