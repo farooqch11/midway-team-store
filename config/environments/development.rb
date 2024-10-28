@@ -1,5 +1,11 @@
 Rails.application.configure do
-  config.hosts = (config.hosts rescue []) << /\h+.ngrok.io/
+  # Allow ngrok tunnels for secure Shopify OAuth redirects
+  config.hosts = (config.hosts rescue []) << /[-\w]+\.ngrok\.io/
+  config.hosts = (config.hosts rescue []) << /[-\w]+\.ngrok-free\.io/
+  config.hosts = (config.hosts rescue []) << /.*\.ngrok\.io/
+  config.hosts = (config.hosts rescue []) << /.*\.ngrok-free\.app/
+  # Allow Cloudflare tunnels for secure Shopify OAuth redirects
+  config.hosts = (config.hosts rescue []) << /[-\w]+\.trycloudflare\.com/
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -55,13 +61,16 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-
+  # config.hosts << "https://6f13-39-58-110-214.ngrok-free.app"
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-  config.action_controller.asset_host = "https://midwayteamstore.com/"
-  config.action_mailer.default_url_options = { host: "https://midwayteamstore.com/", protocol: "https" }
+  config.action_controller.asset_host = "https://shining-hound-ready.ngrok-free.app/"
+  config.action_mailer.default_url_options = { host: "https://shining-hound-ready.ngrok-free.app/", protocol: "http" }
   # config.action_controller.default_url_options = {:host => "localhost:3000"}
   # config.routes.default_url_options[:host] = '8ce38f0662f6.ngrok.io'
-  Rails.application.routes.default_url_options[:host] = "localhost:3000"
+  Rails.application.routes.default_url_options[:host] = "shining-hound-ready.ngrok-free.app"
+
+  config.sass.inline_source_maps = true
+
 end

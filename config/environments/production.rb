@@ -91,6 +91,6 @@ Rails.application.configure do
   config.force_ssl = true
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.action_controller.asset_host = "https://midwayteamstore.com/"
-  config.action_mailer.default_url_options = { host: "midwayteamstore.com/", protocol: "https" }
+  config.action_controller.asset_host = "https://shining-hound-ready.ngrok-free.app/"
+  config.action_mailer.default_url_options = { host: "shining-hound-ready.ngrok-free.app/", protocol: "https" }
 end

@@ -4,7 +4,7 @@
     <div class='card-body'>
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addCategoryModal">
-        <%= icon("fas", "plus") %>
+        +
         Add Category
       </button>
       <table class="table table-bordered">
@@ -29,8 +29,8 @@
               <td>
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                   <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#editCategory<%= category.id %>"> <%= icon("fas", "pencil-alt") %> </button>
-                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCategory<%= category.id %>"> <%= icon("fas", "trash-alt") %> </button>
+                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#editCategory<%= category.id %>"> Edit </button>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCategory<%= category.id %>"> Delete </button>
                   </div>
                 </div>
               </td>
@@ -125,7 +125,7 @@
                   <td>
                     <div class="btn-toolbar" role="toolbar" aria-label="">
                       <div class="btn-group mr-2" role="group" aria-label="First group">
-                        <button type="button" class="btn btn-sm btn-danger" data-remove-product-from-category> <%= icon("fas", "times") %> </button>
+                        <button type="button" class="btn btn-sm btn-danger" data-remove-product-from-category> r </button>
                       </div>
                     </div>
                   </td>

@@ -8,9 +8,9 @@ default: &default
   adapter: mysql2
   encoding: utf8
   database: xs_midway
-  username: dbuser
-  password: midwayuser
-  host: 127.0.0.1
+  username: root
+  password: 
+  host: localhost
   port: 3306
 
 development:
@@ -18,9 +18,9 @@ development:
   adapter: mysql2
   encoding: utf8
   database: xs_midway
-  username: dbuser
-  password: midwayuser
-  host: 127.0.0.1
+  username: root
+  password: 
+  host: localhost
   port: 3306
 
 # Warning: The database defined as "test" will be erased and
