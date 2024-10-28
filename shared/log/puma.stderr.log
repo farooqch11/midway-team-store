@@ -1,0 +1,29 @@
+2024-10-21 14:16:12 +0500 Rack app ("GET /" - (::1)): #<ActiveRecord::AdapterNotFound: Database configuration specifies nonexistent 'mysql' adapter. Available adapters are: mysql2, postgresql, sqlite3, trilogy. Ensure that the adapter is spelled correctly in config/database.yml and that you've added the necessary adapter gem to your Gemfile if it's not in the list of available adapters.>
+#<Thread:0x000000011534bfa0@puma stat pld /Users/junaidhassan/.rvm/gems/ruby-3.2.5/gems/puma-6.4.3/lib/puma/cluster/worker.rb:123 run> terminated with exception (report_on_exception is true):
+/Users/junaidhassan/.rvm/gems/ruby-3.2.5/gems/puma-6.4.3/lib/puma/cluster/worker.rb:135:in `write': Broken pipe (Errno::EPIPE)
+	from /Users/junaidhassan/.rvm/gems/ruby-3.2.5/gems/puma-6.4.3/lib/puma/cluster/worker.rb:135:in `<<'
+	from /Users/junaidhassan/.rvm/gems/ruby-3.2.5/gems/puma-6.4.3/lib/puma/cluster/worker.rb:135:in `block in run'
+#<Thread:0x000000011534e048@puma stat pld /Users/junaidhassan/.rvm/gems/ruby-3.2.5/gems/puma-6.4.3/lib/puma/cluster/worker.rb:123 run> terminated with exception (report_on_exception is true):
+/Users/junaidhassan/.rvm/gems/ruby-3.2.5/gems/puma-6.4.3/lib/puma/cluster/worker.rb:135:in `write': Broken pipe (Errno::EPIPE)
+	from /Users/junaidhassan/.rvm/gems/ruby-3.2.5/gems/puma-6.4.3/lib/puma/cluster/worker.rb:135:in `<<'
+	from /Users/junaidhassan/.rvm/gems/ruby-3.2.5/gems/puma-6.4.3/lib/puma/cluster/worker.rb:135:in `block in run'
+=== puma startup: 2024-10-21 14:18:54 +0500 ===
+=== puma startup: 2024-10-21 14:19:03 +0500 ===
+=== puma startup: 2024-10-21 14:46:15 +0500 ===
+=== puma startup: 2024-10-22 00:20:37 +0500 ===
+=== puma startup: 2024-10-22 18:56:49 +0500 ===
+=== puma startup: 2024-10-22 19:11:39 +0500 ===
+=== puma startup: 2024-10-22 19:44:12 +0500 ===
+=== puma startup: 2024-10-24 11:07:29 +0500 ===
+=== puma startup: 2024-10-24 11:38:46 +0500 ===
+=== puma startup: 2024-10-24 11:50:05 +0500 ===
+=== puma startup: 2024-10-24 11:58:51 +0500 ===
+=== puma startup: 2024-10-24 12:06:37 +0500 ===
+=== puma startup: 2024-10-24 12:35:59 +0500 ===
+=== puma startup: 2024-10-24 12:38:12 +0500 ===
+=== puma startup: 2024-10-24 12:39:22 +0500 ===
+=== puma startup: 2024-10-24 12:52:51 +0500 ===
+=== puma startup: 2024-10-24 15:14:21 +0500 ===
+=== puma startup: 2024-10-24 15:27:11 +0500 ===
+=== puma startup: 2024-10-24 15:47:29 +0500 ===
+=== puma startup: 2024-10-24 15:52:49 +0500 ===

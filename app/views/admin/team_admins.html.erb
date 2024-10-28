@@ -26,9 +26,9 @@
               <% if admin.is_uniform? %><button type="button" data-gen-team-store-link="<%= admin.id %>" class="btn btn-success mb-2">Create a store </button><% end %>
               <div class="btn-toolbar" role="toolbar" >
                 <div class="btn-group" role="group" aria-label="First group">
-                  <a href="<%= admin_team_admins_orders_path admin.id %>" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Sales"> <%= icon("fas", "chart-area") %> </a>
-                  <a href="<%= admin_team_admins_details_path admin.id %>" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Details"> <%= icon("fas", "eye") %> </a>
-                  <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-placement="top" title="Delete" data-target="#deleteAdmin<%= admin.id %>"> <%= icon("fas", "trash-alt") %> </button>
+                  <a href="<%= admin_team_admins_orders_path admin.id %>" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Sales"> Sales </a>
+                  <a href="<%= admin_team_admins_details_path admin.id %>" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Details">Details </a>
+                  <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-placement="top" title="Delete" data-target="#deleteAdmin<%= admin.id %>"> Delete </button>
                 </div>
               </div>
             </td>

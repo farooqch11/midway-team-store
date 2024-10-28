@@ -25,7 +25,7 @@
         <td>
           <div class="btn-toolbar" role="toolbar" aria-label="">
             <div class="btn-group mr-2" role="group" aria-label="First group">
-              <button type="button" class="btn btn-sm btn-danger" data-remove-product-from-category> <%= icon("fas", "times") %> </button>
+              <button type="button" class="btn btn-sm btn-danger" data-remove-product-from-category> r </button>
             </div>
           </div>
         </td>
@@ -38,7 +38,7 @@
         <td>
           <div class="btn-toolbar" role="toolbar" aria-label="">
             <div class="btn-group mr-2" role="group" aria-label="First group">
-              <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> <%= icon("fas", "times") %> </button>
+              <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> r </button>
             </div>
           </div>
         </td>
@@ -50,7 +50,7 @@
         <td>
           <div class="btn-toolbar" role="toolbar" aria-label="">
             <div class="btn-group mr-2" role="group" aria-label="First group">
-              <button type="button" class="btn btn-sm btn-danger" data-remove-store-from-product> <%= icon("fas", "times") %> </button>
+              <button type="button" class="btn btn-sm btn-danger" data-remove-store-from-product> r </button>
             </div>
           </div>
         </td>
@@ -68,11 +68,13 @@
         </main>
       </div>
     </div>
+    
     <%= render "layouts/flash_messages" %>
     <script src="https://unpkg.com/@shopify/app-bridge"></script>
+    <%= @current_shopify_session %>
     <%= content_tag(:div, nil, id: 'shopify-app-init', data: {
       api_key: ShopifyApp.configuration.api_key,
-      shop_origin: (@current_shopify_session.domain if @current_shopify_session),
+      shop_origin: (@current_shopify_session.shop if @current_shopify_session),
       debug: Rails.env.development?
     } ) %>
     <% if content_for?(:javascript) %>

@@ -23,9 +23,9 @@
           </div>
           <div class="btn-toolbar d-inline-block" role="toolbar" >
             <div class="btn-group mr-2" role="group" >
-              <button type="button" class="btn btn-sm btn-success"  data-toggle="tooltip" data-placement="top" title="Publish" data-bulk-publish><%= icon("fas", "eye") %></button>
-              <button type="button" class="btn btn-sm btn-warning"   data-toggle="tooltip" data-placement="top" title="Un-Publish" data-bulk-unpublish><%= icon("fas", "eye-slash") %></button>
-              <button type="button" class="btn btn-sm btn-danger"   data-toggle="tooltip" data-placement="top" title="Delete" data-bulk-delete><%= icon("fas", "trash-alt") %></button>
+              <button type="button" class="btn btn-sm btn-success"  data-toggle="tooltip" data-placement="top" title="Publish" data-bulk-publish>Publish</button>
+              <button type="button" class="btn btn-sm btn-warning"   data-toggle="tooltip" data-placement="top" title="Un-Publish" data-bulk-unpublish>UnPublish</button>
+              <button type="button" class="btn btn-sm btn-danger"   data-toggle="tooltip" data-placement="top" title="Delete" data-bulk-delete>Delete</button>
             </div>
           </div>
         </div>
@@ -66,19 +66,19 @@
               <% else %>
                 <span class="label label-danger"  data-logo-params-status="<%= product.id %>">Not defined</span>
               <% end %>
-              <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-product-id="<%= product.id %>" data-target="#canvasDrawModal"> <%= icon("fas", "draw-polygon") %> </button>
+              <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-product-id="<%= product.id %>" data-target="#canvasDrawModal"> Upload </button>
             </td>
             <td>
               <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Edit" data-target="#editProduct<%= product.id %>"> <%= icon("fas", "pencil-alt") %> </button>
+                  <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Edit" data-target="#editProduct<%= product.id %>">Edit </button>
                   <% if product.published %>
-                    <button type="button" data-toggle-publish="<%= product.id %>" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Un-Publish"> <%= icon("fas", "eye-slash") %> </button>
+                    <button type="button" data-toggle-publish="<%= product.id %>" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Un-Publish"> unpublish</button>
                   <% else %>
-                    <button type="button" data-toggle-publish="<%= product.id %>" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Publish"> <%= icon("fas", "eye") %> </button>
+                    <button type="button" data-toggle-publish="<%= product.id %>" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Publish"> Publish </button>
                   <% end %>
                   
-                  <button type="button" class="btn btn-sm btn-danger"   data-toggle="tooltip" data-placement="top" title="Delete" data-product-delete="<%= product.id %>"><%= icon("fas", "trash-alt") %></button>
+                  <button type="button" class="btn btn-sm btn-danger"   data-toggle="tooltip" data-placement="top" title="Delete" data-product-delete="<%= product.id %>">Delete</button>
                 </div>
               </div>
             </td>
@@ -129,7 +129,7 @@
                     <td>
                       <div class="btn-toolbar" role="toolbar" aria-label="">
                         <div class="btn-group mr-2" role="group" aria-label="">
-                          <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> <%= icon("fas", "times") %> </button>
+                          <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> r </button>
                         </div>
                       </div>
                     </td>
@@ -168,7 +168,7 @@
                           <% end %>
                         </th>
                         <td>
-                          <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-product-id="<%= product.id %>" data-target="#canvasDrawModal"> Define <%= icon("fas", "draw-polygon") %> </button>
+                          <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-product-id="<%= product.id %>" data-target="#canvasDrawModal"> Define </button>
                         </td>
                       </tr>
                     </table>
@@ -216,7 +216,7 @@
                       <td>
                         <div class="btn-toolbar" role="toolbar" aria-label="">
                           <div class="btn-group mr-2" role="group" aria-label="">
-                            <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> <%= icon("fas", "times") %> </button>
+                            <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> r </button>
                           </div>
                         </div>
                       </td>
