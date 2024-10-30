@@ -1,5 +1,5 @@
 ShopifyApp.configure do |config|
-  config.application_name = "My Shopify App"
+  config.application_name = "Midway Team"
   config.old_secret = ""
   config.scope = "read_products,write_products,read_orders,write_orders,read_customers,write_customers,read_content,write_content,read_product_listings,read_inventory,write_inventory,read_locations,read_script_tags,write_script_tags,read_fulfillments,write_fulfillments,read_shipping,write_shipping,read_checkouts,write_checkouts,read_discounts,write_discounts" 
   # Consult this page for more scope options:
@@ -20,25 +20,9 @@ ShopifyApp.configure do |config|
     { topic: "customers/redact", address: "webhooks/customers_redact"},
     { topic: "shop/redact", address: "webhooks/shop_redact"}
   ]
-  # SHOPIFY_API_KEY=a26a987fcf7ad902a06f04f2264fd613
-  # SHOPIFY_API_SECRET=5356127fc0cf8ce7fcd75e9caa4b7298
-  config.api_key = 'e95b175ee0b3d62d59134332bf13d273'
-  config.secret = 'dd18fa7ced71f4920a9b448cd1fb9d52'
-
-  # You may want to charge merchants for using your app. Setting the billing configuration will cause the Authenticated
-  # controller concern to check that the session is for a merchant that has an active one-time payment or subscription.
-  # If no payment is found, it starts off the process and sends the merchant to a confirmation URL so that they can
-  # approve the purchase.
-  #
-  # Learn more about billing in our documentation: https://shopify.dev/apps/billing
-  # config.billing = ShopifyApp::BillingConfiguration.new(
-  #   charge_name: "My app billing charge",
-  #   amount: 5,
-  #   interval: ShopifyApp::BillingConfiguration::INTERVAL_EVERY_30_DAYS,
-  #   currency_code: "USD", # Only supports USD for now
-  #   trial_days: 0,
-  #   test: !ENV['SHOPIFY_TEST_CHARGES'].nil? ? ["true", "1"].include?(ENV['SHOPIFY_TEST_CHARGES']) : !Rails.env.production?
-  # )
+  
+  config.api_key = ENV.fetch('SHOPIFY_API_KEY')
+  config.secret = ENV.fetch('SHOPIFY_API_SECRET')
 
   if defined? Rails::Server
     raise('Missing SHOPIFY_API_KEY. See https://github.com/Shopify/shopify_app#requirements') unless config.api_key
