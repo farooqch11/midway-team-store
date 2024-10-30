@@ -22,8 +22,8 @@ ShopifyApp.configure do |config|
   ]
   # SHOPIFY_API_KEY=a26a987fcf7ad902a06f04f2264fd613
   # SHOPIFY_API_SECRET=5356127fc0cf8ce7fcd75e9caa4b7298
-  config.api_key = 'a26a987fcf7ad902a06f04f2264fd613'
-  config.secret = '5356127fc0cf8ce7fcd75e9caa4b7298'
+  config.api_key = 'e95b175ee0b3d62d59134332bf13d273'
+  config.secret = 'dd18fa7ced71f4920a9b448cd1fb9d52'
 
   # You may want to charge merchants for using your app. Setting the billing configuration will cause the Authenticated
   # controller concern to check that the session is for a merchant that has an active one-time payment or subscription.

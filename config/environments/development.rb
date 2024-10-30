@@ -7,6 +7,7 @@ Rails.application.configure do
   # Allow Cloudflare tunnels for secure Shopify OAuth redirects
   config.hosts = (config.hosts rescue []) << /[-\w]+\.trycloudflare\.com/
   # Settings specified here will take precedence over those in config/application.rb.
+  config.hosts = (config.hosts rescue []) << /.*\.myshopify\.com/
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
