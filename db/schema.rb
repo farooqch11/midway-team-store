@@ -10,8 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
-  create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2024_10_29_073835) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -21,18 +24,25 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "active_storage_blobs", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
+    t.string "checksum"
     t.datetime "created_at", precision: nil, null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "admin_infos", charset: "utf8mb3", force: :cascade do |t|
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "admin_infos", force: :cascade do |t|
     t.integer "team_admin_id"
     t.string "address1"
     t.string "address2"
@@ -45,7 +55,7 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "attribs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "attribs", force: :cascade do |t|
     t.string "title", null: false
     t.string "handle", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -53,20 +63,20 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.string "attrib_type", null: false
   end
 
-  create_table "categories", charset: "utf8mb3", force: :cascade do |t|
+  create_table "categories", force: :cascade do |t|
     t.string "title", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "categories_products", charset: "utf8mb3", force: :cascade do |t|
+  create_table "categories_products", force: :cascade do |t|
     t.integer "product_id"
     t.integer "category_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "color_images", charset: "utf8mb3", force: :cascade do |t|
+  create_table "color_images", force: :cascade do |t|
     t.string "url"
     t.string "color", null: false
     t.string "product_id", null: false
@@ -74,14 +84,14 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "colors", charset: "utf8mb3", force: :cascade do |t|
+  create_table "colors", force: :cascade do |t|
     t.string "title"
     t.string "code"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "g_images", charset: "utf8mb3", force: :cascade do |t|
+  create_table "g_images", force: :cascade do |t|
     t.string "variant_id"
     t.string "image"
     t.string "shopify_product_id"
@@ -89,7 +99,7 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "logo_params", charset: "utf8mb3", force: :cascade do |t|
+  create_table "logo_params", force: :cascade do |t|
     t.integer "pos_x", null: false
     t.integer "pos_y", null: false
     t.integer "width", null: false
@@ -99,7 +109,7 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "logo_requests", charset: "utf8mb3", force: :cascade do |t|
+  create_table "logo_requests", force: :cascade do |t|
     t.string "primary_color"
     t.string "secondary_color"
     t.string "mascot"
@@ -111,18 +121,18 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.string "third_color"
   end
 
-  create_table "logos", charset: "utf8mb3", force: :cascade do |t|
+  create_table "logos", force: :cascade do |t|
     t.string "store_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "main", default: false
   end
 
-  create_table "order_items", charset: "utf8mb3", force: :cascade do |t|
+  create_table "order_items", force: :cascade do |t|
     t.string "title"
     t.string "shopify_id"
-    t.decimal "price", precision: 10
-    t.decimal "fundraised", precision: 10
+    t.decimal "price"
+    t.decimal "fundraised"
     t.integer "quantity"
     t.integer "shopify_product_id"
     t.integer "order_id"
@@ -130,19 +140,19 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "orders", charset: "utf8mb3", force: :cascade do |t|
+  create_table "orders", force: :cascade do |t|
     t.integer "team_admin_id"
     t.integer "store_id"
     t.string "title"
-    t.decimal "price", precision: 10, null: false
-    t.decimal "fundraised", precision: 10
+    t.decimal "price", null: false
+    t.decimal "fundraised"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "shopify_id"
     t.integer "payout_id"
   end
 
-  create_table "payouts", charset: "utf8mb3", force: :cascade do |t|
+  create_table "payouts", force: :cascade do |t|
     t.date "month"
     t.integer "store_id"
     t.decimal "total", precision: 10, null: false
@@ -154,14 +164,14 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.string "tracking", default: "null"
   end
 
-  create_table "prev_images", charset: "utf8mb3", force: :cascade do |t|
+  create_table "prev_images", force: :cascade do |t|
     t.binary "image_url"
     t.integer "shopify_product_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "product_attribs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "product_attribs", force: :cascade do |t|
     t.integer "product_id"
     t.integer "attrib_id"
     t.string "title"
@@ -170,10 +180,10 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "products", charset: "utf8mb3", force: :cascade do |t|
+  create_table "products", force: :cascade do |t|
     t.string "title", null: false
     t.string "product_id", null: false
-    t.decimal "price", precision: 10, null: false
+    t.decimal "price", null: false
     t.string "image_url"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -185,29 +195,29 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.string "vendor"
   end
 
-  create_table "products_stores", charset: "utf8mb3", force: :cascade do |t|
+  create_table "products_stores", force: :cascade do |t|
     t.integer "product_id"
     t.integer "store_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "shopify_products", charset: "utf8mb3", force: :cascade do |t|
+  create_table "shopify_products", force: :cascade do |t|
     t.string "store_id", null: false
     t.string "product_id", null: false
-    t.binary "image_url"
+    t.string "image_url"
     t.string "shopify_id"
-    t.decimal "price", precision: 10
+    t.decimal "price"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "logo_id"
     t.integer "selected_color"
     t.boolean "essential", default: false
-    t.decimal "custom_base_price", precision: 10
+    t.decimal "custom_base_price", precision: 10, default: "0"
     t.string "handle"
   end
 
-  create_table "shops", charset: "utf8mb3", force: :cascade do |t|
+  create_table "shops", force: :cascade do |t|
     t.string "shopify_domain", null: false
     t.string "shopify_token", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -215,7 +225,7 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.index ["shopify_domain"], name: "index_shops_on_shopify_domain", unique: true
   end
 
-  create_table "stores", charset: "utf8mb3", force: :cascade do |t|
+  create_table "stores", force: :cascade do |t|
     t.string "team_admin_id", null: false
     t.string "title", null: false
     t.text "logo_url"
@@ -230,7 +240,7 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.boolean "froze", default: false
   end
 
-  create_table "team_admins", charset: "utf8mb3", force: :cascade do |t|
+  create_table "team_admins", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "email", null: false
@@ -248,7 +258,7 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
     t.string "phone"
   end
 
-  create_table "variant_images", charset: "utf8mb3", force: :cascade do |t|
+  create_table "variant_images", force: :cascade do |t|
     t.string "product_id"
     t.string "variant_id", null: false
     t.string "url"
@@ -257,4 +267,5 @@ ActiveRecord::Schema[7.2].define(version: 2021_01_23_145936) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
 end
