@@ -56,6 +56,8 @@ Rails.application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+  config.logger = Logger.new(STDOUT)
+
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
@@ -73,5 +75,4 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = "shining-hound-ready.ngrok-free.app"
 
   config.sass.inline_source_maps = true
-
 end

@@ -211,6 +211,7 @@ class StoreController < ApplicationController
   def setup
     @store_design = true
     @store = false
+    
     p = params.permit :uuit, :t, :id
     if !p.key?(:id)
       redirect_to :action => "create"
@@ -274,6 +275,9 @@ class StoreController < ApplicationController
     @store_design = true
     @store = false
     p = params.permit :uuit, :t, :id, :xs_prompt
+    puts '-----------------------'
+    puts p[:id]
+    puts '-----------------------'
     if !p.key?(:id)
       redirect_to :action => "create"
       return
@@ -364,6 +368,7 @@ class StoreController < ApplicationController
     @store.title = p[:title]
     @store.save
 
+    # debugger
     # p = params.permit :id, :t
     # if p.key? :id
     #   @store = Store.find_by_id p[:id]
@@ -383,12 +388,13 @@ class StoreController < ApplicationController
     shop = Shop.first
     shop.with_shopify_session do
       collection = get_store_collection @store
-      collection.products.each do |pr|
-        puts @store.has_product_with_shopify_id(pr.id)
-        if !@store.has_product_with_shopify_id(pr.id)
-          pr.destroy
-        end
-      end
+      
+      # collection.products.each do |pr|
+      #   puts @store.has_product_with_shopify_id(pr.id)
+      #   if !@store.has_product_with_shopify_id(pr.id)
+      #     pr.destroy
+      #   end
+      # end
       @store.processing = true
       @store.closed = false
       @store.save
@@ -494,7 +500,8 @@ class StoreController < ApplicationController
       coll = create_store_collection(store)
     else
       begin
-        coll = ShopifyAPI::CustomCollection.find(store.collection)
+        store_collection = Integer(store.collection)
+        coll = ShopifyAPI::CustomCollection.find(store_collection)
       rescue
         coll = create_store_collection(store)
       end
@@ -505,22 +512,46 @@ class StoreController < ApplicationController
   end
 
   def create_store_collection(store)
+    # Create a new CustomCollection instance
     coll = ShopifyAPI::CustomCollection.new
     coll.title = store.title
-    coll.save
-    metafield = ShopifyAPI::Metafield.new({
-      :description => "XS Midway",
-      :namespace => "xsmidway",
-      :key => "custom",
-      :value => "true",
-      :value_type => "string",
-    })
-    coll.add_metafield(metafield)
-
-    store.collection = coll.id
-    store.save
+    
+    # Attempt to save the collection
+    begin
+      if coll.save!
+        puts "Collection created with ID: #{coll.id}"
+  
+        # Create the metafield
+        metafield = ShopifyAPI::Metafield.new
+        metafield.namespace = 'xsmidway'
+        metafield.key = 'custom'
+        metafield.value = "true"
+        metafield.type = 'boolean'
+        
+  
+        # Save the metafield associated with the collection
+        if metafield.save!
+          # Add the metafield to the collection after saving
+          coll.add_metafield(metafield)
+          puts "Metafield added successfully."
+        else
+          puts "Failed to create metafield: #{metafield.errors.full_messages.join(', ')}"
+        end
+        
+        # Update the store with the new collection ID
+        store.collection = coll.id
+        store.save
+      else
+        puts "Failed to create a new collection: #{coll.errors.full_messages.join(', ')}"
+      end
+    rescue ShopifyAPI::Errors::HttpResponseError => e
+      puts "Error while creating collection or metafield: #{e.message}"
+    end
+  
     return coll
   end
+  
+  
 
   def manage_logos
     p = params.permit :id, :t

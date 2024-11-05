@@ -2,7 +2,6 @@
 /.bundle
 
 # Ignore cache files.
-log/*
 tmp/*
 node_modules/
 yarn-error.log
