@@ -3,7 +3,7 @@ class StoreDeleteJob < ApplicationJob
 
   def perform(store)
     # Do something later
-    s = Shop.first
+    s = Shop.last
     s.with_shopify_session do
       store.shopify_products.each do |sp|
         begin

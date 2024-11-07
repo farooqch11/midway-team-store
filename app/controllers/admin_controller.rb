@@ -275,7 +275,7 @@ class AdminController < AuthenticatedController
         store.save
       end
       store.regenerate_admin_token
-      link = "https://" + Shop.first.shopify_domain + store_setup_path(store.id) + "?uuit=#{store.admin_token}"
+      link = "https://" + Shop.last.shopify_domain + store_setup_path(store.id) + "?uuit=#{store.admin_token}"
       res = {
         link: link,
       }

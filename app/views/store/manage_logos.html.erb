@@ -40,7 +40,7 @@
             <% if logo.logo_file.attached? %>
               <div class="col-12 col-sm-4 col-md-3 col-lg-2" data-xs-logo="<%= logo.id %>">
                 <div class="xs-logo">
-                  <img class=" mb-4" data-xs-logo-image height="150" width="150" src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file, Rails.application.config.action_mailer.default_url_options) %>">
+                  <img class=" mb-4" data-xs-logo-image height="150" width="150" src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file) %>">
                   <div class="xs-logo-actions">
                     <div>
                       <% unless logo.main %>

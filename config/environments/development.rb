@@ -8,6 +8,10 @@ Rails.application.configure do
   config.hosts = (config.hosts rescue []) << /[-\w]+\.trycloudflare\.com/
   # Settings specified here will take precedence over those in config/application.rb.
   config.hosts = (config.hosts rescue []) << /.*\.myshopify\.com/
+  config.hosts = (config.hosts rescue []) << /.*\.midwayteamstore\.com/
+  config.hosts << "midwayteamstore.com"
+
+
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -73,6 +77,8 @@ Rails.application.configure do
   # config.action_controller.default_url_options = {:host => "localhost:3000"}
   # config.routes.default_url_options[:host] = '8ce38f0662f6.ngrok.io'
   Rails.application.routes.default_url_options[:host] = "shining-hound-ready.ngrok-free.app"
+  Rails.application.config.hosts << "midwayteamstore.com"
+
 
   config.sass.inline_source_maps = true
 end

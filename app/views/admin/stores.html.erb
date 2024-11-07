@@ -20,7 +20,7 @@
               <td>
                 <div class="btn-toolbar" role="toolbar" >
                   <div class="btn-group" role="group" aria-label="First group">
-                    <a href="https://<%= Shop.first.shopify_domain %>/a/locker/store/<%= store.collection %>" target="_blank" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Preview"> Preview </a>
+                    <a href="https://<%= Shop.last.shopify_domain %>/a/locker/store/<%= store.collection %>" target="_blank" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Preview"> Preview </a>
                     <a href="<%= admin_stores_logos_path store.id %>" type="button" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Logos">Manage Logos</a>
                     <a href="<%= admin_stores_payouts_path store.id %>" type="button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Payout"> payout </a>
                     <a href="<%= admin_stores_orders_path store.id %>" type="button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Sales">Sale </a>

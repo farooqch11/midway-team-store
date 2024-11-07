@@ -3,7 +3,7 @@ class SyncvendorsjobJob < ApplicationJob
 
   def perform(*args)
     # Do something later
-    s = Shop.first
+    s = Shop.last
 
     s.with_shopify_session do
       Product.all.each do |pr|

@@ -121,7 +121,7 @@
                   <span class="xs-product-logo-select <%= "active-logo" if logo == sp.logo %>"
                     data-select-product-logo="<%= logo.id %>">
                     <img class="" height="80" width="80"
-                      src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file, Rails.application.config.action_mailer.default_url_options) %>">
+                      src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file) %>">
                   </span>
                   <% end %>
                   <% end %>
@@ -163,7 +163,7 @@
 
   <div id="store-publish-done" style="display: none;">
     <% if @store.logos.size > 0 %>
-      <img src="<%= @store.logos.first.logo_file.service_url %>" class="store-publish-logo" style="display: block; max-width: 150px; margin: 10px auto;" />
+      <img src="<%= Rails.application.routes.url_helpers.rails_blob_url(@store.logos.first.logo_file) %>" class="store-publish-logo" style="display: block; max-width: 150px; margin: 10px auto;" />
   <% end %>
   <h3 class="text-center">Congratulations!</h3>
   <div class="xs-progress-done text-center">You store is being published now.</div>
@@ -214,7 +214,7 @@
           <span class="xs-logo-select <%= "logo-selected" if logo == @store.logos.first %>"
           data-modal-select-logo="<%= logo.id %>">
             <img class=""
-            src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file, Rails.application.config.action_mailer.default_url_options) %>">
+            src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file) %>">
           </span>
         <% end %>
       <% end %>

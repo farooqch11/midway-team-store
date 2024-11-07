@@ -205,7 +205,7 @@ window.xs = {
             storeTimeEl = $("#store-time");
 
         console.log("setting countdown");
-        console.log(xs_store_time < Date.now());
+       // console.log(xs_store_time < Date.now());
         if (xs_store_countdown) {
             if (xs_store_time < Date.now()) {
                 storeContents.hide().remove();

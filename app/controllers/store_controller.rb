@@ -385,7 +385,7 @@ class StoreController < ApplicationController
     # else
     #   redirect_to :action => "create"
     # end
-    shop = Shop.first
+    shop = Shop.last
     shop.with_shopify_session do
       collection = get_store_collection @store
       
@@ -399,8 +399,8 @@ class StoreController < ApplicationController
       @store.closed = false
       @store.save
 
-      PublishStoreJob.perform_later @store
     end
+    PublishStoreJob.perform_later @store
     render :json => {
       store: @store,
       link: store_front_index_path(@store.collection),
@@ -701,7 +701,7 @@ class StoreController < ApplicationController
   end
 
   def publishs_store(store)
-    shop = Shop.first
+    shop = Shop.last
     shop.with_shopify_session do
       collection = nil
       if store.collection == nil
@@ -845,7 +845,7 @@ class StoreController < ApplicationController
       store.remove_product(product)
     end
 
-    s = Shop.first
+    s = Shop.last
     if s and product.shopify_id != nil or product.shopify_id != ""
       s.with_shopify_session do
         begin

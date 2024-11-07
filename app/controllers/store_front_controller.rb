@@ -65,9 +65,9 @@ class StoreFrontController < ApplicationController
       @filtered_products = @filtered_products.paginate(page: page, per_page: per_page)
       puts @filtered_products.inspect
       @handle = nil
-      Shop.first.with_shopify_session do
+      Shop.last.with_shopify_session do
         begin
-          collection = ShopifyAPI::Collection.find(p[:collection_id])
+          collection = ShopifyAPI::Collection.find(id: p[:collection_id])
           @handle = collection.handle
         rescue
         end

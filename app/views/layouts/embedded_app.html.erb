@@ -71,7 +71,6 @@
     
     <%= render "layouts/flash_messages" %>
     <script src="https://unpkg.com/@shopify/app-bridge"></script>
-    <%= @current_shopify_session %>
     <%= content_tag(:div, nil, id: 'shopify-app-init', data: {
       api_key: ShopifyApp.configuration.api_key,
       shop_origin: (@current_shopify_session.shop if @current_shopify_session),
