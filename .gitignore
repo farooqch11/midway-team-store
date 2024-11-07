@@ -6,6 +6,8 @@ tmp/*
 node_modules/
 yarn-error.log
 
+app/shared/log/*
+
 # Ignore database files.
 *.sqlite3
 *.sqlite3-journal
