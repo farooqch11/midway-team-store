@@ -48,5 +48,6 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } * ENV.fetch("WEB_CONCURRENCY") { 2 } %>
+  pool: 10
+  timeout: 10000
   database: <%= ENV['DATABASE_URL'] %>
