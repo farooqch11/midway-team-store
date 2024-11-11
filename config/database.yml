@@ -49,5 +49,4 @@ production:
   adapter: postgresql
   encoding: unicode
   pool: 10
-  timeout: 10000
   database: <%= ENV['DATABASE_URL'] %>
