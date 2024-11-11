@@ -10,7 +10,7 @@ rails_env = ENV.fetch("RAILS_ENV") { "production" }
 environment rails_env
 
 # Specifies the number of `workers` to boot in clustered mode.
-workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+# workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
 # Preload app for better performance in clustered mode
 preload_app!
