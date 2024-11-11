@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_29_073835) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_11_140107) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -203,8 +203,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_29_073835) do
   end
 
   create_table "shopify_products", force: :cascade do |t|
-    t.string "store_id", null: false
-    t.string "product_id", null: false
+    t.bigint "store_id", null: false
+    t.bigint "product_id", null: false
     t.string "image_url"
     t.string "shopify_id"
     t.decimal "price"
