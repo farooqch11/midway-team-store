@@ -23,20 +23,6 @@ development:
   host: localhost
   port: 3306
 
-# default: &default
-#   adapter: postgresql
-#   encoding: unicode
-#   # For details on connection pooling, see Rails configuration guide
-#   # https://guides.rubyonrails.org/configuring.html#database-pooling
-#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-#   port: 5432
-
-# development:
-#   <<: *default
-#   database: xs_midway
-  # username: <%= ENV['POSTGRES_USER'] %>
-  # password: <%= ENV['POSTGRES_PASSWORD'] %>
-
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -48,5 +34,5 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  pool: 10
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   database: <%= ENV['DATABASE_URL'] %>
