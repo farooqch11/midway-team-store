@@ -1843,6 +1843,7 @@ GEM
       psych (>= 4.0.0)
     redirect_safely (1.0.0)
       activemodel
+    redis (4.0.3)
     redis-client (0.22.2)
       connection_pool
     regexp_parser (2.9.2)
@@ -1972,6 +1973,7 @@ DEPENDENCIES
   rails (~> 7.2.1, >= 7.2.1.1)
   rails_12factor
   rails_same_site_cookie
+  redis (~> 4.0.2)
   sass-rails (~> 5.0)
   selectize-rails
   selenium-webdriver
