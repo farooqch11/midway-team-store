@@ -44,16 +44,16 @@ class ProductsFetchJob < ApplicationJob
   def fetch_all_products
     products = []
     
-    clientProducts = ShopifyAPI::Product.all(limit: 100)
-    loop do
+    clientProducts = ShopifyAPI::Product.all(limit: 10)
+    # loop do
       for product in clientProducts do
         products << product
       end
-      break unless ShopifyAPI::Product.next_page?
-      clientProducts = ShopifyAPI::Product.all(limit: 100, page_info: ShopifyAPI::Product.next_page_info)
-      sleep(0.6)
-      puts "Fetching next page of products..."
-    end
+    #   break unless ShopifyAPI::Product.next_page?
+    #   clientProducts = ShopifyAPI::Product.all(limit: 100, page_info: ShopifyAPI::Product.next_page_info)
+    #   sleep(0.6)
+    #   puts "Fetching next page of products..."
+    # end
     products
   end
 

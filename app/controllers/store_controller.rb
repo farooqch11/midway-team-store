@@ -400,7 +400,7 @@ class StoreController < ApplicationController
       @store.save
 
     end
-    PublishStoreJob.perform_later @store
+    PublishStoreJob.perform_now @store
     render :json => {
       store: @store,
       link: store_front_index_path(@store.collection),
