@@ -132,7 +132,7 @@ class PublishStoreJob < ApplicationJob
   end
 
   def add_product_image(local_shopify_product, new_shopify_product)
-    image_url = local_shopify_product.image_url&.url || new_product.image_url
+    image_url = local_shopify_product.image_url&.url || new_shopify_product.image_url
     return unless image_url
 
     # image_data = open(image_url) { |f| f.read }
