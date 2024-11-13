@@ -9,10 +9,11 @@ local:
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 amazon:
   service: S3
-  access_key_id: AKIAYFHZQ2OEOHUMOWZG
-  secret_access_key: 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
+  access_key_id: AKIAYFHZQ2OEH5HSG4EZ
+  secret_access_key: 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
   region: us-east-1
-  bucket: 'midway-shopify-app'
+  bucket: 'midway-team-bucket'
+  
 
 # s3 = Aws::S3::Resource.new(region: 'us-east-1')
 # bucket = s3.bucket('midway-shopify-app')
