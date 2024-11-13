@@ -14,6 +14,9 @@ amazon:
   region: us-east-1
   bucket: 'midway-shopify-app'
 
+# s3 = Aws::S3::Resource.new(region: 'us-east-1')
+# bucket = s3.bucket('midway-shopify-app')
+
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
