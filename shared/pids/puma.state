@@ -1,5 +1,5 @@
 ---
-pid: 69098
-control_url: unix:///var/folders/10/3y9krhwd2471fm7_04nygkfw0000gn/T/puma-status-1731443271954-69098
-control_auth_token: ddd5b3393c0d388bbc7559fc68bb2481
+pid: 57346
+control_url: unix:///var/folders/10/3y9krhwd2471fm7_04nygkfw0000gn/T/puma-status-1731522275875-57346
+control_auth_token: bb06d6bbc66433a8dc05cd71230645be
 running_from: "/Users/junaidhassan/Documents/projectrails/midway"

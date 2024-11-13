@@ -92,6 +92,7 @@ class PublishStoreJob < ApplicationJob
   end
 
   def build_options(shopify_product)
+    puts shopify_product.inspect
     options = []
     shopify_product.options.each_with_index do |option, index|
       options << { name: option['name'] } unless %w[color colour].include?(option['name'].downcase)
