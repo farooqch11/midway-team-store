@@ -210,14 +210,15 @@
     <h3>Select Logo</h3>
     <div class='xs-modal-inner'>
       <% @store.logos.each do |logo| %>
-        <% if logo.logo_file.attached? %>
-          <span class="xs-logo-select <%= "logo-selected" if logo == @store.logos.first %>"
+  <% if logo.logo_file.attached? %>
+    <span class="xs-logo-select <%= "logo-selected" if logo == @store.logos.first %>"
           data-modal-select-logo="<%= logo.id %>">
-            <img class=""
-            src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file) %>">
-          </span>
-        <% end %>
-      <% end %>
+      <img class=""
+           src="<%= url_for(logo.logo_file) %>" />
+    </span>
+  <% end %>
+<% end %>
+
     </div>
     <div class='xs-modal-footer'>
       <input type="hidden" id="xs-modal-logo" value="<%= @store.logos.first.id if @store.logos.size > 0 %>">

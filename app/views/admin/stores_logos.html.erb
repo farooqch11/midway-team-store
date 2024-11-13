@@ -24,17 +24,21 @@
         </div>
         <div class="row align-items-center justify-content-between">
           <% @store.logos.each do |logo| %>
-            <% if logo.logo_file.attached? %>
-              <div class="col-12 col-sm-4 col-md-3 col-lg-3" >
-                <div class="xs-logo">
-                  <img class=" mb-4" data-xs-logo-image height="150" width="150" src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file) %>">
-                  <div class="xs-logo-actions">
-                    <a href="<%= admin_store_logo_delete_path :id => @store.id, :logo_id => logo.id %>" class="btn btn-danger btn-sm">Delete</a>
-                  </div>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
+  <% if logo.logo_file.attached? %>
+    <div class="col-12 col-sm-4 col-md-3 col-lg-3">
+      <div class="xs-logo">
+        <!-- Use url_for for ActiveStorage URL generation -->
+        <img class="mb-4" data-xs-logo-image height="150" width="150" 
+             src="<%= url_for(logo.logo_file) %>">
+        <div class="xs-logo-actions">
+          <!-- Use admin_store_logo_delete_path to delete the logo -->
+          <a href="<%= admin_store_logo_delete_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
         </div>
       </div>
     </div>

@@ -37,24 +37,29 @@
       <div class='container-fluid'>
         <div class="row">
           <% @store.logos.each do |logo| %>
-            <% if logo.logo_file.attached? %>
-              <div class="col-12 col-sm-4 col-md-3 col-lg-2" data-xs-logo="<%= logo.id %>">
-                <div class="xs-logo">
-                  <img class=" mb-4" data-xs-logo-image height="150" width="150" src="<%= Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file) %>">
-                  <div class="xs-logo-actions">
-                    <div>
-                      <% unless logo.main %>
-                        <a href="<%= store_logo_set_main_path :id => @store.id, :logo_id => logo.id  %>" class="btn btn-primary btn-sm">Set Main Logo</a>
-                      <% else %>
-                        <strong>Main Logo</strong>
-                      <% end %>
-                    </div>
-                    <a href="<%= store_logo_delete_path :id => @store.id, :logo_id => logo.id %>" class="btn btn-danger btn-sm">Delete</a>
-                  </div>
-                </div>
-              </div>
+  <% if logo.logo_file.attached? %>
+    <div class="col-12 col-sm-4 col-md-3 col-lg-2" data-xs-logo="<%= logo.id %>">
+      <div class="xs-logo">
+        <!-- Use url_for for ActiveStorage URL generation -->
+        <img class="mb-4" data-xs-logo-image height="150" width="150" 
+             src="<%= url_for(logo.logo_file) %>">
+        <div class="xs-logo-actions">
+          <div>
+            <% unless logo.main %>
+              <!-- Link to set the main logo -->
+              <a href="<%= store_logo_set_main_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-primary btn-sm">Set Main Logo</a>
+            <% else %>
+              <strong>Main Logo</strong>
             <% end %>
-          <% end %>
+          </div>
+          <!-- Link to delete the logo -->
+          <a href="<%= store_logo_delete_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
         </div>
       </div>
     </div>
