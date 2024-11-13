@@ -162,9 +162,9 @@
   </div>
 
   <div id="store-publish-done" style="display: none;">
-    <% if @store.logos.size > 0 %>
-      <img src="<%= Rails.application.routes.url_helpers.rails_blob_url(@store.logos.first.logo_file) %>" class="store-publish-logo" style="display: block; max-width: 150px; margin: 10px auto;" />
-  <% end %>
+   <% if @store.logos.size > 0 %>
+  <img src="<%= url_for(@store.logos.first.logo_file) %>" class="store-publish-logo" style="display: block; max-width: 150px; margin: 10px auto;" />
+<% end %>
   <h3 class="text-center">Congratulations!</h3>
   <div class="xs-progress-done text-center">You store is being published now.</div>
   <a href="" target="_blank" data-store-link></a>
