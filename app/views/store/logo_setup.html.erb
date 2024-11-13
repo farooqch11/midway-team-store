@@ -116,15 +116,15 @@
 
                 <div class='xs-product-logos' data-product-logos>
                   <span data-close-logos></span>
-                  <% @store.logos.each do |logo| %>
+                 <% @store.logos.each do |logo| %>
                   <% if logo.logo_file.attached? %>
-                  <span class="xs-product-logo-select <%= "active-logo" if logo == sp.logo %>"
-                    data-select-product-logo="<%= logo.id %>">
-                    <img class="" height="80" width="80"
-                      src="<%# Rails.application.routes.url_helpers.rails_blob_url(logo.logo_file) %>">
-                  </span>
+                    <span class="xs-product-logo-select <%= "active-logo" if logo == sp.logo %>"
+                      data-select-product-logo="<%= logo.id %>">
+                      <img class="" height="80" width="80"
+                        src="<%= url_for(logo.logo_file) %>">
+                    </span>
                   <% end %>
-                  <% end %>
+                <% end %>
                 </div>
                 <div class="xs-product-hover-actions">
                   <button type='button' class="btn btn-sm btn-primary" data-change-color="<%= product.id %>">Change
