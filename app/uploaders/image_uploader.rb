@@ -46,6 +46,6 @@ class ImageUploader < CarrierWave::Uploader::Base
   # end
   def asset_host
     # return "https://8ce38f0662f6.ngrok.io"
-    return "https://shining-hound-ready.ngrok-free.app"
+    return "https://midwaysports-667d8dc23be6.herokuapp.com"
   end
 end
