@@ -213,7 +213,7 @@
       <% if logo.logo_file.attached? %>
         <span class="xs-logo-select <%= "logo-selected" if logo == @store.logos.first %>"
               data-modal-select-logo="<%= logo.id %>">
-              <%= logo.inspect%>
+         <%= Rails.application.config.asset_host %><%= url_for(controller: 'images', action: 'proxy', url: logo.logo_file) %>
           <img class=""
               src="<%= Rails.application.config.asset_host %><%= url_for(logo.logo_file) %>" />
         </span>

@@ -20,6 +20,13 @@ module App
     #   'X-Frame-Options' => "headers 'p3p' => 'CP="Not used
     # }
 
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '/proxy_image', headers: :any, methods: [:get]
+      end
+    end
+
     config.action_dispatch.default_headers.delete("X-Frame-Options")
     config.action_dispatch.default_headers["P3P"] = 'CP=\"Not used\"'
   end
