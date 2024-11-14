@@ -42,7 +42,7 @@
       <div class="xs-logo">
         <!-- Use url_for for ActiveStorage URL generation -->
         <img class="mb-4" data-xs-logo-image height="150" width="150" 
-             src="<%= url_for(logo.logo_file) %>">
+             src="<%= Rails.application.config.asset_host %><%= url_for(logo.logo_file) %>">
         <div class="xs-logo-actions">
           <div>
             <% unless logo.main %>

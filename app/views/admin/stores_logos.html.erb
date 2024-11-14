@@ -29,7 +29,7 @@
       <div class="xs-logo">
         <!-- Use url_for for ActiveStorage URL generation -->
         <img class="mb-4" data-xs-logo-image height="150" width="150" 
-             src="<%= url_for(logo.logo_file) %>">
+             src="<%= Rails.application.config.asset_host %><%= url_for(logo.logo_file) %>">
         <div class="xs-logo-actions">
           <!-- Use admin_store_logo_delete_path to delete the logo -->
           <a href="<%= admin_store_logo_delete_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-danger btn-sm">Delete</a>

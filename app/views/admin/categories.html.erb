@@ -19,7 +19,7 @@
         <tbody>
           <% @categories.each do |category| %>
             <tr>
-              <td><% if category.image.attached? %><img src="<%= url_for(category.image) %>" class="rounded " height="80" style="max-width:80px;object-fit: contain;"><% end %></td>
+              <td><% if category.image.attached? %><img src="<%= Rails.application.config.asset_host %><%= url_for(category.image) %>" class="rounded " height="80" style="max-width:80px;object-fit: contain;"><% end %></td>
               <td><%= category.title %></td>
               <td>
                 <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#viewProducts<%= category.id %>">
@@ -62,7 +62,7 @@
               <%= f.file_field :image, :class => "form-control-file", :accept => "image/jpeg,image/jpg,image/png" %>
               <div class="xs-image-preview">
               <% if category.image.attached? %>
-                <img src="<%= url_for(category.image) %>" class="rounded " height="80" style="max-width:80px;object-fit: contain;">
+                <img src="<%= Rails.application.config.asset_host %><%= url_for(category.image) %>" class="rounded " height="80" style="max-width:80px;object-fit: contain;">
                 <% end %>
               </div>
             </div>

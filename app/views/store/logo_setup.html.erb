@@ -113,7 +113,6 @@
                     </label>
                   </div>
                 </div>
-
                 <div class='xs-product-logos' data-product-logos>
                   <span data-close-logos></span>
                  <% @store.logos.each do |logo| %>
@@ -121,7 +120,8 @@
                     <span class="xs-product-logo-select <%= "active-logo" if logo == sp.logo %>"
                       data-select-product-logo="<%= logo.id %>">
                       <img class="" height="80" width="80"
-                        src="<%= url_for(logo.logo_file) %>">
+                        src="<%= Rails.application.config.asset_host %><%= url_for(logo.logo_file) %>">
+                        
                     </span>
                   <% end %>
                 <% end %>
@@ -163,7 +163,7 @@
 
   <div id="store-publish-done" style="display: none;">
    <% if @store.logos.size > 0 %>
-  <img src="<%= url_for(@store.logos.first.logo_file) %>" class="store-publish-logo" style="display: block; max-width: 150px; margin: 10px auto;" />
+  <img src="<%= Rails.application.config.asset_host %><%= url_for(@store.logos.first.logo_file) %>" class="store-publish-logo" style="display: block; max-width: 150px; margin: 10px auto;" />
 <% end %>
   <h3 class="text-center">Congratulations!</h3>
   <div class="xs-progress-done text-center">You store is being published now.</div>
@@ -210,15 +210,15 @@
     <h3>Select Logo</h3>
     <div class='xs-modal-inner'>
       <% @store.logos.each do |logo| %>
-  <% if logo.logo_file.attached? %>
-    <span class="xs-logo-select <%= "logo-selected" if logo == @store.logos.first %>"
-          data-modal-select-logo="<%= logo.id %>">
-      <img class=""
-           src="<%= url_for(logo.logo_file) %>" />
-    </span>
-  <% end %>
-<% end %>
-
+      <% if logo.logo_file.attached? %>
+        <span class="xs-logo-select <%= "logo-selected" if logo == @store.logos.first %>"
+              data-modal-select-logo="<%= logo.id %>">
+              <%= logo.inspect%>
+          <img class=""
+              src="<%= Rails.application.config.asset_host %><%= url_for(logo.logo_file) %>" />
+        </span>
+      <% end %>
+    <% end %>
     </div>
     <div class='xs-modal-footer'>
       <input type="hidden" id="xs-modal-logo" value="<%= @store.logos.first.id if @store.logos.size > 0 %>">

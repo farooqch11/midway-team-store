@@ -124,7 +124,7 @@
               <tbody data-product-categories="<%= product.id %>">
                 <% product.categories.each do |category| %>
                   <tr data-product-category="<%= category.id %>" >
-                    <td><% if category.image.attached? %><img src="<%= url_for(category.image) %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ><% end %></td>
+                    <td><% if category.image.attached? %><img src="<%= Rails.application.config.asset_host %><%= url_for(category.image) %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ><% end %></td>
                     <td><%= category.title %></td>
                     <td>
                       <div class="btn-toolbar" role="toolbar" aria-label="">
@@ -211,7 +211,7 @@
                 <tbody data-product-categories="<%= product.id %>">
                   <% product.categories.each do |category| %>
                     <tr data-product-category="<%= category.id %>" >
-                      <td><% if category.image.attached? %><img src="<%= url_for(category.image) %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ><% end %></td>
+                      <td><% if category.image.attached? %><img src="<%= Rails.application.config.asset_host %><%= url_for(category.image) %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ><% end %></td>
                       <td><%= category.title %></td>
                       <td>
                         <div class="btn-toolbar" role="toolbar" aria-label="">
