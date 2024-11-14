@@ -99,8 +99,8 @@ class ProductsFetchJob < ApplicationJob
   def save_color_image(p, color, variant, product)
     if color && variant.image_id
       variant_image = product.images.select { |image| image.id == variant.image_id }&.first.src
-      variant_image = ShopifyAPI::Image.find(id: variant.image_id, product_id: p.product_id)
-      sleep(0.8)
+      # variant_image = ShopifyAPI::Image.find(id: variant.image_id, product_id: p.product_id)
+      # sleep(0.8)
 
       color_image = p.color_images.find_or_initialize_by(color: color)
       color_image.update(url: variant_image)
