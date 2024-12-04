@@ -38,7 +38,8 @@ class Store < ApplicationRecord
     end
 
     s.price = price_to_be
-
+    s.shopify_id = p.product_id
+    s.handle = p.handle
     s.save
     # else
     #   s = self.shopify_products.find_by_product_id(p.id)

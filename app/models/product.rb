@@ -6,6 +6,7 @@ class Product < ApplicationRecord
   has_many :shopify_products
   has_many :stores, :through => :shopify_products
   has_many :product_attribs
+  has_many :attribs
   has_many :variant_images
 
   has_many :color_images

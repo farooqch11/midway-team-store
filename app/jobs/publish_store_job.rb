@@ -6,14 +6,14 @@ class PublishStoreJob < ApplicationJob
   def perform(store)
     puts "Running job for store: #{store.id}"
     shop = Shop.last
-    shop.with_shopify_session do
+    # shop.with_shopify_session do
 
-      # collection = find_collection(store.collection)
-      collection = store.collection
-      return unless collection
+    #   # collection = find_collection(store.collection)
+    #   collection = store.collection
+    #   return unless collection
      
-      process_products(store, collection)
-    end
+    #   process_products(store, collection)
+    # end
     mark_store_as_processed(store)
     puts "Job completed for store: #{store.id}"
   end

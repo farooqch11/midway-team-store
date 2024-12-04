@@ -794,6 +794,9 @@ $(document).on('turbolinks:load', () => {
             $.ajax({
                 url: "/admin/save_logo_params/" + id,
                 type: 'POST',
+                headers: {
+                    "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+                },
                 data: {
                     info: {
                         pos_y: logoBox.top,

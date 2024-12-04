@@ -9,7 +9,8 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   config.hosts = (config.hosts rescue []) << /.*\.myshopify\.com/
   config.hosts = (config.hosts rescue []) << /.*\.midwayteamstore\.com/
-  config.hosts << "midwayteamstore.com"
+  config.hosts = (config.hosts rescue []) << /.*\.midwayys.myshopify\.com/
+  config.hosts << "midwayys.myshopify.com"
 
 
 
@@ -73,12 +74,14 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   config.action_controller.asset_host = ENV['HOST']
-  config.action_mailer.default_url_options = { host: "https://shining-hound-ready.ngrok-free.app/", protocol: "http" }
-  # config.action_controller.default_url_options = {:host => "localhost:3000"}
+  config.action_mailer.default_url_options = { host: "https://shining-hound-ready.ngrok-free.app/", protocol: "https" }
+  config.action_controller.default_url_options = {:host => "https://shining-hound-ready.ngrok-free.app"}
   # config.routes.default_url_options[:host] = 'https://shining-hound-ready.ngrok-free.app'
   # Rails.application.routes.default_url_options[:host] = "shining-hound-ready.ngrok-free.app"
   # Rails.application.config.hosts << "midwayteamstore.com"
-  # Rails.application.routes.default_url_options[:host] = "https://shining-hound-ready.ngrok-free.app"
+  Rails.application.routes.default_url_options[:host] = "https://shining-hound-ready.ngrok-free.app"
+  # Rails.application.action_controller.default_url_options[:host] = "https://shining-hound-ready.ngrok-free.app"
+
   
   Rails.application.config.asset_host = ENV['HOST']
 

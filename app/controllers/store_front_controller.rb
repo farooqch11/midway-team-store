@@ -3,6 +3,7 @@ class StoreFrontController < ApplicationController
   layout "store_layout"
 
   def index
+    
     p = params.permit :collection_id, :p, :per_page, :filter, :category
     @store = Store.find_by_collection p[:collection_id]
 

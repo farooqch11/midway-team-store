@@ -68,34 +68,62 @@
                 <% end %>
               </div>
               <div class="grid__item small--one-whole medium-up--three-quarters">
+              <%# @filtered_products.inspect %>
                 {% assign xhandles = "<%= @filtered_products.collect{ |x| x.handle if x.handle != nil}.join(",") %>" | split: "," %}
                 <script>
                   window.ximages = {};
                   <% @filtered_products.each do |product| %>
+                  console.log('<%= product.prev_images.last.image_url %>')
+
                     <% next if product.handle == nil %>
                     ximages['<%= product.handle %>'] = "<%= product.prev_images.last.image_url.url if product.prev_images.size > 0 %>";
                   <% end %>
                 </script>
                 <ul class='grid grid--uniform grid--collection'>
-                  {% for xhandle in xhandles %}
+                <% @filtered_products.each do |variant| %>
+                 {% assign xhandle =  "<%= variant.handle %>" %}
+                  <%# {{ xhandle}} %>
+                  <%# {% assign prd  = all_products[xhandle]%} %>
+                  <%# {{ prd.title}} %>
                   {% assign product = false %}
-                  {% for pr in collection.products %}
-                  {% if pr.handle == xhandle %} 
-                  {% assign product = pr %}
-                  {% break %}
-                  {% endif %}
+                  <%# {% for pr in collection.products %} %>
+                  {% if xhandle %} 
+                   <% color_image = ColorImage.find(variant.selected_color) %>
+          
+                  {% assign color =  "<%= color_image.color %>" %}
+                  {% assign product = all_products[xhandle] %}
+                  {% for product_variant in  product.variants %}
+                    {% if product_variant.option2 == color %}
+                      {% assign p_variant = product_variant %}
+                      {% break %}
+                    {% endif %}
                   {% endfor %}
+                  <%# {% break %} %>
+                  {% endif %}
+                  <%# {% endfor %} %>
                   {% if product %}
-                  <%= render :partial => "store_front/partials/grid-item"%>
+                  <%= render :partial => "store_front/partials/grid-item" %>
                   {% endif %}
-                  {% endfor %}
+                  <% end %>
                 </ul>
                 <%= will_paginate @filtered_products, { :pre_path => store_front_index_path(@store.collection)} %>
               </div>
             </div>
           </div>
-          {% for xhandle in xhandles %}
+          <% @filtered_products.each do |variant| %>
+          <% color_image = ColorImage.find(variant.selected_color) %>
+          
+          {% assign color =  "<%= color_image.color %>" %}
+
+          <%# {% for xhandle in xhandles %} %>
+          {% assign xhandle = "<%= variant.handle %>" %}
           {% assign product = all_products[xhandle] %}
+          {% for product_variant in  product.variants %}
+          {% if product_variant.option2 == color %}
+            {% assign p_variant = product_variant %}
+            {% break %}
+          {% endif %}
+          {% endfor %}
           <!-- <div class='xs-store-front-product {% if product.tags contains 'essential' %}xs-essential{% endif %}' {% if product.tags contains 'essential' %}data-product-essential="{{ product.id }}" {% endif %}>
           <div class="xs-inner">
             {% if product.tags contains 'essential' %}
@@ -113,11 +141,12 @@
             </div>
           </div>
         </div> -->
-          <div class="xs-drawer" data-xs-drawer id="drawer{{ product.id }}" style='display: none;'>
+          <div class="xs-drawer" data-xs-drawer id="drawer{{ p_variant.id }}" style='display: none;'>
             <div class="xs-drawer-inner">
               <span data-close-drawer></span>
               <div class='xs-product-image'>
-                {{ product.featured_image | img_url: "grande" | img_tag }}
+                {% assign product_image_midway = "<%= variant.prev_images.last.image_url.url if variant.prev_images.size > 0 %>" %}
+                {{ product_image_midway | img_tag}}
               </div>
               <div class='xs-product-info' data-xs-product-add-form data-product-id="{{ product.id }}">
                 <h3>{{ product.title }}</h3>
@@ -126,9 +155,12 @@
                   <div class="col-9">
                     <select class="form-control xs-variant-select">
                       {% for variant in product.variants %}
+                      {% if variant.option1 == color or variant.option2 == color  %}
                       <option value="{{ variant.id }}" {% if forloop.first %}selected{% endif %}>
-                        {{ variant.title }}
+                        {% if variant.option1 == color %} {{ variant.option2 }} {% endif %}
+                        {% if variant.option2 == color %} {{ variant.option1 }} {% endif %}
                       </option>
+                      {% endif %}
                       {% endfor %}
                     </select>
                   </div>
@@ -142,7 +174,9 @@
                     </select>
                   </div>
                 </div>
-                <input type="hidden" name="xs_image" data-property data-ximage="{{ product.handle }}">
+                <input type="hidden" name="xs_image" data-property value="{{ product_image_midway }}">
+                <input type="hidden" name="xs_logo" data-property value="<%= variant.logo.logo_file.url %>">
+                <input type="hidden" name="xs_store" data-property value="<%= @store.title %>">
                 {% if product.tags contains "tops" or product.tags contains "Tops" %}
                 <div class="line-properties">
                   <input type="text" class="form-control" name="name" data-property placeholder="Name">
@@ -157,7 +191,7 @@
               </div>
             </div>
           </div>
-          {% endfor %}
+          <% end %>
         <% end %>
       </div>
       <div id="store-closed" style="<% if !@store.closed %>display: none;<% end %>">

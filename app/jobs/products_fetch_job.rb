@@ -13,19 +13,22 @@ class ProductsFetchJob < ApplicationJob
       total_products = 0
       total_saved = 0
 
-      products.each do |product|
+      products.each do |shopify_product|
         # CHECK WITH CLIENT IF NEED TO CHECK
         # if eligible_for_team_store?(product)
           total_products += 1
-          puts "#{total_products} : #{product.title}"
+          puts "#{total_products} : #{shopify_product.title}"
 
-          p = Product.find_or_initialize_by(product_id: product.id)
-          if p.new_record?
+          local_product = Product.find_or_initialize_by(product_id: shopify_product.id)
+          if local_product.new_record?
             total_saved += 1
-            save_product(p, product)
-            save_product_variants(p, product)
-            assign_default_color_if_needed(p, product)
-            tag_custom_team_store(p, product.tags.downcase)
+            save_product(local_product, shopify_product)
+            # new_product = Product.find_by(product_id: shopify_product.id)
+            # save_product_attribs(shopify_product, new_product.id)
+            
+            save_product_variants(local_product, shopify_product)
+            assign_default_color_if_needed(local_product, shopify_product)
+            tag_custom_team_store(local_product, shopify_product.tags.downcase)
             puts "#{total_saved} : Saved in database"
           else
             puts "Already in database"
@@ -64,18 +67,48 @@ class ProductsFetchJob < ApplicationJob
   end
 
   # Save product information
-  def save_product(p, product)
-    p.assign_attributes(
-      title: product.title,
-      handle: product.handle,
-      price: product.variants.first.price.to_f * 100,
-      tags: product.tags,
-      description: product.body_html,
+  # GOOD TO GO
+  def save_product(local_product, shopify_product)
+    local_product.assign_attributes(
+      title: shopify_product.title,
+      handle: shopify_product.handle,
+      price: shopify_product.variants.first.price.to_f * 100,
+      tags: shopify_product.tags,
+      description: shopify_product.body_html,
       published: false,
-      vendor: product.vendor,
-      image_url: product.images.first&.src
+      vendor: shopify_product.vendor,
+      image_url: shopify_product.images.first&.src
     )
-    p.save
+    local_product.save
+  end
+
+  def save_product_attribs(shopify_product, product_id)
+    color_index = find_color_option_index(shopify_product)
+    # p.color_images.destroy_all
+
+    shopify_product.variants.each do |variant|
+      local_attrib = Attrib.find_or_initialize_by(variant_id: variant.id)
+      if local_attrib.new_record?
+        color = color_index ? variant.public_send("option#{color_index}") : nil
+        puts color
+
+        if color && variant.image_id
+          variant_image = shopify_product.images.select { |image| image.id == variant.image_id }&.first.src
+        end
+        puts variant_image
+
+        local_attrib.assign_attributes(
+          title: variant.title,
+          handle: variant.title.parameterize(separator: "_"),
+          color: color.parameterize(separator: "_"),
+          variant_id: variant.id,
+          image_url: variant_image,
+          attrib_type: "variant",
+          product_id: product_id
+        )
+        local_attrib.save
+      end
+    end
   end
 
   # Save product variants and color options

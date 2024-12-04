@@ -25,3 +25,17 @@
 # LogoRequest.delete_all
 
 # TeamAdmin.delete_all
+Product.find_each do |product|
+    logo_param = product.logo_param || LogoParam.new
+    logo_param.product = product
+    logo_param.pos_x = 281
+    logo_param.pos_y = 104
+    logo_param.width = 100
+    logo_param.height = 50
+  
+    if logo_param.save
+      puts "LogoParam saved for Product ID #{product.id}"
+    else
+      puts "Failed to save LogoParam for Product ID #{product.id}: #{logo_param.errors.full_messages.join(", ")}"
+    end
+  end
