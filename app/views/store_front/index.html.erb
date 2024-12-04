@@ -102,7 +102,7 @@
                   {% endif %}
                   <%# {% endfor %} %>
                   {% if product %}
-                   {% assign product_image_midway = "<%= variant.prev_images.last.image_url.url if variant.prev_images.size > 0 %>" %}
+                  {% assign product_image_midway = "<%= variant.prev_images.last.image_url.url if variant.prev_images.size > 0 %>" %}
                   <%= render :partial => "store_front/partials/grid-item" %>
                   {% endif %}
                   <% end %>
