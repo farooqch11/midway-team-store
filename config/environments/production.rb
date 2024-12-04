@@ -98,6 +98,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   config.action_controller.asset_host = ENV['HOST']
   config.action_mailer.default_url_options = { host: "midwaysports-667d8dc23be6.herokuapp.com/", protocol: "https" }
+  config.action_controller.default_url_options = {:host => "https://midwaysports-667d8dc23be6.herokuapp.com"}
   Rails.application.config.asset_host = ENV['HOST']
-
+  Rails.application.routes.default_url_options[:host] = "https://midwaysports-667d8dc23be6.herokuapp.com"
+  
 end
