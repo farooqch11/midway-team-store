@@ -646,6 +646,15 @@ class StoreController < ApplicationController
     redirect_to store_manage_logos_path(:id => store.id, :t => store.team_admin.access_token)
   end
 
+  def set_main_banner
+    p = params.permit :id, :logo_id
+    store = Store.find_by_id p[:id]
+
+    store.set_main_banner p[:logo_id]
+
+    redirect_to store_manage_logos_path(:id => store.id, :t => store.team_admin.access_token)
+  end
+
   def upload_images
     p = params.permit :id, :product_id, :image
     sp = ShopifyProduct.find_by_id p[:product_id]

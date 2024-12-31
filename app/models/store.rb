@@ -77,6 +77,16 @@ class Store < ApplicationRecord
       logo.save
     end
   end
+  def set_main_banner(logo_id)
+    self.logos.each do |logo|
+      if logo.id.to_i == logo_id.to_i
+        logo.banner = true
+      else
+        logo.banner = false
+      end
+      logo.save
+    end
+  end
 
   def get_main_logo
     found = main_logo
@@ -88,10 +98,28 @@ class Store < ApplicationRecord
     end
   end
 
+  def get_main_banner
+    found = main_banner
+    if found
+      return get_logo_uri(found)
+    end
+
+  end
+
   def main_logo
     found = false
     self.logos.each do |logo|
       if logo.main
+        found = logo
+      end
+    end
+    return found
+  end
+
+  def main_banner
+    found = false
+    self.logos.each do |logo|
+      if logo.banner
         found = logo
       end
     end

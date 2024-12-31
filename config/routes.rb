@@ -152,6 +152,7 @@ Rails.application.routes.draw do
         post "/upload/logo/:id", :to => "store#upload_logo", :as => "store_logo_upload"
         get "/delete/logo/:id/:logo_id", :to => "store#delete_logo", :as => "store_logo_delete"
         get "/set_main/logo/:id/:logo_id", :to => "store#set_main_logo", :as => "store_logo_set_main"
+        get "/set_main_banner/logo/:id/:logo_id", :to => "store#set_main_banner", :as => "store_banner_set_main"
         post "/upload/images/:id", :to => "store#upload_images", :as => "store_images_upload"
         post "/upload/g_image/:id/:variant_id", :to => "store#upload_g_image", :as => "store_g_images_upload"
         post "/set_product_color/", :to => "store#set_product_color", :as => "store_set_product_color"

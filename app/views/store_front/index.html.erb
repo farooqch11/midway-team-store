@@ -11,10 +11,6 @@
   {% assign collection = collections["<%= @handle %>"] %}
   {% paginate collection.products by 1000 %}
   <div class="page-width xs-store-front"  style="max-width: 1400px!important;">
-    <div class="store-logo" style="text-align:center">
-      <img src="<%= @store.get_main_logo %>" style="max-width: 200px; width: 100%;     max-height: 150px; object-fit: contain; margin: 20px auto; display: block;"/>
-    </div>
-    <h2 class="xs-store-title text-center"><%= @store.title %></h2>
     <% if @store.processing %>
       <div class="store-processing text-center">
         <img src="<%= image_url "loading.gif" %>">
@@ -68,6 +64,17 @@
                 <% end %>
               </div>
               <div class="grid__item small--one-whole medium-up--three-quarters">
+              <div class="xs-store-banner">
+                  <div class="store-logo sl" style="text-align:center">
+                    <img src="<%= @store.get_main_logo %>" style="max-width: 200px; width: 100%;     max-height: 150px; object-fit: contain; margin: 20px auto; display: block;"/>
+                  </div>
+                  <% if @store.get_main_banner %>
+                  <div class="store-banner">
+                    <img src="<%= @store.get_main_banner %>"/>
+                  </div>
+                  <% end %>
+                  <h2 class="xs-store-title text-center"><%= @store.title %></h2>
+              </div>
               <%# @filtered_products.inspect %>
                 {% assign xhandles = "<%= @filtered_products.collect{ |x| x.handle if x.handle != nil}.join(",") %>" | split: "," %}
                 <script>

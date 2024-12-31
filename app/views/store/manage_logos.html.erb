@@ -6,7 +6,7 @@
         <span>&lt; Back</span>
       </div>
       <div class="xs-set-logo-heading">
-        <h4>Logos for this store</h4>
+        <h4>Logos/Banner for this store</h4>
       </div>
       <div class="" data-xs-set-logo="<%= @store.id %>">
       </div>
@@ -37,28 +37,33 @@
       <div class='container-fluid'>
         <div class="row">
           <% @store.logos.each do |logo| %>
-  <% if logo.logo_file.attached? %>
-    <div class="col-12 col-sm-4 col-md-3 col-lg-2" data-xs-logo="<%= logo.id %>">
-      <div class="xs-logo">
-        <!-- Use url_for for ActiveStorage URL generation -->
-        <img class="mb-4" data-xs-logo-image height="150" width="150" 
-             src="<%= Rails.application.config.asset_host %><%= url_for(logo.logo_file) %>">
-        <div class="xs-logo-actions">
-          <div>
-            <% unless logo.main %>
-              <!-- Link to set the main logo -->
-              <a href="<%= store_logo_set_main_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-primary btn-sm">Set Main Logo</a>
-            <% else %>
-              <strong>Main Logo</strong>
+            <% if logo.logo_file.attached? %>
+              <div class="col-12 col-sm-4 col-md-3 col-lg-2" data-xs-logo="<%= logo.id %>">
+                <div class="xs-logo">
+                  <!-- Use url_for for ActiveStorage URL generation -->
+                  <img class="mb-4" data-xs-logo-image height="150" width="150" 
+                      src="<%= Rails.application.config.asset_host %><%= url_for(logo.logo_file) %>">
+                  <div class="xs-logo-actions">
+                    <div>
+                      <% unless logo.banner %>
+                        <a href="<%= store_banner_set_main_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-primary btn-sm">Set Main Banner</a>
+                      <% else %>
+                        <strong>Main Banner</strong>
+                      <% end %>
+                      <% unless logo.main %>
+                        <!-- Link to set the main logo -->
+                        <a href="<%= store_logo_set_main_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-primary btn-sm">Set Main Logo</a>
+                      <% else %>
+                        <strong>Main Logo</strong>
+                      <% end %>
+                    </div>
+                    <!-- Link to delete the logo -->
+                    <a href="<%= store_logo_delete_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-danger btn-sm">Delete</a>
+                  </div>
+                </div>
+              </div>
             <% end %>
-          </div>
-          <!-- Link to delete the logo -->
-          <a href="<%= store_logo_delete_path(id: @store.id, logo_id: logo.id) %>" class="btn btn-danger btn-sm">Delete</a>
-        </div>
-      </div>
-    </div>
-  <% end %>
-<% end %>
+          <% end %>
 
         </div>
       </div>
