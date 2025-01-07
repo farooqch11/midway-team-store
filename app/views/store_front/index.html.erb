@@ -26,7 +26,7 @@
         <% if !@store.closed %>
           <div class="xs-store-collection" id="Collection" data-active-filters="<%= @active_filters %>">
             <div class="grid grid--uniform">
-              <div class="grid__item small--one-whole medium-up--one-quarter">
+              <div class="grid__item category__grid small--one-whole medium-up--one-quarter">
                 <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
                   <h4>Category</h4>
                   <div class="scroll-content">
@@ -314,3 +314,13 @@
     });
   </script>
 <% end %>
+<style>
+.category__grid {
+  margin-top: 220px;
+}
+@media screen and (max-width: 767px) {
+  .category__grid {
+    margin-top: 40px;
+  }
+}
+</style>
