@@ -47,11 +47,11 @@
                   <h4>Color</h4>
                   <div class="scroll-content">
                     <ul class="nav-category ">
-                      <% @categories.each do |category| %>
+                      <% @colors.each do |color| %>
                         <li class="collection-container  ">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="<%= category[:id] %>" class="<%= 'xs-active-filter' if @filter_category == category[:id].to_s %>"  data-category="<%= category[:ids].join "," %>" title="<%= category[:title] %>">
-                              <i class="check-icon"></i> <%= category[:title] %>
+                            <a href="javascript:void(0);" data-id="<%= color[:id] %>"   data-category="<%= color[:ids].join "," %>" title="<%= color[:title] %>">
+                              <i class="check-icon"></i> <%= color[:title] %>
                             </a>
                           </div>
                         </li>
@@ -79,15 +79,27 @@
                   <h4>Price</h4>
                   <div class="scroll-content">
                     <ul class="nav-category ">
-                      <% @categories.each do |category| %>
                         <li class="collection-container  ">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="<%= category[:id] %>" class="<%= 'xs-active-filter' if @filter_category == category[:id].to_s %>"  data-category="<%= category[:ids].join "," %>" title="<%= category[:title] %>">
-                              <i class="check-icon"></i> <%= category[:title] %>
+                            <a href="javascript:void(0);" data-id="" class=""  data-category="" title="">
+                              <i class="check-icon"></i> $5 - $25
                             </a>
                           </div>
                         </li>
-                      <% end %>
+                        <li class="collection-container  ">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="" class=""  data-category="" title="">
+                              <i class="check-icon"></i> $25 - $50
+                            </a>
+                          </div>
+                        </li>
+                        <li class="collection-container  ">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="" class=""  data-category="" title="">
+                              <i class="check-icon"></i> $50 - $75
+                            </a>
+                          </div>
+                        </li>
                     </ul>
                   </div>
                 </div>

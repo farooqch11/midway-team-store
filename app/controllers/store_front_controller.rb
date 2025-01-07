@@ -79,6 +79,7 @@ class StoreFrontController < ApplicationController
       @attributes = {}
       @brands = []
       @tags = []
+      @colors = Color.all
       @store.shopify_products.each do |sp|
         next if sp.product == nil
         @brands << sp.product.vendor
