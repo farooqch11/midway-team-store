@@ -97,28 +97,28 @@
                     <ul class="nav-category ">
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="" class="<%= 'xs-active-filter' if @tags.contains('men') %>"  title="Men">
+                            <a href="javascript:void(0);" data-id="" class="<%= 'xs-active-filter' if @tags.any? { |item| item.include?("women") } %>"  title="Women">
                               <i class="check-icon"></i> Women
                             </a>
                           </div>
                         </li>
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="men" class="<%= 'xs-active-filter' if @tags.contains('men') %>"  title="Men">
+                            <a href="javascript:void(0);" data-id="men" class="<%= 'xs-active-filter' if @tags.any? { |item| item.include?("men") } %>"  title="Men">
                               <i class="check-icon"></i> Men
                             </a>
                           </div>
                         </li>
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="girls" class="<%= 'xs-active-filter' if @tags.contains('girls') %>"  title="Girls">
+                            <a href="javascript:void(0);" data-id="girls" class="<%= 'xs-active-filter' if @tags.any? { |item| item.include?("girls") } %>"  title="Girls">
                               <i class="check-icon"></i> Girls
                             </a>
                           </div>
                         </li>
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="kids" class="<%= 'xs-active-filter' if @tags.contains('kids') %>"  title="Kids">
+                            <a href="javascript:void(0);" data-id="kids" class="<%= 'xs-active-filter' if @tags.any? { |item| item.include?("kids") } %>"  title="Kids">
                               <i class="check-icon"></i> Kids
                             </a>
                           </div>
