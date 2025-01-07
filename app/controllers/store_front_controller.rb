@@ -78,9 +78,11 @@ class StoreFrontController < ApplicationController
       @categories = []
       @attributes = {}
       @brands = []
+      @tags = []
       @store.shopify_products.each do |sp|
         next if sp.product == nil
         @brands << sp.product.vendor
+        @tags << sp.product.tags
         sp.product.categories.each do |cat|
           if !@cat_done.include?(cat.id)
             catt = {

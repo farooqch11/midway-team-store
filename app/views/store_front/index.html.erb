@@ -97,7 +97,7 @@
                     <ul class="nav-category ">
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="" class="<%= 'xs-active-filter' if @tags == category[:id].to_s %>"  title="Men">
+                            <a href="javascript:void(0);" data-id="" class="<%= 'xs-active-filter' if @tags.contains('men') %>"  title="Men">
                               <i class="check-icon"></i> Women
                             </a>
                           </div>
