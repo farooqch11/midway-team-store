@@ -43,6 +43,89 @@
                     </ul>
                   </div>
                 </div>
+                <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
+                  <h4>Color</h4>
+                  <div class="scroll-content">
+                    <ul class="nav-category ">
+                      <% @categories.each do |category| %>
+                        <li class="collection-container  ">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="<%= category[:id] %>" class="<%= 'xs-active-filter' if @filter_category == category[:id].to_s %>"  data-category="<%= category[:ids].join "," %>" title="<%= category[:title] %>">
+                              <i class="check-icon"></i> <%= category[:title] %>
+                            </a>
+                          </div>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+                <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
+                  <h4>Brand</h4>
+                  <div class="scroll-content">
+                    <ul class="nav-category">
+                      <% @brands.each do |brand| %>
+                        <li class="collection-container  ">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="<%= brand %>" class="<%= 'xs-active-filter' %>"  data-category="" title="<%= brand %>">
+                              <i class="check-icon"></i> <%= brand %>
+                            </a>
+                          </div>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+                <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
+                  <h4>Price</h4>
+                  <div class="scroll-content">
+                    <ul class="nav-category ">
+                      <% @categories.each do |category| %>
+                        <li class="collection-container  ">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="<%= category[:id] %>" class="<%= 'xs-active-filter' if @filter_category == category[:id].to_s %>"  data-category="<%= category[:ids].join "," %>" title="<%= category[:title] %>">
+                              <i class="check-icon"></i> <%= category[:title] %>
+                            </a>
+                          </div>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+                <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
+                  <h4>Department</h4>
+                  <div class="scroll-content">
+                    <ul class="nav-category ">
+                        <li class="collection-container">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="" class="<%= 'xs-active-filter' if @tags == category[:id].to_s %>"  title="Men">
+                              <i class="check-icon"></i> Women
+                            </a>
+                          </div>
+                        </li>
+                        <li class="collection-container">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="men" class="<%= 'xs-active-filter' if @tags.contains('men') %>"  title="Men">
+                              <i class="check-icon"></i> Men
+                            </a>
+                          </div>
+                        </li>
+                        <li class="collection-container">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="girls" class="<%= 'xs-active-filter' if @tags.contains('girls') %>"  title="Girls">
+                              <i class="check-icon"></i> Girls
+                            </a>
+                          </div>
+                        </li>
+                        <li class="collection-container">
+                          <div class="collection-name">
+                            <a href="javascript:void(0);" data-id="kids" class="<%= 'xs-active-filter' if @tags.contains('kids') %>"  title="Kids">
+                              <i class="check-icon"></i> Kids
+                            </a>
+                          </div>
+                        </li>
+                    </ul>
+                  </div>
+                </div>
                 <% @attributes.each do |id, attrib| %>
                   <% next if attrib[:title].downcase == "sport" %>
                   <div data-xs-filter="<%= attrib[:title] %>" data-xs-filter-id="<%= attrib[:id] %>" class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">

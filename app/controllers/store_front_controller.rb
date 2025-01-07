@@ -40,7 +40,7 @@ class StoreFrontController < ApplicationController
     if @store != nil
       @prods = @store.shopify_products.order(essential: :desc)
       @filtered_products = @prods
-
+     
       if p.key? :category
         f = []
         @prods.each do |prr|
@@ -77,8 +77,10 @@ class StoreFrontController < ApplicationController
       @cat_done = []
       @categories = []
       @attributes = {}
+      @brands = []
       @store.shopify_products.each do |sp|
         next if sp.product == nil
+        @brands << sp.product.vendor
         sp.product.categories.each do |cat|
           if !@cat_done.include?(cat.id)
             catt = {
@@ -121,6 +123,7 @@ class StoreFrontController < ApplicationController
           end
         end
       end
+      @brands = @brands.uniq!
     end
 
     render(content_type: "application/liquid")
