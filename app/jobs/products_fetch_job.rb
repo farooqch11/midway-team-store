@@ -117,11 +117,13 @@ class ProductsFetchJob < ApplicationJob
           variant_image = shopify_product.images.select { |image| image.id == variant.image_id }&.first.src
         end
         puts variant_image
-
+        if color == nil
+          color = ""
+        end  
         local_attrib.assign_attributes(
           title: variant.title,
           handle: variant.title.parameterize(separator: "_"),
-          color: color.parameterize(separator: "_") if color != nil,
+          color: color.parameterize(separator: "_"),
           variant_id: variant.id,
           image_url: variant_image,
           attrib_type: "variant",
