@@ -3,6 +3,14 @@ class ProductsFetchJob < ApplicationJob
 
   queue_as :default
 
+  # def perform(*args)
+  #   shop = Shop.last
+
+  #   shop.with_shopify_session do
+  #     products = fetch_all_products
+  #     puts "Products fetched: #{products.size}"
+  #   end
+  # end
   def perform(*args)
     shop = Shop.last
 
@@ -47,16 +55,21 @@ class ProductsFetchJob < ApplicationJob
   def fetch_all_products
     products = []
     
-    clientProducts = ShopifyAPI::Product.all(limit: 4)
-    # loop do
-      for product in clientProducts do
+    clientProducts = ShopifyAPI::Product.all
+     loop do
+      # for product in clientProducts do
+      #   products << product
+      # end
+       break unless ShopifyAPI::Product.next_page?
+       clientProducts = ShopifyAPI::Product.all(limit: 100, page_info: ShopifyAPI::Product.next_page_info)
+       for product in clientProducts do
+        # puts product.inspect
+        # puts "===================="
         products << product
-      end
-    #   break unless ShopifyAPI::Product.next_page?
-    #   clientProducts = ShopifyAPI::Product.all(limit: 100, page_info: ShopifyAPI::Product.next_page_info)
-    #   sleep(0.6)
-    #   puts "Fetching next page of products..."
-    # end
+       end
+       sleep(0.6)
+       puts "Fetching next page of products..."
+    end
     products
   end
 
