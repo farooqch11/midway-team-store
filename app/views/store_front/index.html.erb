@@ -10,7 +10,7 @@
   </script>
   {% assign collection = collections["<%= @handle %>"] %}
   {% paginate collection.products by 1000 %}
-  <div class="page-width xs-store-front"  style="max-width: 1400px!important;">
+  <div class="page-width xs-store-front">
     <% if @store.processing %>
       <div class="store-processing text-center">
         <img src="<%= image_url "loading.gif" %>">

@@ -11,6 +11,14 @@ class ProductsFetchJob < ApplicationJob
   #     puts "Products fetched: #{products.size}"
   #   end
   # end
+  # products = []
+  # shop.with_shopify_session do
+
+  #   clientProducts = ShopifyAPI::Product.all(limit: 2)
+  #   for product in clientProducts do
+  #     products << product
+  #    end
+  # end  
   def perform(*args)
     shop = Shop.last
 
@@ -31,8 +39,8 @@ class ProductsFetchJob < ApplicationJob
           if local_product.new_record?
             total_saved += 1
             save_product(local_product, shopify_product)
-            # new_product = Product.find_by(product_id: shopify_product.id)
-            # save_product_attribs(shopify_product, new_product.id)
+            new_product = Product.find_by(product_id: shopify_product.id)
+            save_product_attribs(shopify_product, new_product.id)
             
             save_product_variants(local_product, shopify_product)
             assign_default_color_if_needed(local_product, shopify_product)
