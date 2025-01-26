@@ -10,7 +10,7 @@ class ClientController < ApplicationController
     @user_auth_process = false
     @get_started_process = true
     @categories = Category.all
-    # @attributes = Attrib.all
+    @attributes = Attrib.limit 50
     render(content_type: "application/liquid")
   end
 
