@@ -63,7 +63,7 @@ class ProductsFetchJob < ApplicationJob
   def fetch_all_products
     products = []
     
-    clientProducts = ShopifyAPI::Product.limit 50
+    clientProducts = ShopifyAPI::Product.all(limit: 50)
     for product in clientProducts do
         products << product
     end
