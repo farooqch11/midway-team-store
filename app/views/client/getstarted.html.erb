@@ -27,6 +27,7 @@
             </div>
           <% end %>
         </section>
+        <!--
         <% @attributes.each do |attrib| %>
           <% values = attrib.get_values %>
           <% if values.size > 0 %>
@@ -34,14 +35,11 @@
               <h4>By <%= attrib.title %></h4>
               <% values.each do |value| %>
                 <% if attrib.attrib_type == "color" %>
-                  <!-- <a href="javascript:void(0);" class="xs-color-filter" style="background: <%= value[:color] %>" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value[:color] %>"><%= value[:title] %></a> -->
-                  <!-- <a href="javascript:void(0);" class="xs-color-filter" style="background: <%= value[:color] %>" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value[:color] %>"><%= value[:title] %></a> -->
                   <div class="filter-option">
                     <input type="checkbox" data-xs-filter="attribute" name="<%= attrib.handle %>" data-xs-attrib-id="<%= attrib.handle %>" id="<%= attrib.handle %>_<%= value[:title].parameterize %>" data-xs-filter-val="<%= value[:id] %>">
                     <label for="<%= attrib.handle %>_<%= value[:title].parameterize %>"><span class="xs-color-filter" style="background: <%= value[:color] %>"></span></label>
                   </div>
                 <% else %>
-                  <!-- <a href="javascript:void(0);" data-xs-filter="attribute" data-xs-attrib-id="<%= attrib.handle %>" data-xs-filter-val="<%= value %>"><%= value %></a> -->
                   <div class="filter-option">
                     <input type="checkbox" data-xs-filter="attribute" name="<%= attrib.handle %>" data-xs-attrib-id="<%= attrib.handle %>" id="<%= attrib.handle %>_<%= value.parameterize %>" data-xs-filter-val="<%= value %>">
                     <label for="<%= attrib.handle %>_<%= value.parameterize %>"><span class="xs-simple-filter"><%= value %></span></label>
@@ -51,6 +49,7 @@
             </section>
           <% end %>
         <% end %>
+        -->
       </aside>
       <div class="xs-store-creator">
         <h4 class="xs-h4-title mb-5">Select your products</h4>
