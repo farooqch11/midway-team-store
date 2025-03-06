@@ -25,7 +25,7 @@ endfor
 endif
 -%}
 
-<div {% if product.tags contains 'essential' %}data-product-essential="{{ product.id }}" {% endif %} class="grid__item grid-product {{ grid_item_width }}{% if settings.quick_shop_enable and sold_out == false %} grid-product__has-quick-shop{% endif %}" data-aos="row-of-{{ per_row }}" data-product-handle="{{ product.handle }}">
+<div {% if product.tags contains 'essential' %}data-product-essential="{{ product.id }}" {% endif %} class="grid__item grid-product {{ grid_item_width }}{% if settings.quick_shop_enable and sold_out == false %} grid-product__has-quick-shop{% endif %}" data-aos="row-of-{{ per_row }}" data-product-handle="{{ product.handle }}" data-filter-color="{{ color }}">
   {% if product.tags contains 'essential' %}
   <span class='xs-badge-essential xs-badge' >Essential</span>
   {% endif %}
