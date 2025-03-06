@@ -205,7 +205,7 @@
                   <%# {% endfor %} %>
                   {% if product %}
                   {% assign product_image_midwayy = "<%= variant.prev_images.last.image_url.url if variant.prev_images.size > 0 %>" %}
-                  <%= render :partial => "store_front/partials/grid-item", locals: { color: color, variant: p_variant } %>
+                  <%= render :partial => "store_front/partials/grid-item" %>
                   {% endif %}
                   <% end %>
                 </ul>
