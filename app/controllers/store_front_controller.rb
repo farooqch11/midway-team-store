@@ -6,7 +6,7 @@ class StoreFrontController < ApplicationController
     
     p = params.permit :collection_id, :p, :per_page, :filter, :category
     @store = Store.find_by_collection p[:collection_id]
-
+    
     if @store == nil
       redirect_to store_front_find_path()
     end
@@ -75,56 +75,57 @@ class StoreFrontController < ApplicationController
       end
 
       @cat_done = []
-      @categories = []
+      @categories = Category.all
       @attributes = {}
       @brands = []
       @tags = []
-      @colors = Color.all
+      @colors = []
       @store.shopify_products.each do |sp|
         next if sp.product == nil
         @brands << sp.product.vendor
         @tags << sp.product.tags
-        sp.product.categories.each do |cat|
-          if !@cat_done.include?(cat.id)
-            catt = {
-              id: cat.id,
-              title: cat.title,
-              ids: [],
-            }
-            @store.shopify_products.each do |ssp|
-              next if ssp.product == nil
-              if ssp.product.categories.include? cat
-                catt[:ids] << ssp.shopify_id
-              end
-            end
+        @colors << sp.get_selected_color.color
+        # sp.product.categories.each do |cat|
+        #   if !@cat_done.include?(cat.id)
+        #     catt = {
+        #       id: cat.id,
+        #       title: cat.title,
+        #       ids: [],
+        #     }
+        #     @store.shopify_products.each do |ssp|
+        #       next if ssp.product == nil
+        #       if ssp.product.categories.include? cat
+        #         catt[:ids] << ssp.shopify_id
+        #       end
+        #     end
 
-            @categories << catt
-            @cat_done << cat.id
-          end
-        end
+        #     @categories << catt
+        #     @cat_done << cat.id
+        #   end
+        # end
 
-        sp.product.product_attribs.each do |pattrib|
-          next if pattrib.attrib == nil
-          next if pattrib.attrib.attrib_type == "color"
-          pa = {
-            title: pattrib.attrib.title,
-            id: pattrib.attrib.id,
-            values: {},
-          }
-          @attributes[pattrib.attrib.title] = pa if !@attributes.key?(pattrib.attrib.title)
+        # sp.product.product_attribs.each do |pattrib|
+        #   next if pattrib.attrib == nil
+        #   next if pattrib.attrib.attrib_type == "color"
+        #   pa = {
+        #     title: pattrib.attrib.title,
+        #     id: pattrib.attrib.id,
+        #     values: {},
+        #   }
+        #   @attributes[pattrib.attrib.title] = pa if !@attributes.key?(pattrib.attrib.title)
 
-          if !@attributes[pattrib.attrib.title][:values].key? pattrib.title
-            @attributes[pattrib.attrib.title][:values][pattrib.title] = {
-              id: pattrib.id,
-              title: pattrib.title,
-              ids: [],
-            }
-          end
-          iids = @attributes[pattrib.attrib.title][:values][pattrib.title][:ids]
-          if !iids.include? sp.shopify_id
-            @attributes[pattrib.attrib.title][:values][pattrib.title][:ids] << sp.shopify_id
-          end
-        end
+        #   if !@attributes[pattrib.attrib.title][:values].key? pattrib.title
+        #     @attributes[pattrib.attrib.title][:values][pattrib.title] = {
+        #       id: pattrib.id,
+        #       title: pattrib.title,
+        #       ids: [],
+        #     }
+        #   end
+        #   iids = @attributes[pattrib.attrib.title][:values][pattrib.title][:ids]
+        #   if !iids.include? sp.shopify_id
+        #     @attributes[pattrib.attrib.title][:values][pattrib.title][:ids] << sp.shopify_id
+        #   end
+        # end
       end
       @brands = @brands.uniq!
     end
