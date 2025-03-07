@@ -30,11 +30,11 @@
                 <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
                   <h4>Category</h4>
                   <div class="scroll-content">
-                    <ul class="nav-category ">
+                    <ul class="nav-filter ">
                       <% @categories.each do |category| %>
                         <li class="collection-container  ">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="<%= category[:id] %>" class="<%= 'xs-active-filter' if @filter_category == category[:id].to_s %>"  title="<%= category[:title] %>">
+                            <a href="javascript:void(0);" data-value="<%= category[:title] %>" data-filter="category" class="<%= 'xs-active-filter' if @filter_category == category[:id].to_s %>"  title="<%= category[:title] %>">
                               <i class="check-icon"></i> <%= category[:title] %>
                             </a>
                           </div>
@@ -46,11 +46,11 @@
                 <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
                   <h4>Color</h4>
                   <div class="scroll-content">
-                    <ul class="nav-category ">
+                    <ul class="nav-filter">
                       <% @colors.each do |color| %>
                         <li class="collection-container  ">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="<%= color %>" title="<%= color %>">
+                            <a href="javascript:void(0);" data-value="<%= color %>" data-filter="color">
                               <i class="check-icon"></i> <%= color%>
                             </a>
                           </div>
@@ -62,11 +62,11 @@
                 <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
                   <h4>Brand</h4>
                   <div class="scroll-content">
-                    <ul class="nav-category">
+                    <ul class="nav-filter">
                       <% @brands.each do |brand| %>
                         <li class="collection-container  ">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="<%= brand %>" class="<%= 'xs-active-filter' %>"  data-category="" title="<%= brand %>">
+                            <a href="javascript:void(0);" data-value="<%= brand %>" data-filter="brand">
                               <i class="check-icon"></i> <%= brand %>
                             </a>
                           </div>
@@ -78,24 +78,24 @@
                 <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
                   <h4>Price</h4>
                   <div class="scroll-content">
-                    <ul class="nav-category ">
+                    <ul class="nav-filter">
                         <li class="collection-container  ">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="" class=""  data-category="" title="">
+                            <a href="javascript:void(0);" data-filter="price" data-value="5-25">
                               <i class="check-icon"></i> $5 - $25
                             </a>
                           </div>
                         </li>
                         <li class="collection-container  ">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="" class=""  data-category="" title="">
+                            <a href="javascript:void(0);" data-filter="price" data-value="25-50">
                               <i class="check-icon"></i> $25 - $50
                             </a>
                           </div>
                         </li>
                         <li class="collection-container  ">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="" class=""  data-category="" title="">
+                            <a href="javascript:void(0);" data-filter="price" data-value="50-70">
                               <i class="check-icon"></i> $50 - $75
                             </a>
                           </div>
@@ -106,31 +106,31 @@
                 <div class="filter-group filter-group-category  has_single_item  pt-display-scroll pt-filter-mode-replacer  pt-group-expanded">
                   <h4>Department</h4>
                   <div class="scroll-content">
-                    <ul class="nav-category ">
+                    <ul class="nav-filter">
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="" class="<%= 'xs-active-filter' if @tags.any? { |item| item.include?("women") } %>"  title="Women">
+                            <a href="javascript:void(0);" data-filter="department" data-value="women"  title="Women">
                               <i class="check-icon"></i> Women
                             </a>
                           </div>
                         </li>
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="men" class="<%= 'xs-active-filter' if @tags.any? { |item| item.include?("men") } %>"  title="Men">
+                            <a href="javascript:void(0);" data-filter="department" data-value="men"  title="Men">
                               <i class="check-icon"></i> Men
                             </a>
                           </div>
                         </li>
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="girls" class="<%= 'xs-active-filter' if @tags.any? { |item| item.include?("girls") } %>"  title="Girls">
+                            <a href="javascript:void(0);" data-filter="department" data-value="girls"  title="Girls">
                               <i class="check-icon"></i> Girls
                             </a>
                           </div>
                         </li>
                         <li class="collection-container">
                           <div class="collection-name">
-                            <a href="javascript:void(0);" data-id="kids" class="<%= 'xs-active-filter' if @tags.any? { |item| item.include?("kids") } %>"  title="Kids">
+                            <a href="javascript:void(0);" data-filter="department" data-value="kids"  title="Kids">
                               <i class="check-icon"></i> Kids
                             </a>
                           </div>

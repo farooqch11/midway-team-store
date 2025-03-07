@@ -306,38 +306,84 @@ window.xs = {
                 t.closest('ul').find('a').removeClass('xs-active-filter');
                 t.addClass('xs-active-filter');
             }
+            //console.log(e.target.dataset.filter);
             _t.loadFilters();
         });
     },
     loadFilters: function(){
-        let urlParams = xURL.toObj();
-        
-        console.log(urlParams);
-        if( $("[data-category].xs-active-filter").length < 1){
-            delete urlParams.category;
-            urlParams.p = 1;
-        } else {
-            newcat = $("[data-category].xs-active-filter").attr('data-id');
-            if( urlParams.category != newcat) {
-                urlParams.category = newcat;
-                urlParams.p = 1;
-            }
-        }
-        if( $("[data-filter].xs-active-filter").length < 1){
-            delete urlParams.filter;
-        } 
-        let filterArr = [];
-        $('[data-filter].xs-active-filter').each(function(){
-            const f = $(this);
-            const filterid = f.closest('[data-xs-filter]').attr('data-xs-filter-id');
-            const id = f.attr('data-id')
-
-            filterArr.push(`${filterid}_${id}`);
+        let filters = [];
+        const all_filters = $(".nav-filter");
+        all_filters.each(function(){
+            let filter = $(this).find("a.xs-active-filter").data("filter");
+            let value = $(this).find("a.xs-active-filter").data("value");
+            if(filter){
+                filters[filter] = value;
+            }  
         });
 
-        urlParams.filter = filterArr.join(",");
+        console.log(filters);
+        const products = document.querySelectorAll('.grid-product'); // Select all product cards
 
-        location.href = "?" + jQuery.param(urlParams);
+        products.forEach(product => {
+            const tags = product.getAttribute('data-filter-tag').toLowerCase().split(','); // Convert tags to lowercase array
+            const price = parseFloat(product.getAttribute('data-filter-price')); // Convert price to number
+            const brand = product.getAttribute('data-filter-brand').toLowerCase();
+            const color = product.getAttribute('data-filter-color').toLowerCase();
+    
+            // Extract filters and convert to lowercase if present
+            const category = filters.category ? filters.category.toLowerCase() : null;
+            const department = filters.department ? filters.department.toLowerCase() : null;
+            const filterBrand = filters.brand ? filters.brand.toLowerCase() : null;
+            const filterColor = filters.color ? filters.color.toLowerCase() : null;
+            const priceRange = filters.price ? filters.price.split('-').map(Number) : null;
+    
+            // Ensure at least one filter is present before proceeding
+            if (Object.keys(filters).length === 0) {
+                console.warn("No valid filters provided!");
+                return; // Exit function if no filters are available
+            }
+    
+            // Dynamic matching conditions (Only check available filters)
+            let isMatch = true;
+    
+            if (category && !tags.includes(category)) isMatch = false;
+            if (department && !tags.includes(department)) isMatch = false;
+            if (filterBrand && brand !== filterBrand) isMatch = false;
+            if (filterColor && color !== filterColor) isMatch = false;
+            if (priceRange && !(price >= priceRange[0] && price <= priceRange[1])) isMatch = false;
+    
+            // Show or hide product based on match status
+            product.style.display = isMatch ? "block" : "none";
+        });
+        
+        // let urlParams = xURL.toObj();
+        
+        // console.log(urlParams);
+        // if( $("[data-category].xs-active-filter").length < 1){
+        //     delete urlParams.category;
+        //     urlParams.p = 1;
+        // } else {
+        //     newcat = $("[data-category].xs-active-filter").attr('data-id');
+        //     if( urlParams.category != newcat) {
+        //         urlParams.category = newcat;
+        //         urlParams.p = 1;
+        //     }
+        // }
+        // if( $("[data-filter].xs-active-filter").length < 1){
+        //     delete urlParams.filter;
+        // } 
+        // let filterArr = [];
+        // $('[data-filter].xs-active-filter').each(function(){
+        //     const f = $(this);
+        //     const filterid = f.closest('[data-xs-filter]').attr('data-xs-filter-id');
+        //     const id = f.attr('data-id')
+
+        //     filterArr.push(`${filterid}_${id}`);
+        // });
+
+        // urlParams.filter = filterArr.join(",");
+
+        // location.href = "?" + jQuery.param(urlParams);
     },
     init: function () {
         const _t = this;
