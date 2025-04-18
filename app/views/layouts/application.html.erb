@@ -4,12 +4,24 @@
     <title>App</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= javascript_include_tag 'https://code.jquery.com/jquery-3.6.0.min.js' %>
+    <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/selectize@0.12.6/dist/css/selectize.default.css' %>
+    <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/selectize@0.12.6/dist/js/standalone/selectize.min.js' %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <div class="app-wrapper">
+      <div class="app-content">
+        <main role="main">
+          <div class="container-fluid">
+            <%= render "admin/partials/header" %>
+          </div>
+        </main>
+      </div>
+    </div>
     <%= yield %>
   </body>
 </html>
