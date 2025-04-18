@@ -15,16 +15,22 @@ class AdminController < AuthenticatedController
   end
 
   def products
-    @products = []
-    @attributes = Attrib.all
-
-    p = params.permit :search
-    if p.key? :search
-      @products = Product.not_custom.where("tags like ? OR title LIKE ?", "%#{p[:search]}%", "%#{p[:search]}%")
-    else
-      @products = Product.all.not_custom
+    # @attributes = Attrib.limit(5)
+    @products = Product.not_custom
+                       .includes(
+                         :logo_param,
+                         :color_images,
+                         { categories: { image_attachment: :blob } },
+                         { product_attribs: [:attrib, :color] }
+                       )
+  
+    if params[:search].present?
+      search_query = "%#{params[:search]}%"
+      @products = @products.where("products.title ILIKE :search OR products.tags ILIKE :search", search: search_query)
     end
-  end
+  
+    @products = @products.order(created_at: :desc).paginate(page: params[:page], per_page: 50)
+  end  
 
   def custom_products
     @products = []
@@ -385,7 +391,8 @@ class AdminController < AuthenticatedController
   end
 
   def fetch_products_from_shopify
-    ProductsFetchJob.perform_later
+    debugger
+    ProductsFetchJob.perform_now
     # custom_product_vendor = "xs_custom"
     # @pros = []
     # s_products = ShopifyAPI::Product.find(:all, params: { limit: 50 })
@@ -787,6 +794,7 @@ class AdminController < AuthenticatedController
   end
 
   def add_all_to_category
+    byebug
     p = params.permit :category_id, :ids => []
     cat = Category.find(p[:category_id])
 
