@@ -1,5 +1,5 @@
 ---
-pid: 98051
-control_url: unix:///var/folders/10/3y9krhwd2471fm7_04nygkfw0000gn/T/puma-status-1735636897512-98051
-control_auth_token: 1f5cc70ad9fbc644a4d079d47bfea4cc
-running_from: "/Users/junaidhassan/Documents/projectrails/midway"
+pid: 438587
+control_url: unix:///tmp/puma-status-1744986132025-438587
+control_auth_token: 1ce49baed0a301bee7f7afcf513031ea
+running_from: "/home/ikram/projects/midwaysports"

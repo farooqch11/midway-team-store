@@ -31,3 +31,4 @@ app/assets/builds/*
 # Ignore secrets or environment variable files
 .env
 .gitignore
+/config/master.key
