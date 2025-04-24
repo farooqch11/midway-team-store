@@ -11,6 +11,8 @@ Rails.application.configure do
   config.hosts = (config.hosts rescue []) << /.*\.midwayteamstore\.com/
   config.hosts = (config.hosts rescue []) << /.*\.midwayys.myshopify\.com/
   config.hosts << "midwayys.myshopify.com"
+  config.hosts << "https://stat-favorites-cult-detector.trycloudflare.com"
+  config.hosts.clear
 
 
 

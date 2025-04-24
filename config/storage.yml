@@ -13,7 +13,6 @@ amazon:
   secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
   region: <%= ENV['AWS_REGION'] %>
   bucket:  <%= ENV['AWS_BUCKET'] %>
-  
 
 # s3 = Aws::S3::Resource.new(region: 'us-east-1')
 # bucket = s3.bucket('midway-shopify-app')
