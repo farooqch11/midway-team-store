@@ -391,7 +391,7 @@ class AdminController < AuthenticatedController
   end
 
   def fetch_products_from_shopify
-    ProductsFetchJob.new.perform
+    ProductsFetchJob.new.perform  # run only once
   end
 
   def fetch_custom_products_from_shopify
