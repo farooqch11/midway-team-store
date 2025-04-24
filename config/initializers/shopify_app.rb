@@ -5,7 +5,7 @@ ShopifyApp.configure do |config|
   # Consult this page for more scope options:
   # https://help.shopify.com/en/api/getting-started/authentication/oauth/scopes
   
-  config.embedded_app = false
+  config.embedded_app = true
   # config.new_embedded_auth_strategy = true
   # unstable_newEmbeddedAuthStrategy
 
@@ -39,7 +39,7 @@ Rails.application.config.after_initialize do
       host: ENV.fetch('HOST'),
       scope: ShopifyApp.configuration.scope,
       is_private: false,
-      is_embedded: false,
+      is_embedded: true,
       log_level: :info,
       logger: Rails.logger,
       user_agent_prefix: "ShopifyApp/#{ShopifyApp::VERSION}"
