@@ -6,7 +6,7 @@ class Product < ApplicationRecord
   has_many :shopify_products
   has_many :stores, :through => :shopify_products
   has_many :product_attribs
-  has_many :attribs
+  has_many :attribs, dependent: :destroy
   has_many :variant_images
 
   has_many :color_images
@@ -15,6 +15,8 @@ class Product < ApplicationRecord
 
   scope :not_custom, -> { where(custom_product: false) }
   scope :custom, -> { where(custom_product: true) }
+  scope :published, -> { where(published: true) }
+
 
   def self.get_all_vendors
     vendors = []

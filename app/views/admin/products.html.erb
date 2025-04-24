@@ -52,7 +52,7 @@
               <input class="" type="checkbox" value="<%= product.id %>"  data-admin-product-select>
             </td>
             <td data-search="<%= product.tags %>">
-              <img id="product-image-<%= product.id %>" src="<%= product.image_url %>" data-logo-params='<%= product.logo_param.to_json %>' class="img-thumbnail product-thumbnail" />
+              <img id="product-image-<%= product.id %>" src="<%= product.image_url %>" data-logo-params='<%= product.logo_param.to_json %>' class="img-thumbnail product-thumbnail" width="80" height="80"/>
             </td>
             <td><%= product.title %></td>
             <td>
@@ -176,25 +176,6 @@
                 </div>
               </div>
             </div>
-            <hr />
-            <div class="py-3">
-              <h5 class="lead">Attributes</h5>
-              <% @attributes.each do |attrib| %>
-                <div class="card mb-3">
-                  <div class="card-header">
-                    <h6><%= attrib.title %></h6>
-                  </div>
-                  <div class='card-body'>
-                    <% if attrib.attrib_type == "color" %>
-                      <input type='text' class="xs-attrib-color" data-add-url="<%= admin_attributes_add_to_product_path %>" data-remove-url="<%= admin_attributes_remove_from_product_path %>" data-title="<%= attrib.title %>" data-attrib-id="<%= attrib.id %>" value="<%= product.get_attributes_str attrib %>" data-product-id="<%= product.id %>" >
-                    <% else %>
-                      <input type='text' class="xs-attrib-input" data-add-url="<%= admin_attributes_add_to_product_path %>" data-remove-url="<%= admin_attributes_remove_from_product_path %>" data-title="<%= attrib.title %>" data-attrib-id="<%= attrib.id %>" value="<%= product.get_attributes_str attrib %>" data-product-id="<%= product.id %>" >
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-            <hr />
             <div class="py-3">
               <h5 class="lead">Categories</h5>
               <div class="xs-add-collections-box">
@@ -267,7 +248,7 @@
 </div>
 
 <div class="modal" id="canvasDrawModal" tabindex="-1" role="dialog"  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content ">
       <div class='modal-body'>
         <h3 class="lead">Draw Image Params</h3>
@@ -275,11 +256,11 @@
           <div class="row">
             <div class="col">
               <button id="testBtn" class='btn btn-sm btn-primary'>Test</button>
-              <div class="image-canvas-wrap">
+              <div class="image-canvas-wrap" style="overflow-x: auto;">
                 <canvas id="imageParamsCanvas"></canvas>
               </div>
             </div>
-            <div class="col">
+            <div class="" style="width: 40% !important;">
               <div class="py-3">
                 <h5 class="lead">Position Info:</h5>
                 <table class="table">

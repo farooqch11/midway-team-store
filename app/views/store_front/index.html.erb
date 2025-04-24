@@ -63,7 +63,7 @@
                   <h4>Brand</h4>
                   <div class="scroll-content">
                     <ul class="nav-filter">
-                      <% @brands.each do |brand| %>
+                      <% @brands&.each do |brand| %>
                         <li class="collection-container  ">
                           <div class="collection-name">
                             <a href="javascript:void(0);" data-value="<%= brand %>" data-filter="brand">

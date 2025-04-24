@@ -11,10 +11,10 @@ class ClientApiController < ApplicationController
 
     if filterData != nil
       if filterData.key? :category
-        products = Product.includes(:categories, :product_attribs).not_custom.where(:categories => { id: filterData[:category] })
+        products = Product.includes(:categories, :product_attribs).not_custom.where(:categories => { id: filterData[:category] }).published
       else
         puts "no category, selecting all products"
-        products = Product.includes(:categories, :product_attribs).not_custom
+        products = Product.includes(:categories, :product_attribs).not_custom.published
         # tproducts = Product.all.includes(:categories, :product_attribs).not_custom
       end
 
@@ -70,7 +70,7 @@ class ClientApiController < ApplicationController
 
       puts "after filtering #{tproducts.size} products"
     else
-      tproducts = Product.all.includes(:categories, :product_attribs).not_custom
+      tproducts = Product.all.includes(:categories, :product_attribs).not_custom.published
       puts "no filter #{tproducts.size} products selected"
     end
 

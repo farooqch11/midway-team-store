@@ -15,16 +15,22 @@ class AdminController < AuthenticatedController
   end
 
   def products
-    @products = []
-    @attributes = Attrib.all
-
-    p = params.permit :search
-    if p.key? :search
-      @products = Product.not_custom.where("tags like ? OR title LIKE ?", "%#{p[:search]}%", "%#{p[:search]}%")
-    else
-      @products = Product.all.not_custom
+    # @attributes = Attrib.limit(5)
+    @products = Product.not_custom
+                       .includes(
+                         :logo_param,
+                         :color_images,
+                         { categories: { image_attachment: :blob } },
+                         { product_attribs: [:attrib, :color] }
+                       )
+  
+    if params[:search].present?
+      search_query = "%#{params[:search]}%"
+      @products = @products.where("products.title ILIKE :search OR products.tags ILIKE :search", search: search_query)
     end
-  end
+  
+    @products = @products.order(created_at: :desc)
+  end  
 
   def custom_products
     @products = []
@@ -385,123 +391,7 @@ class AdminController < AuthenticatedController
   end
 
   def fetch_products_from_shopify
-    ProductsFetchJob.perform_later
-    # custom_product_vendor = "xs_custom"
-    # @pros = []
-    # s_products = ShopifyAPI::Product.find(:all, params: { limit: 50 })
-
-    # @pros = @pros + s_products
-    # sleep(1)
-    # i = 0
-
-    # while s_products.next_page?
-    #   s_products = s_products.fetch_next_page
-    #   # puts s_products.inspect
-    #   @pros = @pros + s_products
-    #   sleep(1)
-    #   puts "Request done"
-    # end
-
-    # puts "products fetched : #{@pros.size}"
-    # @pros.each do |product|
-    #   next if product.product_type == "[xs]"
-    #   next if !product.tags.include? "team store"
-
-    #   p = Product.find_by_product_id product.id
-    #   if !p
-    #     p = Product.new
-    #     p.product_id = product.id
-    #     p.title = product.title
-    #     p.handle = product.handle
-    #     p.price = product.variants.first.price.to_f * 100
-    #     p.tags = product.tags
-    #     p.description = product.body_html
-    #     p.published = false
-    #     if product.images.size > 0
-    #       p.image_url = product.images.first.src
-    #       p.save
-    #     end
-    #   end
-
-    #   p.price = product.variants.first.price.to_f * 100
-    #   p.save
-    #   puts product.variants.first.price
-    #   colorIndex = nil
-    #   i = 1
-    #   product.options.each do |option|
-    #     o = option.name.downcase
-    #     if o == "color" or o == "colour"
-    #       colorIndex = i
-    #       break
-    #     end
-    #     i = i + 1
-    #   end
-
-    #   p.color_images.each do |c|
-    #     c.delete
-    #   end
-    #   if colorIndex != nil
-    #     puts "Color Index #{colorIndex}"
-    #     product.variants.each do |variant|
-    #       propname = "option#{colorIndex}"
-    #       puts variant.send(propname)
-    #       color = variant.send(propname)
-
-    #       # saving the color
-    #       c = Color.find_by_title color
-    #       if !c
-    #         c = Color.new
-    #         c.title = color
-    #         c.code = "#000000"
-    #         c.save
-    #       end
-    #       attrib = Attrib.find_by_title "Color"
-    #       if attrib
-    #         pa = ProductAttrib.new
-    #         pa.product = p
-    #         pa.color = c
-    #         pa.attrib = attrib
-    #         pa.save
-    #       end
-
-    #       color_image = p.color_images.find_by_color color
-
-    #       puts "Color image"
-    #       puts color_image.inspect
-    #       if !color_image
-    #         if variant.image_id != nil
-    #           variantImage = ShopifyAPI::Image.find(variant.image_id, :params => { :product_id => p.product_id })
-    #           sleep 0.8
-    #           color_image = ColorImage.new
-    #           color_image.product = p
-    #           color_image.color = color
-    #           color_image.url = variantImage.src
-    #           color_image.save
-    #         end
-    #       end
-    #     end
-    #   else
-    #     dc = Color.find_by_title "Default"
-    #     if !dc
-    #       dc = Color.new
-    #       dc.title = "Default"
-    #       dc.code = "#fff"
-    #       dc.save
-    #     end
-
-    #     if product.images.size > 0
-    #       color_image = ColorImage.new
-    #       color_image.product = p
-    #       color_image.color = dc
-    #       color_image.url = product.images.first.src
-    #       color_image.save
-    #     end
-    #   end
-    #   if product.vendor == custom_product_vendor
-    #     p.custom_product = true
-    #     p.save
-    #   end
-    # end
+    ProductsFetchJob.new.perform
   end
 
   def fetch_custom_products_from_shopify
@@ -787,6 +677,7 @@ class AdminController < AuthenticatedController
   end
 
   def add_all_to_category
+    byebug
     p = params.permit :category_id, :ids => []
     cat = Category.find(p[:category_id])
 
@@ -849,7 +740,7 @@ class AdminController < AuthenticatedController
     pid = p[:id]
     pr = Product.find_by_id pid
     if pr
-      pr.delete
+      pr.destroy
     end
 
     render :json => { status: 200 }

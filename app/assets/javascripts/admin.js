@@ -28,6 +28,17 @@
 $(document).on('turbolinks:load', () => {
     const AppBridge = window['app-bridge'];
     const Toast = AppBridge.actions.Toast;
+    const createApp = AppBridge.default;
+    const apiKey = document.querySelector('meta[name="shopify-api-key"]').getAttribute('content');
+
+    const app = AppBridge.default({
+    apiKey: apiKey,
+    host: new URLSearchParams(window.location.search).get('host'),
+    });
+
+  
+    const { getSessionToken } = window['app-bridge-utils'];
+  
 
     const categoryProducTemplate = Handlebars.compile($("#categoryProductTemplate").html());
     const productCategoryTemplate = Handlebars.compile($("#productCategoryTemplate").html());
@@ -74,13 +85,27 @@ $(document).on('turbolinks:load', () => {
     // initializing bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip();
 
-    $("[data-refresh-products]").on("click", function () {
+    $("[data-refresh-products]").on("click", async function () {
         const btn = $(this).attr('disabled', 'disabled').addClass('btn-disabled');
         showToast('Updating products database');
-
-        $.get('/admin/refresh_products', {}).done(function (e) {
-            btn.removeAttr('disabled').removeClass('btn-disabled');
-            // showToast('Products Database Updated');
+    
+        const token = await getSessionToken(app); // Get Shopify token
+    
+        $.ajax({
+            type: "GET",
+            url: "/admin/refresh_products",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (e) {
+                btn.removeAttr('disabled').removeClass('btn-disabled');
+                // showToast('Products Database Updated');
+            },
+            error: function () {
+                btn.removeAttr('disabled').removeClass('btn-disabled');
+                showToast('Failed to update products database', 'error');
+            }
         });
     });
     $("[data-refresh-custom-products]").on("click", function () {
@@ -184,19 +209,31 @@ $(document).on('turbolinks:load', () => {
             showToast("Products unpublished");
         });
     });
-    $(SELECTORS.PRODUCT_DELETE).on("click", function () {
-        const id = $(this).attr('data-product-delete'),
-            btn = $(this);
-        xs.sendRequest("/admin/product_delete", "POST", {
-            id
-        }).then((data) => {
-            // console.log(data);
-            if (data.status == 200) {
-                btn.closest("tr").remove();
-                showToast("Product deleted");
+    $(SELECTORS.PRODUCT_DELETE).on("click", async function () {
+        const id = $(this).attr('data-product-delete');
+        const btn = $(this);
+    
+        const token = await getSessionToken(app);
+    
+        $.ajax({
+            url: "/admin/product_delete",
+            method: "POST",
+            data: { id },
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (data) {
+                if (data.status == 200) {
+                    btn.closest("tr").remove();
+                    showToast("Product deleted");
+                }
+            },
+            error: function (xhr) {
+                console.error("Error deleting product:", xhr.responseText);
             }
         });
-    });
+    });    
     $(SELECTORS.BULK_DELETE).on("click", function () {
         const ids = getSelectedProductsIDS();
         xs.sendRequest("/admin/product_bulk_delete", "POST", ids).then((data) => {
@@ -670,24 +707,32 @@ $(document).on('turbolinks:load', () => {
 
 
     });
-    $("[data-toggle-publish]").on("click", function () {
+ 
+    $("[data-toggle-publish]").on("click", async function () {
         const $this = $(this),
             product_id = $this.attr('data-toggle-publish');
-
+  
+        const token = await getSessionToken(app); // Get Shopify token
+  
         console.log("toggling");
+  
         $.ajax({
-            type: "POST",
-            url: "/admin/toggle_publish_product/" + product_id,
-            success: function (res) {
-                if (res.published) {
-                    showToast("Product published.");
-                    $this.removeClass('btn-success').addClass('btn-danger').attr('data-original-title', "Un-Publish");
-                } else {
-                    showToast("Product unpublished.");
-                    $this.addClass('btn-success').removeClass('btn-danger').attr('data-original-title', "Publish");
-                }
+          type: "POST",
+          url: "/admin/toggle_publish_product/" + product_id,
+          headers: {
+              "Authorization": `Bearer ${token}`,
+              "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+          },
+          success: function (res) {
+            if (res.published) {
+                showToast("Product published.");
+                $this.removeClass('btn-success').addClass('btn-danger').attr('data-original-title', "Un-Publish");
+            } else {
+                showToast("Product unpublished.");
+                $this.addClass('btn-success').removeClass('btn-danger').attr('data-original-title', "Publish");
             }
-        })
+          }
+      });
     });
     
     const canvas = new fabric.Canvas('imageParamsCanvas', {
@@ -790,12 +835,15 @@ $(document).on('turbolinks:load', () => {
         $("#testBtn").off("click").on('click', function () {
 
         });
-        $("#saveLogoParams").off("click").on('click', function () {
+        $("#saveLogoParams").off("click").on('click', async function (){
+            const token = await getSessionToken(app);
+
             $.ajax({
                 url: "/admin/save_logo_params/" + id,
                 type: 'POST',
                 headers: {
-                    "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+                    "Authorization": `Bearer ${token}`,
+                    "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"), 
                 },
                 data: {
                     info: {
