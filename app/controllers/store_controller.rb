@@ -267,7 +267,7 @@ class StoreController < ApplicationController
     # end
 
     @categories = Category.all
-    @attributes = Attrib.all
+    # @attributes = Attrib.all   ignore need to be removed
     render(content_type: "application/liquid")
   end
 

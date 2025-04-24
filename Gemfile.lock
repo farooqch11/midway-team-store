@@ -1684,6 +1684,8 @@ GEM
     drb (2.2.1)
     duktape (2.7.0.0)
     erubi (1.13.0)
+    excon (1.2.5)
+      logger
     execjs (2.10.0)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-aarch64-linux-musl)
@@ -1695,6 +1697,23 @@ GEM
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     ffi (1.17.0-x86_64-linux-musl)
+    fog-aws (3.31.0)
+      base64 (~> 0.2.0)
+      fog-core (~> 2.6)
+      fog-json (~> 1.1)
+      fog-xml (~> 0.1)
+    fog-core (2.6.0)
+      builder
+      excon (~> 1.0)
+      formatador (>= 0.2, < 2.0)
+      mime-types
+    fog-json (1.2.0)
+      fog-core
+      multi_json (~> 1.10)
+    fog-xml (0.1.5)
+      fog-core
+      nokogiri (>= 1.5.11, < 2.0.0)
+    formatador (1.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     groupdate (6.5.1)
@@ -1751,6 +1770,7 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.1)
     msgpack (1.7.3)
+    multi_json (1.15.0)
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
     mysql2 (0.5.6)
@@ -1963,6 +1983,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   dotenv
   duktape
+  fog-aws
   groupdate
   jbuilder (~> 2.5)
   kaminari

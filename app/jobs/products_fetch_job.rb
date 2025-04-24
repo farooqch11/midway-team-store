@@ -1,8 +1,4 @@
-class ProductsFetchJob < ApplicationJob
-  retry_on StandardError, wait: 5.seconds, attempts: 1
-
-  queue_as :default
-
+class ProductsFetchJob
   def perform(*args)
     shopify_service = ShopifySessionService.new
     graphql_client = shopify_service.graphql_client

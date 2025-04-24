@@ -4,8 +4,8 @@ class ImageUploader < CarrierWave::Uploader::Base
   # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  # storage :file
+  storage :fog
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -44,9 +44,4 @@ class ImageUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
-  def asset_host
-    # return "https://8ce38f0662f6.ngrok.io"
-    return "https://midwaysports-667d8dc23be6.herokuapp.com"
-    #return "https://shining-hound-ready.ngrok-free.app"
-  end
 end

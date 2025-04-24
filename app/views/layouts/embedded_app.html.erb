@@ -10,11 +10,18 @@
     <script src="//code.jquery.com/jquery-2.1.0.min.js" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/lumen/bootstrap.min.css" rel="stylesheet">
+
+    <meta name="csrf-token" content="<%= form_authenticity_token %>">
+
+    <script src="https://unpkg.com/@shopify/app-bridge"></script>
+    <script src="https://unpkg.com/@shopify/app-bridge-utils"></script>
     <% if ShopifyApp.use_webpacker? %>
       <%= javascript_pack_tag "admin", 'data-turbolinks-track': "reload" %>
     <% else %>
       <%= javascript_include_tag "admin", "data-turbolinks-track" => true %>
     <% end %>
+    <meta name="shopify-api-key" content="<%= ENV['SHOPIFY_API_KEY'] %>">
     <%= csrf_meta_tags %>
   </head>
   <body>
