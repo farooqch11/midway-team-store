@@ -160,38 +160,39 @@ window.xs = {
         $("[data-xs-drawer]").removeClass('open');
     },
     initDrawers: function () {
-        const _t = this;
-        $("[data-xs-drawer]").appendTo($("body"));
+        console.log(this);
+        // const _t = this;
+        // $("[data-xs-drawer]").appendTo($("body"));
 
-        $("[data-xs-open-drawer]").on('click', function () {
-            let drawer = $(this).attr('data-xs-open-drawer');
-            drawer = "#" + drawer;
+        // $("[data-xs-open-drawer]").on('click', function () {
+        //     let drawer = $(this).attr('data-xs-open-drawer');
+        //     drawer = "#" + drawer;
 
-            console.log($(drawer));
-            if ($(drawer).hasClass('open')) {
-                $(drawer).removeClass('open');
-            } else {
-                _t.closeAllDrawers();
-                $(drawer).addClass('open');
-            }
-        });
+        //     console.log($(drawer));
+        //     if ($(drawer).hasClass('open')) {
+        //         $(drawer).removeClass('open');
+        //     } else {
+        //         _t.closeAllDrawers();
+        //         $(drawer).addClass('open');
+        //     }
+        // });
         
-        $("[data-close-drawer]").on('click', function () {
-            $(this).closest('[data-xs-drawer]').removeClass('open');
-        });
+        // $("[data-close-drawer]").on('click', function () {
+        //     $(this).closest('[data-xs-drawer]').removeClass('open');
+        // });
 
-            let fortnight = new Date(Date.now() + 12096e5);
-            $(".xs-product-date-note").text(`Estimated to ship by ${fortnight.toLocaleDateString()}`);
+        //     let fortnight = new Date(Date.now() + 12096e5);
+        //     $(".xs-product-date-note").text(`Estimated to ship by ${fortnight.toLocaleDateString()}`);
         
 
-        if( window.ximages != undefined ) {
-            $('input[data-ximage]').each(function () {
-                let key = $(this).attr('data-ximage');
-                $(this).val(ximages[key]);
-            });
-        }
-        _t.initVariants();
-        _t.initAddToCart();
+        // if( window.ximages != undefined ) {
+        //     $('input[data-ximage]').each(function () {
+        //         let key = $(this).attr('data-ximage');
+        //         $(this).val(ximages[key]);
+        //     });
+        // }
+        // _t.initVariants();
+        // _t.initAddToCart();
 
     },
 
