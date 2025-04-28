@@ -144,6 +144,7 @@ class StoreFrontController < ApplicationController
           link: store_front_index_path(:collection_id => store.collection),
           title: store.title,
           logo: store.get_first_logo,
+          organization: store&.team_admin&.organization
         }
       end
     end

@@ -6,7 +6,7 @@
     </h4>
 
     <div class="input-group input-group-lg mx-auto" style="max-width: 600px;">
-      <input type="text" class="form-control rounded-pill px-4" placeholder="Enter your team name" data-search-store-input>
+     <input type="text" class="form-control rounded-pill pl-5" placeholder="ex. &quot;UA Men's Raid Short Sleeve T-Shirt&quot; or &quot;Stock&quot;" data-search-store-input>
       <div class="input-group-append ml-2">
         <button class="btn btn-primary rounded-pill px-4" type="button" id="xs-search-stores">Search</button>
       </div>
@@ -15,24 +15,22 @@
 </section>
 
 <section class="bg-white text-center py-5">
-  <div class="container" style="max-width: 1400px; height: 270px">
-    <div id="store-loader" class="text-center my-5" style="display: none;">
+  <div class="container" style="max-width: 1400px; min-height: 270px;">
+      <div id="store-loader" class="text-center my-5" style="display: none;">
       <div class="spinner-border text-primary" role="status" style="width: 7rem; height: 7rem;">
         <span class="sr-only">Loading...</span>
       </div>
-      <p class="mt-3 text-muted h5">Searching...</p>
     </div>
 
     <div id="results-section" style="display: none;">
-      <h3 class="mb-4">Search Results</h3>
       <div class="list-group" id="xs_results">
-
+        <!-- Search results go here -->
       </div>
 
-      <div class="text-center mt-4" id="load-more-wrapper" style="display: none;">
-        <button class="btn btn-outline-primary" id="load-more-btn">Load More</button>
+      <div id="load-more-wrapper" class="text-center mt-4" style="display: none;">
+        <button id="load-more-btn" type="button" class="btn btn-success">Load More</button>
       </div>
-
     </div>
+
   </div>
 </section>
