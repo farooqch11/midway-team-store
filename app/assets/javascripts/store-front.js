@@ -227,29 +227,58 @@ window.xs = {
     },
     setSearchEvents: function () {
         const _t = this;
-        const searchInput = $("[data-search-store-input]"),
-            searchBtn = $("#xs-search-stores");
-
+        const searchInput = $("[data-search-store-input]");
+        const searchBtn = $("#xs-search-stores");
+        const loader = $("#store-loader");
+        const resultSection = $("#results-section");
+        const resultsEl = $("#xs_results");
+    
         searchBtn.on('click', function () {
-            let term = searchInput.val();
+            let term = searchInput.val().trim();
             console.log(term);
-            if (term == "") {
+    
+            if (term === "") {
                 return;
             }
-
-            _t.sendRequest("/a/locker/store/", {
-                q: term
-            }).then(data => {
-                console.log(data);
-                const resultsEl = $("#xs_results").html("");
-                data.forEach((item) => {
-                    let el = $(`<a href="${item.link}" class="list-group-item list-group-item-action"><img src="${item.logo}" /> ${item.title}</a>`);
-                    resultsEl.append(el);
+    
+            loader.show();
+            resultSection.hide();
+            resultsEl.html("");
+    
+            _t.sendRequest("/a/locker/store/", { q: term })
+                .then(data => {
+                    console.log(data);
+    
+                    loader.hide();
+                    resultSection.show();
+    
+                    if (data.length === 0) {
+                        resultsEl.append('<div class="list-group-item text-center text-muted">No stores found.</div>');
+                    } else {
+                        data.forEach((item) => {
+                            let el = $(`
+                              <a href="${item.link}" target="_blank" class="list-group-item list-group-item-action mb-3 shadow-sm p-4 d-flex justify-content-between align-items-center rounded">
+                                <div class="text-left">
+                                  <div class="font-weight-bold mb-1" style="font-size: 1.2rem;">${item.title}</div>
+                                  <div class="text-muted" style="font-size: 0.9rem;">${item.organization || ''}</div>
+                                </div>
+                                <div class="text-right">
+                                  <img src="${item.logo}" alt="Logo" style="width: 80px; height: 80px; object-fit: contain;">
+                                </div>
+                              </a>
+                            `);
+                            resultsEl.append(el);
+                        });
+                    }
                 })
-            });
-
+                .catch(error => {
+                    console.error("Search failed:", error);
+                    loader.hide();
+                    resultSection.show();
+                    resultsEl.append('<div class="list-group-item text-center text-danger">Error loading stores.</div>');
+                });
         });
-    },
+    },       
     getEssentials: function () {
         const _t = this;
         _t.essentials = [];
