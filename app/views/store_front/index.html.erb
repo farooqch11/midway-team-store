@@ -198,10 +198,8 @@
                 <script>
                   window.ximages = {};
                   <% @filtered_products.each do |product| %>
-                  console.log('<%= product.prev_images&.last&.image_url&.url %>')
-
                     <% next if product.handle == nil %>
-                    ximages['<%= product.handle %>'] = "<%= product.prev_images.&last&.image_url&.url if product.prev_images.size > 0 %>";
+                        ximages['<%= product.handle %>'] = "<%= product.prev_images.&last&.image_url&.url if product.prev_images.size > 0 %>";
                   <% end %>
                 </script>
                 <ul class='grid grid--uniform grid--collection'>
