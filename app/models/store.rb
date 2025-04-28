@@ -134,8 +134,9 @@ class Store < ApplicationRecord
     end
     return uri
   end
-
+  
   def get_logo_uri(l)
-    return Rails.application.routes.url_helpers.rails_blob_url(l.logo_file, Rails.application.config.action_mailer.default_url_options)
+    return l.logo_file.url if l&.logo_file&.attached?
   end
+  
 end

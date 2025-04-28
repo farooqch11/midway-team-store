@@ -175,7 +175,7 @@
                 <script>
                   window.ximages = {};
                   <% @filtered_products.each do |product| %>
-                  console.log('<%= product.prev_images.last.image_url %>')
+                  console.log('<%= product.prev_images.last.image_url.url %>')
 
                     <% next if product.handle == nil %>
                     ximages['<%= product.handle %>'] = "<%= product.prev_images.last.image_url.url if product.prev_images.size > 0 %>";
@@ -278,7 +278,7 @@
                   </div>
                 </div>
                 <input type="hidden" name="xs_image" data-property value="{{ product_image_midway }}">
-                <input type="hidden" name="xs_logo" data-property value="<%= variant.logo.logo_file.url %>">
+                <input type="hidden" name="xs_logo" data-property value="<%= variant&.logo&.logo_file&.url %>">
                 <input type="hidden" name="xs_store" data-property value="<%= @store.title %>">
                 {% if product.tags contains "tops" or product.tags contains "Tops" %}
                 <div class="line-properties">
