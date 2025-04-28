@@ -233,6 +233,41 @@ window.xs = {
         const loader = $("#store-loader");
         const resultSection = $("#results-section");
         const resultsEl = $("#xs_results");
+        const loadMoreWrapper = $("#load-more-wrapper");
+        const loadMoreBtn = $("#load-more-btn");
+    
+        let allData = [];
+        let itemsToShow = 1;
+        let currentIndex = 0;
+    
+        function renderItems() {
+            const slice = allData.slice(currentIndex, currentIndex + itemsToShow);
+    
+            slice.forEach((item) => {
+                let el = $(`
+                  <a href="${item.link}" target="_blank" class="list-group-item list-group-item-action mb-3 shadow-sm p-4 d-flex justify-content-between align-items-center rounded" style="max-width: 800px; margin: 0 auto;">
+                    <div class="text-left">
+                      <div class="text-uppercase text-muted mb-1" style="font-size: 0.75rem;">Store Name</div>
+                      <div class="font-weight-bold mb-2" style="font-size: 1.2rem;">${item.title || ''}</div>
+                      <div class="text-uppercase text-muted mb-1" style="font-size: 0.75rem;">Organization</div>
+                      <div class="font-weight-bold mb-2" style="font-size: 1.2rem;">${item.organization || ''}</div>
+                    </div>
+                    <div class="text-right">
+                      <img src="${item.logo}" alt="Logo" style="width: 80px; height: 80px; object-fit: contain;">
+                    </div>
+                  </a>
+                `);
+            
+                resultsEl.append(el.hide().fadeIn(300));
+            });            
+    
+            currentIndex += itemsToShow;
+    
+            // Hide Load More button if no more items
+            if (currentIndex >= allData.length) {
+                loadMoreWrapper.hide();
+            }
+        }
     
         searchBtn.on('click', function () {
             let term = searchInput.val().trim();
@@ -245,6 +280,8 @@ window.xs = {
             loader.show();
             resultSection.hide();
             resultsEl.html("");
+            loadMoreWrapper.hide(); // Hide Load More while searching
+            currentIndex = 0;        // Reset counter
     
             _t.sendRequest("/a/locker/store/", { q: term })
                 .then(data => {
@@ -253,23 +290,17 @@ window.xs = {
                     loader.hide();
                     resultSection.show();
     
-                    if (data.length === 0) {
+                    allData = data || [];
+    
+                    if (allData.length === 0) {
                         resultsEl.append('<div class="list-group-item text-center text-muted">No stores found.</div>');
                     } else {
-                        data.forEach((item) => {
-                            let el = $(`
-                              <a href="${item.link}" target="_blank" class="list-group-item list-group-item-action mb-3 shadow-sm p-4 d-flex justify-content-between align-items-center rounded">
-                                <div class="text-left">
-                                  <div class="font-weight-bold mb-1" style="font-size: 1.2rem;">${item.title}</div>
-                                  <div class="text-muted" style="font-size: 0.9rem;">${item.organization || ''}</div>
-                                </div>
-                                <div class="text-right">
-                                  <img src="${item.logo}" alt="Logo" style="width: 80px; height: 80px; object-fit: contain;">
-                                </div>
-                              </a>
-                            `);
-                            resultsEl.append(el);
-                        });
+                        renderItems(); // Show first 5
+    
+                        if (allData.length > currentIndex) {
+                            loadMoreWrapper.show();
+                            loadMoreBtn.text('Load More');
+                        }
                     }
                 })
                 .catch(error => {
@@ -279,7 +310,19 @@ window.xs = {
                     resultsEl.append('<div class="list-group-item text-center text-danger">Error loading stores.</div>');
                 });
         });
-    },       
+    
+        // Load More button
+        loadMoreBtn.on('click', function () {
+            loadMoreBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            
+            setTimeout(() => {
+                renderItems();
+                if (currentIndex < allData.length) {
+                    loadMoreBtn.text('Load More');
+                }
+            }, 500); // Small delay for smooth loading feel
+        });
+    },         
     getEssentials: function () {
         const _t = this;
         _t.essentials = [];
