@@ -54,8 +54,7 @@ endif
     assign preview_image = product.featured_media.preview_image
     assign img_url = preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.'
     -%}
-    
-    <a data-xs-open-drawer="drawer{{ p_variant.id }}" href="javascript:void(0);" class="grid-product__link{% if sold_out %} grid-product__link--disabled{% endif %}">
+    <a href="{{product.url}}?variant={{p_variant.id}}" class="grid-product__link{% if sold_out %} grid-product__link--disabled{% endif %}">
       <div class="grid-product__image-mask">
         {%- if settings.quick_shop_enable and sold_out == false -%}
         <div class="quick-product__btn quick-product__btn--not-ready js-modal-open-quick-modal-{{ product.id }} small--hide" data-product-id="{{ product.id }}">
