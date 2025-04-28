@@ -7,41 +7,29 @@
     <% else %>
     window.xs_store_countdown = false;
     <% end %>
-  const productsArray = [ 
-    <% @filtered_products.each do |filtered_variant| %>
-    {% assign productHandle = "<%= filtered_variant.handle %>" %}
-    {% assign variantLogoUrl = "<%= filtered_variant.logo.logo_file.url %>" %}
-    {% assign selectedProduct = false %}
+  
+  const productsArray = [
+  <% @filtered_products.each_with_index do |filtered_variant, index| %>
+    <% selected_color_image = ColorImage.find(filtered_variant.selected_color) %>
+    <% selected_color = selected_color_image.color %>
+    {% assign product = all_products["<%= filtered_variant.handle %>"] %}
+    {% assign matching_variant = product.variants | where: "option2", "<%= selected_color %>" | first %}
 
-    {% if productHandle %}
-      <% selected_color_image = ColorImage.find(filtered_variant.selected_color) %>
-      {% assign selectedColor = "<%= selected_color_image.color %>" %}
-      {% assign selectedProduct = all_products[productHandle] %}
-
-      {% if selectedProduct %}
-        {% assign matchingVariant = selectedProduct.variants | where: "option2", selectedColor | first %}
-      {% endif %}
-    {% endif %}
-
-    {% if selectedProduct %}
-      {% assign productImageUrl = "<%= filtered_variant.prev_images.last.image_url.url if filtered_variant.prev_images.size > 0 %>" %}
-    {% endif %}
     {
       id: <%= filtered_variant.id %>,
-      product_id: <%= selectedProduct.id if selectedProduct %>,
-      product_handle: "<%= productHandle %>",
-      product_title: "<%= selectedProduct.title if selectedProduct %>",
-      variant_id: <%= matchingVariant.id if matchingVariant %>,
-      variant_title: "<%= matchingVariant.title if matchingVariant %>",
-      variant_price: <%= matchingVariant.price if matchingVariant %>,
-      variant_image_url: "<%= productImageUrl %>",
-      logo_url: "<%= variantLogoUrl %>",
+      product_id: {{ product.id | default: 'null' }},
+      product_handle: "<%= filtered_variant.handle %>",
+      product_title: "{{ product.title | default: '' }}",
+      variant_id: {{ matching_variant.id | default: 'null' }},
+      variant_title: "{{ matching_variant.title | default: '' }}",
+      variant_price: {{ matching_variant.price | default: 'null' }},
+      variant_image_url: "<%= filtered_variant.prev_images.any? ? filtered_variant.prev_images.last.image_url.url : '' %>",
+      logo_url: "<%= filtered_variant.logo.logo_file.url %>",
       store_name: "<%= @store.title %>"
-    },
-    
-    <% end %>
-  ];
-  window.xs_store_products = productsArray;
+    }<%= "," unless index == @filtered_products.size - 1 %>
+  <% end %>
+];
+  localStorage.setItem('xs_products', JSON.stringify(productsArray));
   </script>
   {% assign collection = collections["<%= @handle %>"] %}
   {% paginate collection.products by 1000 %}
