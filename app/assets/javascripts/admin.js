@@ -253,6 +253,7 @@ $(document).on('turbolinks:load', () => {
     $(".fetch-categories-add-all").each(function () {
         let url = $(this).attr('data-url'),
             addUrl = $(this).attr('data-add-url');
+    
         const options = {
             valueField: "id",
             labelField: "title",
@@ -263,46 +264,61 @@ $(document).on('turbolinks:load', () => {
             render: {
                 option: function (item, escape) {
                     return `<div class='xs-search-item'>
-                    <div class='xs-search-item-image'><img src='${item.image_url}' /></div>
-                    <div class='xs-search-item-title'>${item.title}</div>
+                        <div class='xs-search-item-image'><img src='${item.image_url}' /></div>
+                        <div class='xs-search-item-title'>${item.title}</div>
                     </div>`;
                 }
             },
-            load: function (query, callback) {
+            load: async function (query, callback) {
                 if (!query.length) return callback();
+    
+                const token = await getSessionToken(app); // Shopify App Bridge token
+                const csrf = $('meta[name="csrf-token"]').attr("content");
+    
                 $.ajax({
                     url: url + encodeURIComponent(query),
                     type: 'GET',
-                    error: function () {
-                        callback();
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "X-CSRF-Token": csrf
                     },
                     success: function (res) {
                         callback(res.categories);
+                    },
+                    error: function () {
+                        callback();
                     }
-                })
+                });
             },
-            onChange: function (value) {
-                showToast("Adding Products to category. Please wait..");
+            onChange: async function (value) {
+                showToast("Adding Products to category. Please wait...");
+    
+                const token = await getSessionToken(app);
+                const csrf = $('meta[name="csrf-token"]').attr("content");
+    
                 $.ajax({
                     url: addUrl + encodeURIComponent(value),
                     type: 'POST',
-                    data: getSelectedProductsIDS(),
-                    error: function () {
-                        callback();
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "X-CSRF-Token": csrf
                     },
+                    data: getSelectedProductsIDS(),
                     success: function (res) {
                         showToast("Product added to category");
                         res.forEach(product => {
                             renderProductInfo(product);
-                        })
-                        // console.log(res);
+                        });
+                    },
+                    error: function () {
+                        showToast("Error adding products");
                     }
-                })
+                });
             }
         };
-
-        let $select = $(this).selectize(options);
-    });
+    
+        $(this).selectize(options);
+    });    
     $(".fetch-categories-remove-all").each(function () {
         let url = $(this).attr('data-url'),
             addUrl = $(this).attr('data-add-url');
@@ -477,6 +493,7 @@ $(document).on('turbolinks:load', () => {
     $(".fetch-categories-select").each(function () {
         let url = $(this).attr('data-url'),
             addUrl = $(this).attr('data-add-url');
+    
         const options = {
             valueField: "id",
             labelField: "title",
@@ -487,42 +504,57 @@ $(document).on('turbolinks:load', () => {
             render: {
                 option: function (item, escape) {
                     return `<div class='xs-search-item'>
-                    <div class='xs-search-item-image'><img src='${item.image_url}' /></div>
-                    <div class='xs-search-item-title'>${item.title}</div>
+                        <div class='xs-search-item-image'><img src='${item.image_url}' /></div>
+                        <div class='xs-search-item-title'>${item.title}</div>
                     </div>`;
                 }
             },
-            load: function (query, callback) {
+            load: async function (query, callback) {
                 if (!query.length) return callback();
+    
+                const token = await getSessionToken(app);
+                const csrf = $('meta[name="csrf-token"]').attr("content");
+    
                 $.ajax({
                     url: url + encodeURIComponent(query),
                     type: 'GET',
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "X-CSRF-Token": csrf
+                    },
                     error: function () {
                         callback();
                     },
                     success: function (res) {
                         callback(res.categories);
                     }
-                })
+                });
             },
-            onChange: function (value) {
+            onChange: async function (value) {
+                const token = await getSessionToken(app);
+                const csrf = $('meta[name="csrf-token"]').attr("content");
+    
                 $.ajax({
                     url: addUrl + encodeURIComponent(value),
                     type: 'GET',
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "X-CSRF-Token": csrf
+                    },
                     error: function () {
-                        callback();
+                        showToast("Failed to add product to category");
                     },
                     success: function (res) {
                         showToast("Product added to category");
                         renderProductInfo(res);
                         console.log(res);
                     }
-                })
+                });
             }
         };
-
+    
         let $select = $(this).selectize(options);
-    });
+    });    
     // product page category add/remove code
     $(".fetch-stores-select").each(function () {
         let url = $(this).attr('data-url'),
@@ -584,19 +616,29 @@ $(document).on('turbolinks:load', () => {
     })
 
 
-    function removeCategoryFromProduct(category) {
+    async function removeCategoryFromProduct(category) {
         let id = $(category).attr('data-product-category'),
             product_id = $(category).closest("[data-product-categories]").attr('data-product-categories');
+    
+        const token = await getSessionToken(app);
+        const csrf = $('meta[name="csrf-token"]').attr("content");
+    
         $.ajax({
             url: "/admin/remove_cat_from_product/" + product_id + "/" + id,
             type: 'GET',
-            error: function () {},
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "X-CSRF-Token": csrf
+            },
             success: function (res) {
                 showToast("Category removed");
                 renderProductInfo(res);
+            },
+            error: function () {
+                showToast("Failed to remove category");
             }
-        })
-    }
+        });
+    }    
 
     function removeStoreFromProduct(store) {
         let id = $(store).attr('data-product-store'),
@@ -1096,4 +1138,57 @@ $(document).on('turbolinks:load', () => {
             btn.removeAttr('disabled')
         });
     })
+
+    // Handle AJAX form submission for creating category
+    const categoryForm = document.getElementById("create-category-form");
+
+    if (categoryForm) {
+    categoryForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(categoryForm);
+        const token = await getSessionToken(app);
+        const csrf = document.querySelector('meta[name="csrf-token"]').content;
+
+        fetch(categoryForm.action, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "X-CSRF-Token": csrf
+        },
+        body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+        if (data.success) {
+            const toast = Toast.create(app, {
+                message: "Category created successfully!",
+                duration: 3000,
+            });
+            toast.dispatch(Toast.Action.SHOW);
+            
+            setTimeout(() => {
+                window.location.href = "/admin/categories";
+            }, 500);
+        } else {
+            const toast = Toast.create(app, {
+                message: "Failed to create category: " + (data.errors || []).join(", "),
+                duration: 5000,
+                isError: true
+            });
+            toast.dispatch(Toast.Action.SHOW);
+        }     
+        })
+        .catch(err => {
+        console.error("Error creating category:", err);
+        const toast = Toast.create(app, {
+            message: "Something went wrong.",
+            duration: 4000,
+            isError: true
+        });
+        toast.dispatch(Toast.Action.SHOW);
+        });
+    });
+    }
+
 });

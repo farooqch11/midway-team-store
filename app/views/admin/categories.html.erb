@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @categories.each do |category| %>
+          <% Category.all.each do |category| %>
             <tr>
               <td><% if category.image.attached? %><img src="<%= Rails.application.config.asset_host %><%= url_for(category.image) %>" class="rounded " height="80" style="max-width:80px;object-fit: contain;"><% end %></td>
               <td><%= category.title %></td>
@@ -41,7 +41,7 @@
     </div>
   </div>
 </div>
-<% @categories.each do |category| %>
+<% Category.all.each do |category| %>
   <div class="modal" id="editCategory<%= category.id %>" tabindex="-1" role="dialog" aria-labelledby="categoryEditModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -152,21 +152,20 @@
         </button>
       </div>
       <div class="modal-body">
-        <%= form_for @new_category, url: { action: "categories_new" }, html: { class: "nifty_form" } do |f| %>
-          <div class="form-group">
-            <%= f.label :title, "Title" %>
-            <%= f.text_field :title, :class => "form-control" %>
-          </div>
-          <div class="form-group xs-image-field">
-            <%= f.label :image, "Image" %>
-            <%= f.file_field :image, :class => "form-control-file", :accept => "image/jpeg,image/jpg,image/png" %>
-            <div class="xs-image-preview">
-            </div>
-          </div>
-          <div class="form-group">
-            <button type="submit" name="create" class="btn btn-success">Save</button>
-          </div>
-        <% end %>
+      <%= form_for @new_category, url: admin_categories_new_path, html: { id: "create-category-form", multipart: true } do |f| %>
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, class: "form-control", name: "category[title]" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :image %>
+          <%= f.file_field :image, accept: "image/*", class: "form-control-file", name: "category[image]" %>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+      <% end %>
+
       </div>
     </div>
   </div>
