@@ -355,18 +355,19 @@ class AdminController < AuthenticatedController
   #categories actions
   def categories
     @new_category = Category.new
-    @categories = Category.all
   end
 
   def categories_new
-    p = params.permit(:category => {})
-    c = p[:category]
-    category = Category.new
-    category.title = c[:title]
-    category.image.attach(c[:image])
-    category.save
-    redirect_to action: "categories"
+    category_params = params.require(:category).permit(:title, :image)
+    category = Category.new(category_params)
+  
+    if category.save
+      render json: { success: true, category: category }
+    else
+      render json: { success: false, errors: category.errors.full_messages }, status: :unprocessable_entity
+    end
   end
+  
 
   def categories_edit
     p = params.permit(:id, :category => {})
@@ -677,7 +678,6 @@ class AdminController < AuthenticatedController
   end
 
   def add_all_to_category
-    byebug
     p = params.permit :category_id, :ids => []
     cat = Category.find(p[:category_id])
 
