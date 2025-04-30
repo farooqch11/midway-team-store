@@ -24,7 +24,7 @@
       variant_title: "{{ matching_variant.title | default: '' }}",
       variant_price: {{ matching_variant.price | default: 'null' }},
       variant_image_url: "<%= filtered_variant.prev_images.any? ? filtered_variant.prev_images.last.image_url.url : '' %>",
-      logo_url: "<%= filtered_variant.logo.logo_file.url %>",
+      logo_url: "<%= filtered_variant.logo&.logo_file&.url&.split('?').first %>",
       store_name: "<%= @store.title %>"
     }<%= "," unless index == @filtered_products.size - 1 %>
   <% end %>
