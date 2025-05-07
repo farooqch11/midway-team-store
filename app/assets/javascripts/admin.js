@@ -1140,55 +1140,53 @@ $(document).on('turbolinks:load', () => {
     })
 
     // Handle AJAX form submission for creating category
-    const categoryForm = document.getElementById("create-category-form");
+    document.addEventListener("DOMContentLoaded", () => {
+      const categoryForm = document.getElementById("create-category-form");
 
-    if (categoryForm) {
-    categoryForm.addEventListener("submit", async function (e) {
-        e.preventDefault();
+      if (categoryForm) {
+        categoryForm.addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-        const formData = new FormData(categoryForm);
-        const token = await getSessionToken(app);
-        const csrf = document.querySelector('meta[name="csrf-token"]').content;
+          const formData = new FormData(categoryForm);
+          const token = await getSessionToken(app);
+          const csrf = document.querySelector('meta[name="csrf-token"]').content;
 
-        fetch(categoryForm.action, {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "X-CSRF-Token": csrf
-        },
-        body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-        if (data.success) {
-            const toast = Toast.create(app, {
-                message: "Category created successfully!",
+          fetch(categoryForm.action, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "X-CSRF-Token": csrf
+            },
+            body: formData
+          })
+            .then(response => response.json())
+            .then(data => {
+              const toast = Toast.create(app, {
+                message: data.success
+                  ? "Category created successfully!"
+                  : "Failed to create category: " + (data.errors || []).join(", "),
                 duration: 3000,
-            });
-            toast.dispatch(Toast.Action.SHOW);
-            
-            setTimeout(() => {
-                window.location.href = "/admin/categories";
-            }, 500);
-        } else {
-            const toast = Toast.create(app, {
-                message: "Failed to create category: " + (data.errors || []).join(", "),
-                duration: 5000,
+                isError: !data.success
+              });
+              toast.dispatch(Toast.Action.SHOW);
+
+              if (data.success) {
+                setTimeout(() => {
+                  window.location.href = "/admin/categories";
+                }, 500);
+              }
+            })
+            .catch(err => {
+              console.error("Error creating category:", err);
+              const toast = Toast.create(app, {
+                message: "Something went wrong.",
+                duration: 4000,
                 isError: true
+              });
+              toast.dispatch(Toast.Action.SHOW);
             });
-            toast.dispatch(Toast.Action.SHOW);
-        }     
-        })
-        .catch(err => {
-        console.error("Error creating category:", err);
-        const toast = Toast.create(app, {
-            message: "Something went wrong.",
-            duration: 4000,
-            isError: true
         });
-        toast.dispatch(Toast.Action.SHOW);
-        });
+      }
     });
-    }
 
 });
