@@ -2,7 +2,7 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   
-  root :to => "home#index"
+  root :to => "admin#products"
   get '/proxy_image', to: 'images#proxy'
 
   mount ShopifyApp::Engine, at: "/"

@@ -11,7 +11,7 @@ class AdminController < AuthenticatedController
   end
 
   def orders
-    @stores = Store.all
+    @stores = Store.paginate(page: params[:p] || 1, per_page: 5)
   end
 
   def products

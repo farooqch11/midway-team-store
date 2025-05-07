@@ -33,7 +33,7 @@ $(document).on('turbolinks:load', () => {
 
     const app = AppBridge.default({
     apiKey: apiKey,
-    host: new URLSearchParams(window.location.search).get('host'),
+      host: new URLSearchParams(window.location.search).get('host'),
     });
 
   
@@ -736,7 +736,7 @@ $(document).on('turbolinks:load', () => {
 
     // load datatable
     $('.xs-datatable').DataTable({
-        "pageLength": 60,
+        "pageLength": 15,
         "oLanguage": {
 
             "sSearch": "Enter title or tags to search"
