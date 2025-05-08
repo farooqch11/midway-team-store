@@ -80,7 +80,8 @@
     <%= content_tag(:div, nil, id: 'shopify-app-init', data: {
       api_key: ShopifyApp.configuration.api_key,
       shop_origin: (@current_shopify_session.shop if @current_shopify_session),
-      debug: Rails.env.development?
+      debug: Rails.env.development?,
+      force_redirect: true
     } ) %>
     <% if content_for?(:javascript) %>
       <div id="ContentForJavascript" data-turbolinks-temporary>
