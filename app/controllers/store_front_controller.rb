@@ -135,7 +135,7 @@ class StoreFrontController < ApplicationController
 
   def search
     p = params.permit :q
-    stores = Store.where("title LIKE ?", "%#{p[:q]}%")
+    stores = Store.where("title ILIKE ?", "%#{p[:q]}%")
     res = []
     stores.each do |store|
       if store.is_published?
