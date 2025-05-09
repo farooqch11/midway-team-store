@@ -1,0 +1,114 @@
+<% if @products.size > 0 %>
+  <% @products.each do |product| %>
+    <div class="modal" id="viewCategories<%= product.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+          <div class="modal-body">
+            <h5 class="lead">Add to categories</h5>
+            <div class="xs-add-collections-box">
+              <select class="fetch-categories-select" data-url="<%= admin_search_categories_json_path :query=> "" %>" data-add-url="<%= admin_add_category_to_product_path :product_id => product.id, :category_id => "" %>"></select>
+            </div>
+            <hr/>
+            <h5 class="lead">Categories of <i><%= product.title %></i></h5>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" width="100" class>Image</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody data-product-categories="<%= product.id %>">
+                <% product.categories.each do |category| %>
+                  <tr data-product-category="<%= category.id %>" >
+                    <td><% if category.image.attached? %><img src="<%= Rails.application.config.asset_host %><%= url_for(category.image) %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ><% end %></td>
+                    <td><%= category.title %></td>
+                    <td>
+                      <div class="btn-toolbar" role="toolbar" aria-label="">
+                        <div class="btn-group mr-2" role="group" aria-label="">
+                          <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> r </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="editProduct<%= product.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+          <div class="modal-body">
+            <h4 class="lead"><%= product.title %></h4>
+            <div class="py-3">
+              <div class='container-fluid'>
+                <div class="row">
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="xs-product-image ll">
+                      <img src="<%= product.image_url %>" class="img-fluid img-thumbnail">
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-8">
+                    <table class="table">
+                      <tr>
+                        <th>Logo Drawing Parameters: 
+                          <% if product.logo_param != nil %>
+                            <span class="label label-success" data-logo-params-status="<%= product.id %>">Defined</span>
+                          <% else %>
+                            <span class="label label-danger"  data-logo-params-status="<%= product.id %>">Not defined</span>
+                          <% end %>
+                        </th>
+                        <td>
+                          <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-product-id="<%= product.id %>" data-target="#canvasDrawModal"> Define </button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="py-3">
+              <h5 class="lead">Categories</h5>
+              <div class="xs-add-collections-box">
+                <select class="fetch-categories-select" data-url="<%= admin_search_categories_json_path :query=> "" %>" data-add-url="<%= admin_add_category_to_product_path :product_id => product.id, :category_id => "" %>"></select>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" width="100" class>Image</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody data-product-categories="<%= product.id %>">
+                  <% product.categories.each do |category| %>
+                    <tr data-product-category="<%= category.id %>" >
+                      <td><% if category.image.attached? %><img src="<%= Rails.application.config.asset_host %><%= url_for(category.image) %>" class="rounded " height="40" style="max-width:80px;object-fit: contain;" ><% end %></td>
+                      <td><%= category.title %></td>
+                      <td>
+                        <div class="btn-toolbar" role="toolbar" aria-label="">
+                          <div class="btn-group mr-2" role="group" aria-label="">
+                            <button type="button" class="btn btn-sm btn-danger" data-remove-category-from-product> r </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
