@@ -15,23 +15,22 @@ class AdminController < AuthenticatedController
   end
 
   def products
-    # @attributes = Attrib.limit(5)
-    @products = Product.not_custom
-                       .includes(
-                         :logo_param,
-                         :color_images,
-                         { categories: { image_attachment: :blob } },
-                         { product_attribs: [:attrib, :color] }
-                       )
+    @products = Product.not_custom.includes(:logo_param, :categories)
   
     if params[:search].present?
-      search_query = "%#{params[:search]}%"
-      @products = @products.where("products.title ILIKE :search OR products.tags ILIKE :search", search: search_query)
+      query = "%#{params[:search]}%"
+      @products = @products.where("title ILIKE :q OR tags ILIKE :q", q: query)
     end
-  
-    @products = @products.order(created_at: :desc)
-  end  
+    puts request.headers["Accept"]
+    puts request.xhr?
 
+    debugger
+    respond_to do |format|
+      format.html # normal page load
+      format.js   { render partial: "admin/products_table", locals: { products: @products } }
+    end
+  end  
+  
   def custom_products
     @products = []
     @attributes = Attrib.all

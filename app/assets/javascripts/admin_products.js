@@ -159,4 +159,39 @@ $(document).on('turbolinks:load', () => {
 
   }
 
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("search-form");
+    console.log("Search script loaded");
+
+  
+    if (form) {
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault(); // <-- This MUST be called to stop normal submit
+  
+        const query = new FormData(form).get("search");
+        const url = `${form.action}?search=${encodeURIComponent(query)}`;
+  
+        const token = await getSessionToken(app);
+        const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "X-CSRF-Token": csrfToken,
+            "Accept": "text/javascript",           // ✅ make it respond with JS
+            "X-Requested-With": "XMLHttpRequest" 
+          }
+        })
+          .then(res => res.text())
+          .then(html => {
+            document.getElementById("search-results").innerHTML = html;
+          })
+          .catch(err => {
+            console.error("Search failed", err);
+          });
+      });
+    }
+  });
+
 });
